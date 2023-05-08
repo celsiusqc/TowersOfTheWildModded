@@ -1,12 +1,12 @@
 {
-    "name": "totw_modded:bumblezone/bottom",
+    "name": "totw_modded:bumblezone/top",
     "fallback": "minecraft:empty",
     "elements": [
         {
             "weight": 1,
             "element": {
                 "element_type": "minecraft:legacy_single_pool_element",
-                "location": "totw_modded:bumblezone/bumblezone_tower_bottom",
+                "location": "totw_modded:bumblezone/waystone_bumblezone_tower_top",
                 "projection": "rigid",
                 "processors": "minecraft:empty"
             }

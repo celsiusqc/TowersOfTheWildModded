@@ -1,4 +1,8 @@
 {
+    "forge:conditions": [{
+        "type": "forge:mod_loaded",
+        "modid": "the_bumblezone"
+    }],
     "structures": [
         {
             "structure": "totw_modded:bumblezone",

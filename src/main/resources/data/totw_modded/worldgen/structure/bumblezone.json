@@ -1,13 +1,18 @@
 {
-    "type": "minecraft:jigsaw",
+    "forge:conditions": [{
+        "type": "forge:mod_loaded",
+        "modid": "the_bumblezone"
+    }],
+    "type": "the_bumblezone:generic_optimized_structure",
     "biomes": "#totw_modded:has_structure/bumblezone_tower",
     "spawn_overrides": {},
     "start_pool": "totw_modded:bumblezone/bottom",
     "size": 1,
     "step": "surface_structures",
-    "terrain_adaptation": "beard_thin",
+    "project_start_to_heightmap": "WORLD_SURFACE_WG",
+    "terrain_adaptation": "none",
     "start_height": {
-        "absolute": 33
+        "absolute": 0
     },
     "max_distance_from_center": 80,
     "use_expansion_hack": false
