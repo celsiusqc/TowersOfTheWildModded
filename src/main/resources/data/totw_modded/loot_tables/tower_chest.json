@@ -105,14 +105,10 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
+          "type": "minecraft:tag",
           "weight": 5,
-          "name": "paraglider:paraglider"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 5,
-          "name": "paraglider:deku_leaf"
+          "name": "totw_modded:gliders",
+          "expand": true
         }
       ]
     }
