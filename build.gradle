@@ -18,7 +18,7 @@ plugins {
 
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.0.0-1.20.1'
+version = '1.0.0-1.19.4'
 group = 'net.celsiusqc.totw_modded' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'totw_modded'
 
@@ -188,30 +188,45 @@ dependencies {
     // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("curse.maven:hang-glider-852668:4611981")
-    implementation fg.deobf("curse.maven:puzzles-lib-495476:4621178")
-    //Waystones
-    implementation fg.deobf("curse.maven:waystones-245755:4584510")
-    implementation fg.deobf("curse.maven:balm-531761:4597440")
 
-    implementation fg.deobf("curse.maven:worldedit-225608:4586218")
-    implementation fg.deobf("curse.maven:jei-238222:4609866")
+    //Hang Glider
+    implementation fg.deobf("curse.maven:hang-glider-852668:4555796")
+    implementation fg.deobf("curse.maven:puzzles-lib-495476:4582313")
+
+    //Waystones
+    implementation fg.deobf("curse.maven:waystones-245755:4513822")
+    implementation fg.deobf("curse.maven:balm-531761:4442605")
+
+    implementation fg.deobf("curse.maven:worldedit-225608:4445118")
+    implementation fg.deobf("curse.maven:jei-238222:4592504")
 
     //Ad Astra
-    implementation fg.deobf("curse.maven:ad-astra-635042:4606233")
-    implementation fg.deobf("curse.maven:resourceful-lib-570073:4598948")
-    implementation fg.deobf("curse.maven:resourceful-config-714059:4576455")
-    implementation fg.deobf("curse.maven:botarium-704113:4594094")
+    implementation fg.deobf("curse.maven:ad-astra-635042:4452010")
+    implementation fg.deobf("curse.maven:resourceful-lib-570073:4553782")
+    implementation fg.deobf("curse.maven:resourceful-config-714059:4438564")
+    implementation fg.deobf("curse.maven:botarium-704113:4439777")
 
     //Rats
-    implementation fg.deobf("curse.maven:rats-323596:4608071")
-    implementation fg.deobf("curse.maven:citadel-331936:4613231")
+    implementation fg.deobf("curse.maven:rats-323596:4539642")
+    implementation fg.deobf("curse.maven:citadel-331936:4556622")
 
     //Suggestion Provider for commands
-    implementation fg.deobf("curse.maven:suggestion-provider-fix-469647:4591193")
+    implementation fg.deobf("curse.maven:suggestion-provider-fix-469647:3832426")
 
     //Create
-    implementation fg.deobf("curse.maven:create-328085:4626108")
+    //implementation fg.deobf("curse.maven:create-328085:4626108")
+
+    //Twilight Forest
+    implementation fg.deobf("curse.maven:the-twilight-forest-227639:4539671")
+
+    //Crash Utilities
+    implementation fg.deobf("curse.maven:crash-utilities-371813:4406294")
+
+    //Rubidium
+    implementation fg.deobf("curse.maven:rubidium-574856:4448053")
+    implementation fg.deobf("curse.maven:oculus-581495:4451142")
+
+
 
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings

@@ -23,5 +23,6 @@ Hence, credit has just now been attributed.
 
 Variants:
 # <img alt="Variants" src="https://i.imgur.com/SFHGrGx.png">
+# <img alt="Variants" src="https://i.imgur.com/USmCvf9.png">
 # <img alt="Variants" src="https://i.imgur.com/0Kns0gM.png">
 # <img alt="Variants" src="https://i.imgur.com/q7tx9IE.png">
