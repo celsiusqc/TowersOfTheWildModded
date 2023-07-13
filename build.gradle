@@ -226,6 +226,10 @@ dependencies {
     implementation fg.deobf("curse.maven:rubidium-574856:4448053")
     implementation fg.deobf("curse.maven:oculus-581495:4451142")
 
+    //Blue Skies
+    implementation fg.deobf("curse.maven:blue-skies-312918:4525734")
+    implementation fg.deobf("curse.maven:structure-gel-api-378802:4489758")
+
 
 
 
