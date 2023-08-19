@@ -18,7 +18,9 @@ plugins {
 
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.0.0-1.20.1'
+def modVersion = project.findProperty("mod_version") ?: "1.0.1-1.20.1"
+
+version = "$modVersion"
 group = 'net.celsiusqc.totw_modded' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'totw_modded'
 
@@ -212,6 +214,15 @@ dependencies {
 
     //Create
     implementation fg.deobf("curse.maven:create-328085:4626108")
+
+    //Paraglider
+    implementation fg.deobf("curse.maven:paragliders-289240:4709929")
+
+    //Craft Tweaker
+    implementation fg.deobf("curse.maven:crafttweaker-239197:4675705")
+
+    //Twilight Forest
+    implementation fg.deobf("curse.maven:the-twilight-forest-227639:4653704")
 
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
