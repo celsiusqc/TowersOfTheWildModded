@@ -224,6 +224,12 @@ dependencies {
     //Twilight Forest
     implementation fg.deobf("curse.maven:the-twilight-forest-227639:4653704")
 
+    //Aether
+    implementation fg.deobf("curse.maven:aether-255308:5068019")
+
+    //World Edit
+    implementation fg.deobf("curse.maven:worldedit-225608:4586218")
+
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
