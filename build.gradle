@@ -10,13 +10,30 @@ base {
 	archivesName = project.archives_base_name
 }
 
-repositories {
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
-}
+	repositories {
+		maven { url "https://www.cursemaven.com" }
+
+		maven {
+			name "Modding Legacy Maven"
+			url "https://maven.moddinglegacy.com/maven"
+		}
+
+		maven {
+			// Location of the maven that hosts Terrarium and Team Resourceful's files.
+			name = "Team Resourceful Maven"
+			url = "https://maven.resourcefulbees.com/repository/maven-public/"
+		}
+
+		maven {
+			url "https://nexus.resourcefulbees.com/repository/telepathicgrunt/"
+		}
+	}
+
 
 fabricApi {
 	configureDataGeneration()
@@ -30,11 +47,52 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
+
 	// Uncomment the following line to enable the deprecated Fabric API modules. 
 	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
+
+
+	//Fabric API
+	modImplementation "curse.maven:fabric-api-306612:5105683"
+
+	//JEI
+	modImplementation "curse.maven:jei-238222:5101365"
+
+	//Waystones
+	modImplementation "curse.maven:waystones-fabric-500087:4962607"
+	modImplementation "curse.maven:balm-fabric-500525:5140906"
+
+
+	//Ad Astra
+//	modImplementation "curse.maven:ad-astra-635042:5116772"
+	//implementation fg.deobf("curse.maven:ad-astra-635042:5116772")
+
+	//"modImplementation" group: "earth.terrarium.adastra", name: "ad_astra-fabric-1.20.1", version: "1.15.18"
+
+
+//	modImplementation "curse.maven:resourceful-lib-570073:5093330"
+//	modImplementation "curse.maven:resourceful-config-714059:5020442"
+//	modImplementation "curse.maven:botarium-704113:5118354"
+
+
+	//Create
+	//modImplementation "curse.maven:create-fabric-624165:4721061"
+//
+	//Paraglider
+	modImplementation "curse.maven:paragliders-289240:5046071"
+	modImplementation "curse.maven:forge-config-api-port-fabric-547434:4583000"
+
+
+	//Hang Glider
+//	modImplementation "curse.maven:hang-glider-852668:4710224"
+//		modImplementation "curse.maven:puzzles-lib-495476:5112686"
+//		modImplementation "curse.maven:cardinal-components-api-318449:4681153"
+
+
+	//World Edit
+	//modImplementation "curse.maven:worldedit-225608:4586218"
 }
 
 processResources {
@@ -49,15 +107,15 @@ tasks.withType(JavaCompile).configureEach {
 	it.options.release = 17
 }
 
-java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
-
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
-}
+//java {
+//	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+//	// if it is present.
+//	// If you remove this line, sources will not be generated.
+//	withSourcesJar()
+//
+//	sourceCompatibility = JavaVersion.VERSION_17
+//	targetCompatibility = JavaVersion.VERSION_17
+//}
 
 jar {
 	from("LICENSE") {
