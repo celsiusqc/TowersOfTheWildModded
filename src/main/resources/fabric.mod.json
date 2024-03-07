@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "totw_modded",
+	"version": "${version}",
+	"name": "Towers Of The Wild: Modded",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"celsiusqc"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/totw_modded/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+          "net.celsiusqc.totw_modded.TowersOfTheWildModded"
+		],
+		"client": [
+			"net.celsiusqc.totw_modded.TowersOfTheWildModdedClient"
+		],
+		"fabric-datagen": [
+			"net.celsiusqc.totw_modded.TowersOfTheWildModdedDataGenerator"
+		]
+	},
+	"mixins": [
+		"totw_modded.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.14.12",
+		"minecraft": "~1.19.3",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
