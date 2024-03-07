@@ -1,12 +1,18 @@
 package net.celsiusqc.totw_modded;
 
-import net.minecraftforge.fml.common.Mod;
+import com.sun.jna.WString;
+import net.fabricmc.api.ModInitializer;
 
-// The value here should match an entry in the META-INF/mods.toml file
-@Mod(net.celsiusqc.totw_modded.TowersOfTheWildModded.MOD_ID)
-public class TowersOfTheWildModded {
-    public static final String MOD_ID = "totw_modded";
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+public class TowersOfTheWildModded implements ModInitializer {
+	public static final String MOD_ID = "totw_modded";
+    public static final Logger LOGGER = LoggerFactory.getLogger("MOD_ID");
 
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
+	@Override
+	public void onInitialize() {
+
+		LOGGER.info("Hello Fabric world!");
+	}
 }
