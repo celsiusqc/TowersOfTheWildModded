@@ -15,7 +15,9 @@ plugins {
 
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.0.1-1.19.2'
+def modVersion = project.findProperty("mod_version") ?: "1.0.3-1.19.1"
+
+version = "$modVersion"
 group = 'net.celsiusqc.totw_modded' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'totw_modded'
 
@@ -176,6 +178,9 @@ dependencies {
     //Hang Glider
     implementation fg.deobf("curse.maven:hang-glider-852668:4499066")
     implementation fg.deobf("curse.maven:puzzles-lib-495476:4600775")
+
+    //Aether
+    implementation fg.deobf("curse.maven:aether-255308:5068007")
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
