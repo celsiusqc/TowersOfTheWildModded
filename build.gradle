@@ -18,7 +18,10 @@ plugins {
 
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.0.0-1.19.4'
+
+def modVersion = project.findProperty("mod_version") ?: "1.0.2-1.19.4"
+
+version = "forge-1.19.4-$modVersion"
 group = 'net.celsiusqc.totw_modded' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'totw_modded'
 
@@ -197,21 +200,21 @@ dependencies {
     implementation fg.deobf("curse.maven:waystones-245755:4513822")
     implementation fg.deobf("curse.maven:balm-531761:4442605")
 
-    implementation fg.deobf("curse.maven:worldedit-225608:4445118")
+//    implementation fg.deobf("curse.maven:worldedit-225608:4445118")
     implementation fg.deobf("curse.maven:jei-238222:4592504")
 
     //Ad Astra
-    implementation fg.deobf("curse.maven:ad-astra-635042:4452010")
-    implementation fg.deobf("curse.maven:resourceful-lib-570073:4553782")
-    implementation fg.deobf("curse.maven:resourceful-config-714059:4438564")
-    implementation fg.deobf("curse.maven:botarium-704113:4439777")
+//    implementation fg.deobf("curse.maven:ad-astra-635042:4452010")
+//    implementation fg.deobf("curse.maven:resourceful-lib-570073:4553782")
+//    implementation fg.deobf("curse.maven:resourceful-config-714059:4438564")
+//    implementation fg.deobf("curse.maven:botarium-704113:4439777")
 
     //Rats
-    implementation fg.deobf("curse.maven:rats-323596:4539642")
-    implementation fg.deobf("curse.maven:citadel-331936:4556622")
+//    implementation fg.deobf("curse.maven:rats-323596:4539642")
+//    implementation fg.deobf("curse.maven:citadel-331936:4556622")
 
     //Suggestion Provider for commands
-    implementation fg.deobf("curse.maven:suggestion-provider-fix-469647:3832426")
+//    implementation fg.deobf("curse.maven:suggestion-provider-fix-469647:3832426")
 
     //Create
     //implementation fg.deobf("curse.maven:create-328085:4626108")
@@ -223,12 +226,14 @@ dependencies {
     implementation fg.deobf("curse.maven:crash-utilities-371813:4406294")
 
     //Rubidium
-    implementation fg.deobf("curse.maven:rubidium-574856:4448053")
-    implementation fg.deobf("curse.maven:oculus-581495:4451142")
+//    implementation fg.deobf("curse.maven:rubidium-574856:4448053")
+//    implementation fg.deobf("curse.maven:oculus-581495:4451142")
 
     //Blue Skies
-    implementation fg.deobf("curse.maven:blue-skies-312918:4525734")
-    implementation fg.deobf("curse.maven:structure-gel-api-378802:4489758")
+//    implementation fg.deobf("curse.maven:blue-skies-312918:4525734")
+//    implementation fg.deobf("curse.maven:structure-gel-api-378802:4489758")
+
+    implementation fg.deobf("curse.maven:aether-255308:5192731")
 
 
 
