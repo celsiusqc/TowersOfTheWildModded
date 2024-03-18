@@ -8,7 +8,9 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
-version = project.mod_version
+def modVersion = project.findProperty("mod_version") ?: "1.0.2-1.19.4"
+
+version = "fabric-1.19.4-$modVersion"
 group = project.maven_group
 
 repositories {
