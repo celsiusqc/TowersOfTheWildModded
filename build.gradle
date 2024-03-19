@@ -17,7 +17,7 @@ apply plugin: 'org.spongepowered.mixin'
 
 def modVersion = project.findProperty("mod_version") ?: "1.0.3-1.19.2"
 
-version = "forge-1.19.2-$modVersion"
+version = "1.19.2-$modVersion"
 group = 'net.celsiusqc.totw_modded' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'totw_modded'
 
