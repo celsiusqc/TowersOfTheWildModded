@@ -1,7 +1,7 @@
 {
     "structures": [
         {
-            "structure": "totw_modded:nether",
+            "structure": "totw_modded:ratlantis",
             "weight": 1
         }
     ],
@@ -9,6 +9,6 @@
         "type": "minecraft:random_spread",
         "spacing": 45,
         "separation": 25,
-        "salt": 1683778
+        "salt": 1686783
     }
 }

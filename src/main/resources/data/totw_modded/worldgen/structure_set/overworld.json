@@ -27,12 +27,20 @@
         {
             "structure": "totw_modded:badlands",
             "weight": 1
+        },
+        {
+            "structure": "totw_modded:ocean_warm",
+            "weight": 1
+        },
+        {
+            "structure": "totw_modded:ocean",
+            "weight": 1
         }
     ],
     "placement": {
         "type": "minecraft:random_spread",
         "spacing": 45,
         "separation": 25,
-        "salt": 1689777
+        "salt": 1685777
     }
 }

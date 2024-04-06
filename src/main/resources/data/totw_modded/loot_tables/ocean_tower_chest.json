@@ -36,7 +36,7 @@
               }
             }
           ],
-          "name": "minecraft:feather"
+          "name": "minecraft:prismarine_shard"
         },
         {
           "type": "minecraft:item",
@@ -89,6 +89,18 @@
             }
           ],
           "name": "minecraft:book"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "minecraft:enchant_with_levels",
+              "levels": 30,
+              "treasure": true
+            }
+          ],
+          "name": "minecraft:heart_of_the_sea"
         }
       ]
     },
@@ -98,16 +110,6 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:map"
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:tag",
-          "name": "totw_modded:gliders",
-          "expand": true
         }
       ]
     }
