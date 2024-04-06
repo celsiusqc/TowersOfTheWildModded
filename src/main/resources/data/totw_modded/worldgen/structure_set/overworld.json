@@ -27,6 +27,14 @@
         {
             "structure": "totw_modded:badlands",
             "weight": 1
+        },
+        {
+            "structure": "totw_modded:ocean_warm",
+            "weight": 1
+        },
+        {
+            "structure": "totw_modded:ocean",
+            "weight": 1
         }
     ],
     "placement": {
