@@ -1,8 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    {"id":"hangglider:hang_glider","required":false},
-    {"id":"paraglider:paraglider","required":false},
-    {"id":"paraglider:deku_leaf","required":false}
-  ]
-}

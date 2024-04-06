@@ -1,7 +1,0 @@
-{
-    "replace": false,
-    "required": false,
-    "values": [
-        "#minecraft:is_nether"
-    ]
-}
