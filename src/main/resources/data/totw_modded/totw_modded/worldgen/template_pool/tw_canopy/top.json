@@ -1,0 +1,15 @@
+{
+    "name": "totw_modded:tw_canopy/top",
+    "fallback": "minecraft:empty",
+    "elements": [
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "minecraft:legacy_single_pool_element",
+                "location": "totw_modded:tw_canopy/waystone_canopy_tower_top",
+                "projection": "rigid",
+                "processors": "minecraft:empty"
+            }
+        }
+    ]
+}

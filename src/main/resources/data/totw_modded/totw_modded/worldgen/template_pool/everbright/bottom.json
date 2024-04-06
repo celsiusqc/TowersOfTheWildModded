@@ -1,0 +1,15 @@
+{
+    "name": "totw_modded:everbright/bottom",
+    "fallback": "minecraft:empty",
+    "elements": [
+        {
+            "weight": 1,
+            "element": {
+                "element_type": "minecraft:legacy_single_pool_element",
+                "location": "totw_modded:everbright/everbright_tower_bottom",
+                "projection": "rigid",
+                "processors": "minecraft:empty"
+            }
+        }
+    ]
+}

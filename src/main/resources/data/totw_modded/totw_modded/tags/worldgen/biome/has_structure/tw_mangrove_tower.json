@@ -1,0 +1,8 @@
+{
+    "replace": false,
+    "required": false,
+    "values": [
+        "twilightforest:swamp",
+        "twilightforest:fire_swamp"
+    ]
+}

@@ -1,0 +1,46 @@
+{
+    "structures": [
+        {
+            "structure": "totw_modded:regular",
+            "weight": 1
+        },
+        {
+            "structure": "totw_modded:desert",
+            "weight": 1
+        },
+        {
+            "structure": "totw_modded:ice",
+            "weight": 1
+        },
+        {
+            "structure": "totw_modded:derelict",
+            "weight": 1
+        },
+        {
+            "structure": "totw_modded:derelict_grass",
+            "weight": 1
+        },
+        {
+            "structure": "totw_modded:jungle",
+            "weight": 1
+        },
+        {
+            "structure": "totw_modded:badlands",
+            "weight": 1
+        },
+        {
+            "structure": "totw_modded:ocean_warm",
+            "weight": 1
+        },
+        {
+            "structure": "totw_modded:ocean",
+            "weight": 1
+        }
+    ],
+    "placement": {
+        "type": "minecraft:random_spread",
+        "spacing": 45,
+        "separation": 25,
+        "salt": 1685777
+    }
+}

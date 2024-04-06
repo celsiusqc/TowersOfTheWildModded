@@ -1,0 +1,9 @@
+{
+    "replace": false,
+    "required": false,
+    "values": [
+        "twilightforest:forest",
+        "twilightforest:spooky_forest",
+        "twilightforest:mushroom_forest"
+    ]
+}

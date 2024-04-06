@@ -1,0 +1,14 @@
+{
+    "replace": false,
+    "required": false,
+    "values": [
+        "blue_skies:calming_skies",
+        "blue_skies:brightlands",
+        "blue_skies:slushlands",
+        "blue_skies:frostbitten_forest",
+        "blue_skies:frostbitten_forest_clearing",
+        "blue_skies:snow_covered_pines",
+        "blue_skies:brisk_meadow",
+        "blue_skies:polar_highland"
+    ]
+}
