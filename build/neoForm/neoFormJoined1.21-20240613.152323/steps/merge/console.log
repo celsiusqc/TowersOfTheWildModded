@@ -1,0 +1,8 @@
+JVM Args:          
+Run Args:          "--client", "C:\Users\zboland\Documents\GitHub\TowersOfTheWildModded\build\neoForm\neoFormJoined1.21-20240613.152323\steps\stripClient\output.jar", "--server", "C:\Users\zboland\Documents\GitHub\TowersOfTheWildModded\build\neoForm\neoFormJoined1.21-20240613.152323\steps\stripServer\output.jar", "--ann", "1.21", "--output", "C:\Users\zboland\Documents\GitHub\TowersOfTheWildModded\build\neoForm\neoFormJoined1.21-20240613.152323\steps\merge\output.jar", "--inject", "false"
+JVM:               C:\Users\zboland\.gradle\jdks\eclipse_adoptium-21-amd64-windows\jdk-21.0.3+9\bin\java.exe
+Classpath:         C:\Users\zboland\.gradle\caches\modules-2\files-2.1\net.neoforged\mergetool\2.0.3\85c096b0155715275f84922d41462484c9a0285c\mergetool-2.0.3-fatjar.jar
+Working Dir:       C:\Users\zboland\Documents\GitHub\TowersOfTheWildModded\build\neoForm\neoFormJoined1.21-20240613.152323\steps\merge
+Main Class:        net.neoforged.mergetool.ConsoleMerger
+Program log file:  C:\Users\zboland\Documents\GitHub\TowersOfTheWildModded\build\neoForm\neoFormJoined1.21-20240613.152323\steps\merge\log.log
+Output file:       C:\Users\zboland\Documents\GitHub\TowersOfTheWildModded\build\neoForm\neoFormJoined1.21-20240613.152323\steps\merge\output.jar
