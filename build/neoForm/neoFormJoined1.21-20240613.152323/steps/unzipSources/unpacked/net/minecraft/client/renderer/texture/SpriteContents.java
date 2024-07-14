@@ -74,7 +74,7 @@ public class SpriteContents implements Stitcher.Entry, AutoCloseable {
         }
     }
 
-    int getFrameCount() {
+    private int getFrameCount() {
         return this.animatedTexture != null ? this.animatedTexture.frames.size() : 1;
     }
 

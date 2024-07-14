@@ -44,7 +44,7 @@ public class MappedRegistry<T> extends net.neoforged.neoforge.registries.BaseMap
     private volatile Map<TagKey<T>, HolderSet.Named<T>> tags = new IdentityHashMap<>();
     private boolean frozen;
     @Nullable
-    protected Map<T, Holder.Reference<T>> unregisteredIntrusiveHolders;
+    private Map<T, Holder.Reference<T>> unregisteredIntrusiveHolders;
     private final HolderLookup.RegistryLookup<T> lookup = new HolderLookup.RegistryLookup<T>() {
         @Override
         public ResourceKey<? extends Registry<? extends T>> key() {
@@ -206,7 +206,7 @@ public class MappedRegistry<T> extends net.neoforged.neoforge.registries.BaseMap
 
     @Override
     public Optional<Holder.Reference<T>> getHolder(ResourceLocation pLocation) {
-        return Optional.ofNullable(this.byLocation.get(pLocation));
+        return Optional.ofNullable(this.byLocation.get(resolve(pLocation)));
     }
 
     @Override
@@ -259,7 +259,7 @@ public class MappedRegistry<T> extends net.neoforged.neoforge.registries.BaseMap
     @Nullable
     @Override
     public T get(@Nullable ResourceLocation pName) {
-        Holder.Reference<T> reference = this.byLocation.get(resolve(pName));
+        Holder.Reference<T> reference = this.byLocation.get(pName != null ? resolve(pName) : null);
         return getValueFromNullable(reference);
     }
 

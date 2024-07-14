@@ -488,9 +488,8 @@ public abstract class BlockBehaviour implements FeatureElement {
         return ((BlockStateBase)state).isAir;
     }
 
-    /* ======================================== FORGE START ===================================== */
+    // Neo: Holds the loot table for this block's drops. Used for getLootTable method.
     private final java.util.function.Supplier<ResourceKey<LootTable>> lootTableSupplier;
-    /* ========================================= FORGE END ====================================== */
 
     public abstract static class BlockStateBase extends StateHolder<Block, BlockState> {
         private final int lightEmission;

@@ -64,7 +64,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface 
     static final Logger LOGGER = LogUtils.getLogger();
     private static final int CONVERSION_RETRY_DELAY_MS = 5000;
     private static final int CONVERSION_RETRIES = 2;
-    public final List<ConsoleInput> consoleInput = Collections.synchronizedList(Lists.newArrayList());
+    private final List<ConsoleInput> consoleInput = Collections.synchronizedList(Lists.newArrayList());
     @Nullable
     private QueryThreadGs4 queryThreadGs4;
     private final RconConsoleSource rconConsoleSource;

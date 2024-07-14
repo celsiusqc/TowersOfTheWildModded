@@ -39,9 +39,10 @@ public abstract class Language {
     private static Language loadDefault() {
         Builder<String, String> builder = ImmutableMap.builder();
         BiConsumer<String, String> biconsumer = builder::put;
-        parseTranslations(biconsumer, "/assets/minecraft/lang/en_us.json");
+        Map<String, net.minecraft.network.chat.Component> componentMap = new java.util.HashMap<>();
+        parseTranslations(biconsumer, componentMap::put, "/assets/minecraft/lang/en_us.json");
         final Map<String, String> map = new java.util.HashMap<>(builder.build());
-        net.neoforged.neoforge.server.LanguageHook.captureLanguageMap(map);
+        net.neoforged.neoforge.server.LanguageHook.captureLanguageMap(map, componentMap);
         return new Language() {
             @Override
             public String getOrDefault(String p_128127_, String p_265421_) {
@@ -73,21 +74,46 @@ public abstract class Language {
             public Map<String, String> getLanguageData() {
                 return map;
             }
+
+            @Override
+            public @org.jetbrains.annotations.Nullable net.minecraft.network.chat.Component getComponent(String key) {
+                return componentMap.get(key);
+            }
         };
     }
 
+    @Deprecated
     private static void parseTranslations(BiConsumer<String, String> pOutput, String pLanguagePath) {
-        try (InputStream inputstream = Language.class.getResourceAsStream(pLanguagePath)) {
-            loadFromJson(inputstream, pOutput);
+        parseTranslations(pOutput, (key, value) -> {}, pLanguagePath);
+    }
+
+    private static void parseTranslations(BiConsumer<String, String> p_282031_, BiConsumer<String, net.minecraft.network.chat.Component> componentConsumer, String p_283638_) {
+        try (InputStream inputstream = Language.class.getResourceAsStream(p_283638_)) {
+            loadFromJson(inputstream, p_282031_, componentConsumer);
         } catch (JsonParseException | IOException ioexception) {
-            LOGGER.error("Couldn't read strings from {}", pLanguagePath, ioexception);
+            LOGGER.error("Couldn't read strings from {}", p_283638_, ioexception);
         }
     }
 
     public static void loadFromJson(InputStream pStream, BiConsumer<String, String> pOutput) {
+        loadFromJson(pStream, pOutput, (key, value) -> {});
+    }
+
+    public static void loadFromJson(InputStream pStream, BiConsumer<String, String> pOutput, BiConsumer<String, net.minecraft.network.chat.Component> componentConsumer) {
         JsonObject jsonobject = GSON.fromJson(new InputStreamReader(pStream, StandardCharsets.UTF_8), JsonObject.class);
 
         for (Entry<String, JsonElement> entry : jsonobject.entrySet()) {
+            if (entry.getValue().isJsonArray()) {
+                var component = net.minecraft.network.chat.ComponentSerialization.CODEC
+                    .parse(com.mojang.serialization.JsonOps.INSTANCE, entry.getValue())
+                    .getOrThrow(msg -> new com.google.gson.JsonParseException("Error parsing translation for " + entry.getKey() + ": " + msg));
+
+                pOutput.accept(entry.getKey(), component.getString());
+                componentConsumer.accept(entry.getKey(), component);
+
+                continue;
+            }
+
             String s = UNSUPPORTED_FORMAT_PATTERN.matcher(GsonHelper.convertToString(entry.getValue(), entry.getKey())).replaceAll("%$1s");
             pOutput.accept(entry.getKey(), s);
         }
@@ -101,8 +127,12 @@ public abstract class Language {
         instance = pInstance;
     }
 
-    // FORGE START
+    // Neo: All helpers methods below are injected by Neo to ease modder's usage of Language
     public Map<String, String> getLanguageData() { return ImmutableMap.of(); }
+
+    public @org.jetbrains.annotations.Nullable net.minecraft.network.chat.Component getComponent(String key) {
+        return null;
+    }
 
     public String getOrDefault(String pId) {
         return this.getOrDefault(pId, pId);

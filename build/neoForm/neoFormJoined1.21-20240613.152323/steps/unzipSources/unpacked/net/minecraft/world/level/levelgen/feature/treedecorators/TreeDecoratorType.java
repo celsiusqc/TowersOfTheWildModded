@@ -17,7 +17,7 @@ public class TreeDecoratorType<P extends TreeDecorator> {
         return Registry.register(BuiltInRegistries.TREE_DECORATOR_TYPE, pName, new TreeDecoratorType<>(pCodec));
     }
 
-    private TreeDecoratorType(MapCodec<P> pCodec) {
+    public TreeDecoratorType(MapCodec<P> pCodec) {
         this.codec = pCodec;
     }
 

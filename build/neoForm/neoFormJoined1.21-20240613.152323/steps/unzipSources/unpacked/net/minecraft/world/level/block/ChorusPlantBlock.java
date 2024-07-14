@@ -49,7 +49,8 @@ public class ChorusPlantBlock extends PipeBlock {
         BlockState blockstate4 = pLevel.getBlockState(pPos.south());
         BlockState blockstate5 = pLevel.getBlockState(pPos.west());
         Block block = pState.getBlock();
-        return pState.trySetValue(DOWN, Boolean.valueOf(blockstate.is(block) || blockstate.is(Blocks.CHORUS_FLOWER) || blockstate.is(Blocks.END_STONE)))
+        net.neoforged.neoforge.common.util.TriState soilDecision = blockstate.canSustainPlant(pLevel, pPos.below(), Direction.UP, pState);
+        return pState.trySetValue(DOWN, Boolean.valueOf(blockstate.is(block) || blockstate.is(Blocks.CHORUS_FLOWER) || blockstate.is(Blocks.END_STONE) || soilDecision.isTrue()))
             .trySetValue(UP, Boolean.valueOf(blockstate1.is(block) || blockstate1.is(Blocks.CHORUS_FLOWER)))
             .trySetValue(NORTH, Boolean.valueOf(blockstate2.is(block) || blockstate2.is(Blocks.CHORUS_FLOWER)))
             .trySetValue(EAST, Boolean.valueOf(blockstate3.is(block) || blockstate3.is(Blocks.CHORUS_FLOWER)))
@@ -69,6 +70,12 @@ public class ChorusPlantBlock extends PipeBlock {
             return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
         } else {
             boolean flag = pFacingState.is(this) || pFacingState.is(Blocks.CHORUS_FLOWER) || pFacing == Direction.DOWN && pFacingState.is(Blocks.END_STONE);
+            if (pFacing == Direction.DOWN) {
+                net.neoforged.neoforge.common.util.TriState soilDecision = pFacingState.canSustainPlant(pLevel, pFacingPos.relative(pFacing), pFacing.getOpposite(), pState);
+                if (!soilDecision.isDefault()) {
+                    flag = soilDecision.isTrue();
+                }
+            }
             return pState.setValue(PROPERTY_BY_DIRECTION.get(pFacing), Boolean.valueOf(flag));
         }
     }
@@ -100,6 +107,8 @@ public class ChorusPlantBlock extends PipeBlock {
             }
         }
 
+        net.neoforged.neoforge.common.util.TriState soilDecision = blockstate.canSustainPlant(pLevel, pPos.below(), Direction.UP, pState);
+        if (!soilDecision.isDefault()) return soilDecision.isTrue();
         return blockstate.is(this) || blockstate.is(Blocks.END_STONE);
     }
 

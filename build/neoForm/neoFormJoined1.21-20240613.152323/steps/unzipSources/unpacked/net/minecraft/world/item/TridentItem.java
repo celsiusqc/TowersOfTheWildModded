@@ -177,7 +177,7 @@ public class TridentItem extends Item implements ProjectileItem {
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ToolAction toolAction) {
-        return net.neoforged.neoforge.common.ToolActions.DEFAULT_TRIDENT_ACTIONS.contains(toolAction);
+    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ItemAbility itemAbility) {
+        return net.neoforged.neoforge.common.ItemAbilities.DEFAULT_TRIDENT_ACTIONS.contains(itemAbility);
     }
 }

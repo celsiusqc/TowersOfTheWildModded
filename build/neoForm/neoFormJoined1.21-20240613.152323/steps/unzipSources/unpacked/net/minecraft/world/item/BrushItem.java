@@ -156,7 +156,7 @@ public class BrushItem extends Item {
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ToolAction toolAction) {
-        return net.neoforged.neoforge.common.ToolActions.DEFAULT_BRUSH_ACTIONS.contains(toolAction);
+    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ItemAbility itemAbility) {
+        return net.neoforged.neoforge.common.ItemAbilities.DEFAULT_BRUSH_ACTIONS.contains(itemAbility);
     }
 }

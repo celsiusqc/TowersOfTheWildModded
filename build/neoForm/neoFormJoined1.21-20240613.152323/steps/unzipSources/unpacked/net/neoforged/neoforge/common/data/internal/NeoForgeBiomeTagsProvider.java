@@ -41,6 +41,8 @@ public final class NeoForgeBiomeTagsProvider extends BiomeTagsProvider {
                 .add(Biomes.BAMBOO_JUNGLE)
                 .add(Biomes.SPARSE_JUNGLE)
                 .add(Biomes.DESERT)
+                .add(Biomes.BADLANDS)
+                .add(Biomes.WOODED_BADLANDS)
                 .add(Biomes.ERODED_BADLANDS)
                 .add(Biomes.SAVANNA)
                 .add(Biomes.SAVANNA_PLATEAU)
@@ -83,7 +85,6 @@ public final class NeoForgeBiomeTagsProvider extends BiomeTagsProvider {
 
         tag(Tags.Biomes.IS_SPARSE_VEGETATION_OVERWORLD)
                 .add(Biomes.WOODED_BADLANDS)
-                .add(Biomes.ERODED_BADLANDS)
                 .add(Biomes.SAVANNA)
                 .add(Biomes.SAVANNA_PLATEAU)
                 .add(Biomes.WINDSWEPT_SAVANNA)
@@ -101,7 +102,9 @@ public final class NeoForgeBiomeTagsProvider extends BiomeTagsProvider {
                 .add(Biomes.DARK_FOREST)
                 .add(Biomes.OLD_GROWTH_BIRCH_FOREST)
                 .add(Biomes.OLD_GROWTH_SPRUCE_TAIGA)
-                .add(Biomes.JUNGLE);
+                .add(Biomes.JUNGLE)
+                .add(Biomes.BAMBOO_JUNGLE)
+                .add(Biomes.MANGROVE_SWAMP);
         tag(Tags.Biomes.IS_DENSE_VEGETATION_NETHER);
         tag(Tags.Biomes.IS_DENSE_VEGETATION_END);
         tag(Tags.Biomes.IS_DENSE_VEGETATION).addTag(Tags.Biomes.IS_DENSE_VEGETATION_OVERWORLD).addOptionalTag(Tags.Biomes.IS_DENSE_VEGETATION_NETHER.location()).addOptionalTag(Tags.Biomes.IS_DENSE_VEGETATION_END.location());

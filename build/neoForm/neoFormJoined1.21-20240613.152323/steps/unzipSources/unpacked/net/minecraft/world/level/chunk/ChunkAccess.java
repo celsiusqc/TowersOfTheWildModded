@@ -491,7 +491,7 @@ public abstract class ChunkAccess implements BlockGetter, BiomeManager.NoiseBiom
     public static record TicksToSave(SerializableTickContainer<Block> blocks, SerializableTickContainer<Fluid> fluids) {
     }
 
-    // FORGE START
+    // Neo: Hook in AttachmentHolder to chunks for data storage and retrieval
     private final net.neoforged.neoforge.attachment.AttachmentHolder.AsField attachmentHolder = new net.neoforged.neoforge.attachment.AttachmentHolder.AsField(this);
 
     @Override
@@ -554,6 +554,8 @@ public abstract class ChunkAccess implements BlockGetter, BiomeManager.NoiseBiom
     protected net.neoforged.neoforge.attachment.AttachmentHolder.AsField getAttachmentHolder() {
         return attachmentHolder;
     }
+
+    // Neo: Allow for exposing the Level a chunk is tied to if available
     @Nullable
     public net.minecraft.world.level.Level getLevel() { return null; }
 }

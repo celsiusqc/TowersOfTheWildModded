@@ -210,11 +210,12 @@ public class KeyMapping implements Comparable<KeyMapping>, net.neoforged.neoforg
         this.isDown = pValue;
     }
 
-    /****************** Forge Start *****************************/
+    // Neo: Injected Key Mapping controls
     private net.neoforged.neoforge.client.settings.KeyModifier keyModifierDefault = net.neoforged.neoforge.client.settings.KeyModifier.NONE;
     private net.neoforged.neoforge.client.settings.KeyModifier keyModifier = net.neoforged.neoforge.client.settings.KeyModifier.NONE;
     private net.neoforged.neoforge.client.settings.IKeyConflictContext keyConflictContext = net.neoforged.neoforge.client.settings.KeyConflictContext.UNIVERSAL;
 
+    // Neo: Injected Key Mapping constructors to assist modders
     /**
      * Convenience constructor for creating KeyBindings with keyConflictContext set.
      */
@@ -254,6 +255,7 @@ public class KeyMapping implements Comparable<KeyMapping>, net.neoforged.neoforg
         CATEGORIES.add(category);
     }
 
+    // Neo: Implemented IKeyMappingExtension methods into vanilla
     @Override
     public InputConstants.Key getKey() {
          return this.key;
@@ -288,5 +290,4 @@ public class KeyMapping implements Comparable<KeyMapping>, net.neoforged.neoforg
          this.keyModifier = keyModifier;
          MAP.put(keyCode, this);
     }
-    /****************** Forge End *****************************/
 }

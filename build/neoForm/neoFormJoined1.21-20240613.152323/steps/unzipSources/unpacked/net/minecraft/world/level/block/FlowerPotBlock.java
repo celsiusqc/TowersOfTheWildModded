@@ -142,24 +142,36 @@ public class FlowerPotBlock extends Block {
         return false;
     }
 
-    //Forge Start
+    // Neo: Maps flower blocks to the filled flower pot equivalent
     private final Map<net.minecraft.resources.ResourceLocation, java.util.function.Supplier<? extends Block>> fullPots;
+
+    @org.jetbrains.annotations.Nullable
     private final java.util.function.Supplier<FlowerPotBlock> emptyPot;
+
     private final java.util.function.Supplier<? extends Block> flowerDelegate;
 
     public FlowerPotBlock getEmptyPot() {
          return emptyPot == null ? this : emptyPot.get();
     }
 
+    /**
+     * Maps the given flower to the filled pot it is for.
+     * Call this on the empty pot block. Attempting to call this on a filled pot will throw an exception.
+     *
+     * @param flower The ResourceLocation of the flower block. Not flower item
+     * @param fullPot The filled flower pot to map the flower block to
+     */
     public void addPlant(net.minecraft.resources.ResourceLocation flower, java.util.function.Supplier<? extends Block> fullPot) {
          if (getEmptyPot() != this) {
-              throw new IllegalArgumentException("Cannot add plant to non-empty pot: " + this);
+              throw new IllegalArgumentException("Cannot add plant to non-empty pot: " + this + " (Please call addPlant on the empty pot instead)");
          }
          fullPots.put(flower, fullPot);
     }
 
+    /**
+     * Returns all the filled pots that can be spawned from filling this pot. (If this pot is filled, returned map will be empty)
+     */
     public Map<net.minecraft.resources.ResourceLocation, java.util.function.Supplier<? extends Block>> getFullPotsView() {
         return java.util.Collections.unmodifiableMap(fullPots);
     }
-    //Forge End
 }

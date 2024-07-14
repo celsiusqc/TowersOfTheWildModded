@@ -87,6 +87,8 @@ public abstract class EffectRenderingInventoryScreen<T extends AbstractContainer
                         this.getEffectName(mobeffectinstance),
                         MobEffectUtil.formatDuration(mobeffectinstance, 1.0F, this.minecraft.level.tickRateManager().tickrate())
                     );
+                    // Neo: Allow mods to adjust the tooltip shown when hovering a mob effect.
+                    list = net.neoforged.neoforge.client.ClientHooks.getEffectTooltip(this, mobeffectinstance, list);
                     pGuiGraphics.renderTooltip(this.font, list, Optional.empty(), pMouseX, pMouseY);
                 }
             }

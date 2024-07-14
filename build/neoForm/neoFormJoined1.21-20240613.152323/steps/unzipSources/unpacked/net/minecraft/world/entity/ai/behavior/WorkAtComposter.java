@@ -40,18 +40,18 @@ public class WorkAtComposter extends WorkAtPoi {
 
         int i = 20;
         int j = 10;
-        int[] aint = new int[COMPOSTABLE_ITEMS.size()];
+        it.unimi.dsi.fastutil.objects.Reference2IntMap<Item> amounts = new it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap<>(COMPOSTABLE_ITEMS.size() * 2); // Neo: let's assume that there's roughly twice more villager compostables than in vanilla
         SimpleContainer simplecontainer = pVillager.getInventory();
         int k = simplecontainer.getContainerSize();
         BlockState blockstate = pState;
 
         for (int l = k - 1; l >= 0 && i > 0; l--) {
             ItemStack itemstack = simplecontainer.getItem(l);
-            int i1 = COMPOSTABLE_ITEMS.indexOf(itemstack.getItem());
-            if (i1 != -1) {
+            var compostable = itemstack.getItemHolder().getData(net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps.COMPOSTABLES);
+            if (compostable != null && compostable.canVillagerCompost()) {
                 int j1 = itemstack.getCount();
-                int k1 = aint[i1] + j1;
-                aint[i1] = k1;
+                int k1 = amounts.getInt(itemstack.getItem()) + j1;
+                amounts.put(itemstack.getItem(), k1);
                 int l1 = Math.min(Math.min(k1 - 10, i), j1);
                 if (l1 > 0) {
                     i -= l1;

@@ -962,7 +962,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
     }
 
     private static final com.google.gson.Gson GSON = new com.google.gson.Gson();
-    private String cachedServerStatus; // NEO: cache the server status json in case a client spams requests
+    private String cachedServerStatus; // Neo: cache the server status json in case a client spams requests
     private void resetStatusCache(ServerStatus status) {
         this.cachedServerStatus = GSON.toJson(ServerStatus.CODEC.encodeStart(com.mojang.serialization.JsonOps.INSTANCE, status)
                 .result().orElseThrow());

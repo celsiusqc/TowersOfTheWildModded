@@ -64,7 +64,7 @@ public class FishingHookRenderer extends EntityRenderer<FishingHook> {
     private Vec3 getPlayerHandPos(Player pPlayer, float p_340872_, float pPartialTick) {
         int i = pPlayer.getMainArm() == HumanoidArm.RIGHT ? 1 : -1;
         ItemStack itemstack = pPlayer.getMainHandItem();
-        if (!itemstack.canPerformAction(net.neoforged.neoforge.common.ToolActions.FISHING_ROD_CAST)) {
+        if (!itemstack.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.FISHING_ROD_CAST)) {
             i = -i;
         }
 

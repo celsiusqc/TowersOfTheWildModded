@@ -50,7 +50,7 @@ public class ShovelItem extends DiggerItem {
             return InteractionResult.PASS;
         } else {
             Player player = pContext.getPlayer();
-            BlockState blockstate1 = blockstate.getToolModifiedState(pContext, net.neoforged.neoforge.common.ToolActions.SHOVEL_FLATTEN, false);
+            BlockState blockstate1 = blockstate.getToolModifiedState(pContext, net.neoforged.neoforge.common.ItemAbilities.SHOVEL_FLATTEN, false);
             BlockState blockstate2 = null;
             if (blockstate1 != null && level.getBlockState(blockpos.above()).isAir()) {
                 level.playSound(player, blockpos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -86,7 +86,7 @@ public class ShovelItem extends DiggerItem {
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ToolAction toolAction) {
-        return net.neoforged.neoforge.common.ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(toolAction);
+    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ItemAbility itemAbility) {
+        return net.neoforged.neoforge.common.ItemAbilities.DEFAULT_SHOVEL_ACTIONS.contains(itemAbility);
     }
 }

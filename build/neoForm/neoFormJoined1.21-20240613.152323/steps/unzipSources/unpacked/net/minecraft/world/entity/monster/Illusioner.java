@@ -181,7 +181,7 @@ public class Illusioner extends SpellcasterIllager implements RangedAttackMob {
         ItemStack itemstack1 = this.getProjectile(itemstack);
         AbstractArrow abstractarrow = ProjectileUtil.getMobArrow(this, itemstack1, pDistanceFactor, itemstack);
         if (itemstack.getItem() instanceof net.minecraft.world.item.BowItem bowItem)
-            abstractarrow = bowItem.customArrow(abstractarrow, itemstack1);
+            abstractarrow = bowItem.customArrow(abstractarrow, itemstack1, itemstack);
         double d0 = pTarget.getX() - this.getX();
         double d1 = pTarget.getY(0.3333333333333333) - abstractarrow.getY();
         double d2 = pTarget.getZ() - this.getZ();

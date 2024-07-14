@@ -89,18 +89,18 @@ public class AxeItem extends DiggerItem {
     }
 
     private Optional<BlockState> evaluateNewBlockState(Level pLevel, BlockPos pPos, @Nullable Player pPlayer, BlockState pState, UseOnContext p_40529_) {
-        Optional<BlockState> optional = Optional.ofNullable(pState.getToolModifiedState(p_40529_, net.neoforged.neoforge.common.ToolActions.AXE_STRIP, false));
+        Optional<BlockState> optional = Optional.ofNullable(pState.getToolModifiedState(p_40529_, net.neoforged.neoforge.common.ItemAbilities.AXE_STRIP, false));
         if (optional.isPresent()) {
             pLevel.playSound(pPlayer, pPos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
             return optional;
         } else {
-            Optional<BlockState> optional1 = Optional.ofNullable(pState.getToolModifiedState(p_40529_, net.neoforged.neoforge.common.ToolActions.AXE_SCRAPE, false));
+            Optional<BlockState> optional1 = Optional.ofNullable(pState.getToolModifiedState(p_40529_, net.neoforged.neoforge.common.ItemAbilities.AXE_SCRAPE, false));
             if (optional1.isPresent()) {
                 pLevel.playSound(pPlayer, pPos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
                 pLevel.levelEvent(pPlayer, 3005, pPos, 0);
                 return optional1;
             } else {
-                Optional<BlockState> optional2 = Optional.ofNullable(pState.getToolModifiedState(p_40529_, net.neoforged.neoforge.common.ToolActions.AXE_WAX_OFF, false));
+                Optional<BlockState> optional2 = Optional.ofNullable(pState.getToolModifiedState(p_40529_, net.neoforged.neoforge.common.ItemAbilities.AXE_WAX_OFF, false));
                 if (optional2.isPresent()) {
                     pLevel.playSound(pPlayer, pPos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
                     pLevel.levelEvent(pPlayer, 3004, pPos, 0);
@@ -124,7 +124,7 @@ public class AxeItem extends DiggerItem {
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ToolAction toolAction) {
-        return net.neoforged.neoforge.common.ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction);
+    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ItemAbility itemAbility) {
+        return net.neoforged.neoforge.common.ItemAbilities.DEFAULT_AXE_ACTIONS.contains(itemAbility);
     }
 }

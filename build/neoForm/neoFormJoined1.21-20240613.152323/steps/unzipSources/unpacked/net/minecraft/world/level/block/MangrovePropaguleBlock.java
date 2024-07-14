@@ -93,7 +93,12 @@ public class MangrovePropaguleBlock extends SaplingBlock implements SimpleWaterl
 
     @Override
     protected boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        return isHanging(pState) ? pLevel.getBlockState(pPos.above()).is(Blocks.MANGROVE_LEAVES) : super.canSurvive(pState, pLevel, pPos);
+        if (isHanging(pState)) {
+            net.neoforged.neoforge.common.util.TriState soilDecision = pLevel.getBlockState(pPos.above()).canSustainPlant(pLevel, pPos.above(), Direction.DOWN, pState);
+            if (!soilDecision.isDefault()) return soilDecision.isTrue();
+            return pLevel.getBlockState(pPos.above()).is(Blocks.MANGROVE_LEAVES);
+        }
+        return super.canSurvive(pState, pLevel, pPos);
     }
 
     /**

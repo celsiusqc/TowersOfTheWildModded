@@ -90,6 +90,8 @@ public class ServerConfigurationPacketListenerImpl extends ServerCommonPacketLis
         LayeredRegistryAccess<RegistryLayer> layeredregistryaccess = this.server.registries();
         List<KnownPack> list = this.server.getResourceManager().listPacks().flatMap(p_325637_ -> p_325637_.location().knownPackInfo().stream()).toList();
         this.send(new ClientboundUpdateEnabledFeaturesPacket(FeatureFlags.REGISTRY.toNames(this.server.getWorldData().enabledFeatures())));
+        // Neo: we must sync the registries before vanilla sends tags in SynchronizeRegistriesTask!
+        net.neoforged.neoforge.network.ConfigurationInitialization.configureEarlyTasks(this, this.configurationTasks::add);
         this.synchronizeRegistriesTask = new SynchronizeRegistriesTask(list, layeredregistryaccess);
         this.configurationTasks.add(this.synchronizeRegistriesTask);
         this.addOptionalTasks();
@@ -161,7 +163,7 @@ public class ServerConfigurationPacketListenerImpl extends ServerCommonPacketLis
     public void handleConfigurationFinished(ServerboundFinishConfigurationPacket pPacket) {
         PacketUtils.ensureRunningOnSameThread(pPacket, this, this.server);
         this.finishCurrentTask(JoinWorldTask.TYPE);
-        this.connection.setupOutboundProtocol(GameProtocols.CLIENTBOUND_TEMPLATE.bind(RegistryFriendlyByteBuf.decorator(this.server.registryAccess())));
+        this.connection.setupOutboundProtocol(GameProtocols.CLIENTBOUND_TEMPLATE.bind(RegistryFriendlyByteBuf.decorator(this.server.registryAccess(), this.connectionType)));
         // Packets can only be sent after the outbound protocol is set up again
         if (this.connectionType == net.neoforged.neoforge.network.connection.ConnectionType.OTHER) {
             //We need to also initialize this here, as the client may have sent the packet before we have finished our configuration.

@@ -92,8 +92,8 @@ public class DebugScreenOverlay {
     private final Minecraft minecraft;
     private final DebugScreenOverlay.AllocationRateCalculator allocationRateCalculator;
     private final Font font;
-    protected HitResult block;
-    protected HitResult liquid;
+    private HitResult block;
+    private HitResult liquid;
     @Nullable
     private ChunkPos lastPos;
     @Nullable
@@ -101,9 +101,9 @@ public class DebugScreenOverlay {
     @Nullable
     private CompletableFuture<LevelChunk> serverChunk;
     private boolean renderDebug;
-    protected boolean renderProfilerChart;
-    protected boolean renderFpsCharts;
-    protected boolean renderNetworkCharts;
+    private boolean renderProfilerChart;
+    private boolean renderFpsCharts;
+    private boolean renderNetworkCharts;
     private final LocalSampleLogger frameTimeLogger = new LocalSampleLogger(1);
     private final LocalSampleLogger tickTimeLogger = new LocalSampleLogger(TpsDebugDimensions.values().length);
     private final LocalSampleLogger pingLogger = new LocalSampleLogger(1);

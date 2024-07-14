@@ -22,7 +22,7 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 
-public interface LevelReader extends BlockAndTintGetter, CollisionGetter, SignalGetter, BiomeManager.NoiseBiomeSource {
+public interface LevelReader extends BlockAndTintGetter, CollisionGetter, SignalGetter, BiomeManager.NoiseBiomeSource, net.neoforged.neoforge.common.extensions.ILevelReaderExtension {
     @Nullable
     ChunkAccess getChunk(int pX, int pZ, ChunkStatus pChunkStatus, boolean pRequireChunk);
 
@@ -191,10 +191,6 @@ public interface LevelReader extends BlockAndTintGetter, CollisionGetter, Signal
     @Deprecated
     default boolean hasChunkAt(BlockPos pPos) {
         return this.hasChunkAt(pPos.getX(), pPos.getZ());
-    }
-
-    default boolean isAreaLoaded(BlockPos center, int range) {
-        return this.hasChunksAt(center.offset(-range, -range, -range), center.offset(range, range, range));
     }
 
     @Deprecated

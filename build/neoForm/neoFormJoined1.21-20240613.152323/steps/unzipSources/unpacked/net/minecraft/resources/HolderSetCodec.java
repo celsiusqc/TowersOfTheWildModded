@@ -56,7 +56,7 @@ public class HolderSetCodec<E> implements Codec<HolderSet<E>> {
             Optional<HolderGetter<E>> optional = registryops.getter(this.registryKey);
             if (optional.isPresent()) {
                 HolderGetter<E> holdergetter = optional.get();
-                // NEO: use the wrapped codec to decode custom/tag/list instead of just tag/list
+                // Neo: use the wrapped codec to decode custom/tag/list instead of just tag/list
                 return this.combinedCodec.decode(pOps, pInput)
                     .flatMap(
                         p_337522_ -> {

@@ -29,8 +29,10 @@ public class BowItem extends ProjectileWeaponItem {
     public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving, int pTimeLeft) {
         if (pEntityLiving instanceof Player player) {
             ItemStack itemstack = player.getProjectile(pStack);
-            if (!itemstack.isEmpty()) { // Porting 1.20.5 redo EventHooks.onArrowLoose
+            if (!itemstack.isEmpty()) {
                 int i = this.getUseDuration(pStack, pEntityLiving) - pTimeLeft;
+                i = net.neoforged.neoforge.event.EventHooks.onArrowLoose(itemstack, pLevel, player, i, !itemstack.isEmpty());
+                if (i < 0) return;
                 float f = getPowerForTime(i);
                 if (!((double)f < 0.1)) {
                     List<ItemStack> list = draw(pStack, itemstack, player);

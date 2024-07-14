@@ -60,7 +60,7 @@ public class EntityRenderDispatcher implements ResourceManagerReloadListener {
     private static final RenderType SHADOW_RENDER_TYPE = RenderType.entityShadow(ResourceLocation.withDefaultNamespace("textures/misc/shadow.png"));
     private static final float MAX_SHADOW_RADIUS = 32.0F;
     private static final float SHADOW_POWER_FALLOFF_Y = 0.5F;
-    public Map<EntityType<?>, EntityRenderer<?>> renderers = ImmutableMap.of();
+    private Map<EntityType<?>, EntityRenderer<?>> renderers = ImmutableMap.of();
     /**
      * lists the various player skin types with their associated Renderer class instances.
      */

@@ -74,7 +74,7 @@ public class HumanoidArmorLayer<T extends LivingEntity, M extends HumanoidModel<
                 for (ArmorMaterial.Layer armormaterial$layer : armormaterial.layers()) {
                     int j = armormaterial$layer.dyeable() ? i : -1;
                     var texture = net.neoforged.neoforge.client.ClientHooks.getArmorTexture(pLivingEntity, itemstack, armormaterial$layer, flag, pSlot);
-                    this.renderModel(pPoseStack, pBuffer, pPackedLight, pModel, j, texture);
+                    this.renderModel(pPoseStack, pBuffer, pPackedLight, model, j, texture);
                 }
 
                 ArmorTrim armortrim = itemstack.get(DataComponents.TRIM);

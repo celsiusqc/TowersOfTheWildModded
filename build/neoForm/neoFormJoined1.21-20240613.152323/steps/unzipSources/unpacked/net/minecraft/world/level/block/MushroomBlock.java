@@ -88,9 +88,10 @@ public class MushroomBlock extends BushBlock implements BonemealableBlock {
     protected boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         BlockPos blockpos = pPos.below();
         BlockState blockstate = pLevel.getBlockState(blockpos);
+        net.neoforged.neoforge.common.util.TriState soilDecision = blockstate.canSustainPlant(pLevel, blockpos, net.minecraft.core.Direction.UP, pState);
         return blockstate.is(BlockTags.MUSHROOM_GROW_BLOCK)
             ? true
-            : pLevel.getRawBrightness(pPos, 0) < 13 && blockstate.canSustainPlant(pLevel, blockpos, net.minecraft.core.Direction.UP, this);
+            : soilDecision.isDefault() ? (pLevel.getRawBrightness(pPos, 0) < 13 && this.mayPlaceOn(blockstate, pLevel, blockpos)) : soilDecision.isTrue();
     }
 
     public boolean growMushroom(ServerLevel pLevel, BlockPos pPos, BlockState pState, RandomSource pRandom) {

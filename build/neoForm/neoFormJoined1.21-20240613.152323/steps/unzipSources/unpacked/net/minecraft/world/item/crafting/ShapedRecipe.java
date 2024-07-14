@@ -11,7 +11,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class ShapedRecipe implements CraftingRecipe, net.neoforged.neoforge.common.crafting.IShapedRecipe<net.minecraft.world.item.crafting.CraftingInput> {
+public class ShapedRecipe implements CraftingRecipe {
     final ShapedRecipePattern pattern;
     final ItemStack result;
     final String group;

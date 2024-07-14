@@ -263,6 +263,14 @@ public abstract class LivingEntity extends Entity implements Attackable, net.neo
     private boolean skipDropExperience;
     private final Reference2ObjectMap<Enchantment, Set<EnchantmentLocationBasedEffect>> activeLocationDependentEnchantments = new Reference2ObjectArrayMap<>();
     protected float appliedScale = 1.0F;
+    /**
+     * This field stores information about damage dealt to this entity.
+     * a new {@link net.neoforged.neoforge.common.damagesource.DamageContainer} is instantiated
+     * via {@link #hurt(DamageSource, float)} after invulnerability checks, and is removed from
+     * the stack before the method's return.
+    **/
+    @Nullable
+    protected java.util.Stack<net.neoforged.neoforge.common.damagesource.DamageContainer> damageContainers = new java.util.Stack<>();
 
     protected LivingEntity(EntityType<? extends LivingEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -1132,7 +1140,6 @@ public abstract class LivingEntity extends Entity implements Attackable, net.neo
      */
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (!net.neoforged.neoforge.common.CommonHooks.onLivingAttack(this, pSource, pAmount)) return false;
         if (this.isInvulnerableTo(pSource)) {
             return false;
         } else if (this.level().isClientSide) {
@@ -1142,26 +1149,30 @@ public abstract class LivingEntity extends Entity implements Attackable, net.neo
         } else if (pSource.is(DamageTypeTags.IS_FIRE) && this.hasEffect(MobEffects.FIRE_RESISTANCE)) {
             return false;
         } else {
+            this.damageContainers.push(new net.neoforged.neoforge.common.damagesource.DamageContainer(pSource, pAmount));
+            if (net.neoforged.neoforge.common.CommonHooks.onEntityIncomingDamage(this, this.damageContainers.peek())) return false;
             if (this.isSleeping() && !this.level().isClientSide) {
                 this.stopSleeping();
             }
 
             this.noActionTime = 0;
+            pAmount = this.damageContainers.peek().getNewDamage(); //Neo: enforce damage container as source of truth for damage amount
             float f = pAmount;
             boolean flag = false;
             float f1 = 0.0F;
-            if (pAmount > 0.0F && this.isDamageSourceBlocked(pSource)) {
-                net.neoforged.neoforge.event.entity.living.ShieldBlockEvent ev = net.neoforged.neoforge.common.CommonHooks.onShieldBlock(this, pSource, pAmount);
-                if(!ev.isCanceled()) {
-                if(ev.shieldTakesDamage()) this.hurtCurrentlyUsedShield(pAmount);
+            net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent ev;
+            if (pAmount > 0.0F && (ev = net.neoforged.neoforge.common.CommonHooks.onDamageBlock(this, this.damageContainers.peek(), this.isDamageSourceBlocked(pSource))).getBlocked()) {
+                this.damageContainers.peek().setBlockedDamage(ev);
+                if(ev.shieldDamage() > 0) {
+                    this.hurtCurrentlyUsedShield(ev.shieldDamage());
+                }
                 f1 = ev.getBlockedDamage();
-                pAmount -= ev.getBlockedDamage();
+                pAmount = ev.getDamageContainer().getNewDamage();
                 if (!pSource.is(DamageTypeTags.IS_PROJECTILE) && pSource.getDirectEntity() instanceof LivingEntity livingentity) {
                     this.blockUsingShield(livingentity);
                 }
 
                 flag = pAmount <= 0;
-            }
             }
 
             if (pSource.is(DamageTypeTags.IS_FREEZING) && this.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES)) {
@@ -1173,10 +1184,12 @@ public abstract class LivingEntity extends Entity implements Attackable, net.neo
                 pAmount *= 0.75F;
             }
 
+            this.damageContainers.peek().setNewDamage(pAmount); //update container with vanilla changes
             this.walkAnimation.setSpeed(1.5F);
             boolean flag1 = true;
             if ((float)this.invulnerableTime > 10.0F && !pSource.is(DamageTypeTags.BYPASSES_COOLDOWN)) {
                 if (pAmount <= this.lastHurt) {
+                    this.damageContainers.pop();
                     return false;
                 }
 
@@ -1185,12 +1198,13 @@ public abstract class LivingEntity extends Entity implements Attackable, net.neo
                 flag1 = false;
             } else {
                 this.lastHurt = pAmount;
-                this.invulnerableTime = 20;
+                this.invulnerableTime = this.damageContainers.peek().getPostAttackInvulnerabilityTicks();
                 this.actuallyHurt(pSource, pAmount);
                 this.hurtDuration = 10;
                 this.hurtTime = this.hurtDuration;
             }
 
+            pAmount = this.damageContainers.peek().getNewDamage(); //update local with container value
             Entity entity = pSource.getEntity();
             if (entity != null) {
                 if (entity instanceof LivingEntity livingentity1
@@ -1267,7 +1281,7 @@ public abstract class LivingEntity extends Entity implements Attackable, net.neo
             if (this instanceof ServerPlayer) {
                 CriteriaTriggers.ENTITY_HURT_PLAYER.trigger((ServerPlayer)this, pSource, f, pAmount, flag);
                 if (f1 > 0.0F && f1 < 3.4028235E37F) {
-                    ((ServerPlayer)this).awardStat(Stats.CUSTOM.get(Stats.DAMAGE_BLOCKED_BY_SHIELD), Math.round(f1 * 10.0F));
+                    ((ServerPlayer)this).awardStat(Stats.DAMAGE_BLOCKED_BY_SHIELD, Math.round(f1 * 10.0F));
                 }
             }
 
@@ -1275,6 +1289,7 @@ public abstract class LivingEntity extends Entity implements Attackable, net.neo
                 CriteriaTriggers.PLAYER_HURT_ENTITY.trigger((ServerPlayer)entity, this, pSource, f, pAmount, flag);
             }
 
+            this.damageContainers.pop();
             return flag2;
         }
     }
@@ -1692,6 +1707,8 @@ public abstract class LivingEntity extends Entity implements Attackable, net.neo
         if (!(pDamageAmount <= 0.0F)) {
             int i = (int)Math.max(1.0F, pDamageAmount / 4.0F);
 
+            net.neoforged.neoforge.common.CommonHooks.onArmorHurt(pDamageSource, pSlots, i, this);
+            if (true) return; //Neo: Invalidates the loop. Armor damage happens in common hook.
             for (EquipmentSlot equipmentslot : pSlots) {
                 ItemStack itemstack = this.getItemBySlot(equipmentslot);
                 if (itemstack.getItem() instanceof ArmorItem && itemstack.canBeHurtBy(pDamageSource)) {
@@ -1730,10 +1747,11 @@ public abstract class LivingEntity extends Entity implements Attackable, net.neo
                 pDamageAmount = Math.max(f / 25.0F, 0.0F);
                 float f2 = f1 - pDamageAmount;
                 if (f2 > 0.0F && f2 < 3.4028235E37F) {
+                    this.damageContainers.peek().setReduction(net.neoforged.neoforge.common.damagesource.DamageContainer.Reduction.MOB_EFFECTS, f2);
                     if (this instanceof ServerPlayer) {
-                        ((ServerPlayer)this).awardStat(Stats.CUSTOM.get(Stats.DAMAGE_RESISTED), Math.round(f2 * 10.0F));
+                        ((ServerPlayer)this).awardStat(Stats.DAMAGE_RESISTED, Math.round(f2 * 10.0F));
                     } else if (pDamageSource.getEntity() instanceof ServerPlayer) {
-                        ((ServerPlayer)pDamageSource.getEntity()).awardStat(Stats.CUSTOM.get(Stats.DAMAGE_DEALT_RESISTED), Math.round(f2 * 10.0F));
+                        ((ServerPlayer)pDamageSource.getEntity()).awardStat(Stats.DAMAGE_DEALT_RESISTED, Math.round(f2 * 10.0F));
                     }
                 }
             }
@@ -1752,6 +1770,7 @@ public abstract class LivingEntity extends Entity implements Attackable, net.neo
 
                 if (f3 > 0.0F) {
                     pDamageAmount = CombatRules.getDamageAfterMagicAbsorb(pDamageAmount, f3);
+                    this.damageContainers.peek().setReduction(net.neoforged.neoforge.common.damagesource.DamageContainer.Reduction.ENCHANTMENTS,this.damageContainers.peek().getNewDamage() - pDamageAmount);
                 }
 
                 return pDamageAmount;
@@ -1764,24 +1783,25 @@ public abstract class LivingEntity extends Entity implements Attackable, net.neo
      */
     protected void actuallyHurt(DamageSource pDamageSource, float pDamageAmount) {
         if (!this.isInvulnerableTo(pDamageSource)) {
-            pDamageAmount = net.neoforged.neoforge.common.CommonHooks.onLivingHurt(this, pDamageSource, pDamageAmount);
-            if (pDamageAmount <= 0) return;
-            pDamageAmount = this.getDamageAfterArmorAbsorb(pDamageSource, pDamageAmount);
-            pDamageAmount = this.getDamageAfterMagicAbsorb(pDamageSource, pDamageAmount);
-            float f1 = Math.max(pDamageAmount - this.getAbsorptionAmount(), 0.0F);
-            this.setAbsorptionAmount(this.getAbsorptionAmount() - (pDamageAmount - f1));
-            float f = pDamageAmount - f1;
+            this.damageContainers.peek().setReduction(net.neoforged.neoforge.common.damagesource.DamageContainer.Reduction.ARMOR, this.damageContainers.peek().getNewDamage() - this.getDamageAfterArmorAbsorb(pDamageSource, this.damageContainers.peek().getNewDamage()));
+            this.getDamageAfterMagicAbsorb(pDamageSource, this.damageContainers.peek().getNewDamage());
+            float damage = this.damageContainers.peek().getNewDamage();
+            this.damageContainers.peek().setReduction(net.neoforged.neoforge.common.damagesource.DamageContainer.Reduction.ABSORPTION, Math.min(this.getAbsorptionAmount(), damage));
+            float absorbed = Math.min(damage, this.damageContainers.peek().getReduction(net.neoforged.neoforge.common.damagesource.DamageContainer.Reduction.ABSORPTION));
+            this.setAbsorptionAmount(Math.max(0, this.getAbsorptionAmount() - absorbed));
+            float f1 = net.neoforged.neoforge.common.CommonHooks.onLivingDamagePre(this, this.damageContainers.peek());
+            float f = absorbed;
             if (f > 0.0F && f < 3.4028235E37F && pDamageSource.getEntity() instanceof ServerPlayer serverplayer) {
                 serverplayer.awardStat(Stats.DAMAGE_DEALT_ABSORBED, Math.round(f * 10.0F));
             }
 
-            f1 = net.neoforged.neoforge.common.CommonHooks.onLivingDamage(this, pDamageSource, f1);
             if (f1 != 0.0F) {
                 this.getCombatTracker().recordDamage(pDamageSource, f1);
                 this.setHealth(this.getHealth() - f1);
-                this.setAbsorptionAmount(this.getAbsorptionAmount() - f1);
                 this.gameEvent(GameEvent.ENTITY_DAMAGE);
+                this.onDamageTaken(this.damageContainers.peek());
             }
+            net.neoforged.neoforge.common.CommonHooks.onLivingDamagePost(this, this.damageContainers.peek());
         }
     }
 
@@ -3311,7 +3331,7 @@ public abstract class LivingEntity extends Entity implements Attackable, net.neo
     public boolean isBlocking() {
         if (this.isUsingItem() && !this.useItem.isEmpty()) {
             Item item = this.useItem.getItem();
-            return !this.useItem.canPerformAction(net.neoforged.neoforge.common.ToolActions.SHIELD_BLOCK) ? false : item.getUseDuration(this.useItem, this) - this.useItemRemaining >= 5;
+            return !this.useItem.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.SHIELD_BLOCK) ? false : item.getUseDuration(this.useItem, this) - this.useItemRemaining >= 5;
         } else {
             return false;
         }
@@ -3571,9 +3591,8 @@ public abstract class LivingEntity extends Entity implements Attackable, net.neo
         return pHand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
     }
 
-    /* ==== FORGE START ==== */
-    /***
-     * Removes all potion effects that have the given {@link net.neoforged.neoforge.common.EffectCure} in their set of cures
+    /**
+     * Neo: Removes all potion effects that have the given {@link net.neoforged.neoforge.common.EffectCure} in their set of cures
      * @param cure the EffectCure being used
      */
     public boolean removeEffectsCuredBy(net.neoforged.neoforge.common.EffectCure cure) {
@@ -3594,7 +3613,7 @@ public abstract class LivingEntity extends Entity implements Attackable, net.neo
     }
 
     /**
-     * Returns true if the entity's rider (EntityPlayer) should face forward when mounted.
+     * Neo: Returns true if the entity's rider (EntityPlayer) should face forward when mounted.
      * currently only used in vanilla code by pigs.
      *
      * @param player The player who is riding the entity.
@@ -3702,7 +3721,7 @@ public abstract class LivingEntity extends Entity implements Attackable, net.neo
     }
 
     public boolean canDisableShield() {
-        return this.getMainHandItem().canDisableShield(this.useItem, this, this);
+        return this.getMainHandItem().canDisableShield(this.useItem, this, this); // Neo: Switch to using the item to determine if disables shield instead of hardcoded Axe check
     }
 
     @Override

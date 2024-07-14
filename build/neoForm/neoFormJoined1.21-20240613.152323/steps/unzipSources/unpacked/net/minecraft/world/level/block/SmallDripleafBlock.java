@@ -90,6 +90,8 @@ public class SmallDripleafBlock extends DoublePlantBlock implements Bonemealable
         } else {
             BlockPos blockpos = p_154617_.below();
             BlockState blockstate = p_154616_.getBlockState(blockpos);
+            net.neoforged.neoforge.common.util.TriState soilDecision = blockstate.canSustainPlant(p_154616_, blockpos, Direction.UP, p_154615_);
+            if (!soilDecision.isDefault()) return soilDecision.isTrue();
             return this.mayPlaceOn(blockstate, p_154616_, blockpos);
         }
     }

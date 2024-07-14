@@ -56,8 +56,7 @@ public interface SoundInstance {
         LINEAR;
     }
 
-    /*================================ FORGE START ================================================*/
-
+    // Neo: Allow SoundInstances to change source of audio stream if needed
     default java.util.concurrent.CompletableFuture<net.minecraft.client.sounds.AudioStream> getStream(net.minecraft.client.sounds.SoundBufferLibrary soundBuffers, Sound sound, boolean looping) {
         return soundBuffers.getStream(sound.getPath(), looping);
     }

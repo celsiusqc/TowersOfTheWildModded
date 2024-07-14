@@ -146,6 +146,8 @@ public class BigDripleafBlock extends HorizontalDirectionalBlock implements Bone
     protected boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         BlockPos blockpos = pPos.below();
         BlockState blockstate = pLevel.getBlockState(blockpos);
+        net.neoforged.neoforge.common.util.TriState soilDecision = blockstate.canSustainPlant(pLevel, blockpos, Direction.UP, pState);
+        if (!soilDecision.isDefault()) return soilDecision.isTrue();
         return blockstate.is(this) || blockstate.is(Blocks.BIG_DRIPLEAF_STEM) || blockstate.is(BlockTags.BIG_DRIPLEAF_PLACEABLE);
     }
 

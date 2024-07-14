@@ -92,7 +92,7 @@ public abstract class ProjectileWeaponItem extends Item {
             abstractarrow.setCritArrow(true);
         }
 
-        return customArrow(abstractarrow, pWeapon);
+        return customArrow(abstractarrow, pAmmo, pWeapon);
     }
 
     protected static List<ItemStack> draw(ItemStack pWeapon, ItemStack pAmmo, LivingEntity pShooter) {
@@ -135,7 +135,18 @@ public abstract class ProjectileWeaponItem extends Item {
         }
     }
 
-    public AbstractArrow customArrow(AbstractArrow arrow, net.minecraft.world.item.ItemStack stack) {
+    public AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
         return arrow;
+    }
+
+    /**
+     * Neo: Controls what ammo ItemStack that Creative Mode should return if the player has no valid ammo in inventory.
+     * Modded weapons should override this to return their own ammo if they do not use vanilla arrows.
+     * @param player The player (if in context) firing the weapon
+     * @param projectileWeaponItem The weapon ItemStack the ammo is for
+     * @return The default ammo ItemStack for this weapon
+     */
+    public ItemStack getDefaultCreativeAmmo(@Nullable Player player, ItemStack projectileWeaponItem) {
+        return Items.ARROW.getDefaultInstance();
     }
 }

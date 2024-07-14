@@ -287,6 +287,6 @@ public class PotionBrewing {
         }
     }
 
-    public static record Mix<T>(Holder<T> from, Ingredient ingredient, Holder<T> to) {
+    static record Mix<T>(Holder<T> from, Ingredient ingredient, Holder<T> to) {
     }
 }

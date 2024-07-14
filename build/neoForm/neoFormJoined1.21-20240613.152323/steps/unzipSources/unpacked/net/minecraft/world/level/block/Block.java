@@ -65,7 +65,6 @@ public class Block extends BlockBehaviour implements ItemLike, net.neoforged.neo
     public static final MapCodec<Block> CODEC = simpleCodec(Block::new);
     private static final Logger LOGGER = LogUtils.getLogger();
     private final Holder.Reference<Block> builtInRegistryHolder = BuiltInRegistries.BLOCK.createIntrusiveHolder(this);
-    @Deprecated //Forge: Do not use, use GameRegistry
     public static final IdMapper<BlockState> BLOCK_STATE_REGISTRY = net.neoforged.neoforge.registries.GameData.getBlockStateIDMap();
     private static final LoadingCache<VoxelShape, Boolean> SHAPE_FULL_BLOCK_CACHE = CacheBuilder.newBuilder()
         .maximumSize(512L)
@@ -548,11 +547,9 @@ public class Block extends BlockBehaviour implements ItemLike, net.neoforged.neo
         return this.stateDefinition.getPossibleStates().stream().collect(ImmutableMap.toImmutableMap(Function.identity(), pShapeGetter));
     }
 
-    /* ======================================== FORGE START =====================================*/
-
     /**
-     * Short-lived holder of dropped item entities.
-     *
+     * Neo: Short-lived holder of dropped item entities. Used mainly for Neo hooks and event logic.
+     * <p>
      * When not null, records all item entities from {@link #popResource(Level, Supplier, ItemStack)} instead of adding them to the world.
      */
     @Nullable
@@ -560,7 +557,7 @@ public class Block extends BlockBehaviour implements ItemLike, net.neoforged.neo
 
     /**
      * Initializes {@link #capturedDrops}, starting the drop capture process.
-     *
+     * <p>
      * Must only be called on the server thread.
      */
     private static void beginCapturingDrops() {
@@ -569,7 +566,7 @@ public class Block extends BlockBehaviour implements ItemLike, net.neoforged.neo
 
     /**
      * Ends the drop capture process by setting {@link #capturedDrops} to null and returning the old list.
-     *
+     * <p>
      * Must only be called on the server thread.
      */
     private static List<ItemEntity> stopCapturingDrops() {
@@ -578,18 +575,20 @@ public class Block extends BlockBehaviour implements ItemLike, net.neoforged.neo
         return drops;
     }
 
+    // Neo: Client rendering for Blocks
     private Object renderProperties;
 
-    /*
-        DO NOT CALL, IT WILL DISAPPEAR IN THE FUTURE
-        Call RenderProperties.get instead
+    /**
+     * Neo: DO NOT CALL, IT WILL DISAPPEAR IN THE FUTURE
+     * TODO: Replace this with a better solution
+     * Call {@link net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions#of(Block)}  instead
      */
     public Object getRenderPropertiesInternal() {
         return renderProperties;
     }
 
+    // Neo: Minecraft instance isn't available in datagen, so don't call initializeClient if in datagen
     private void initClient() {
-        // Minecraft instance isn't available in datagen, so don't call initializeClient if in datagen
         if (net.neoforged.fml.loading.FMLEnvironment.dist == net.neoforged.api.distmarker.Dist.CLIENT && !net.neoforged.neoforge.data.loading.DatagenModLoader.isRunningDataGen()) {
             initializeClient(properties -> {
                 if (properties == this)
@@ -599,51 +598,9 @@ public class Block extends BlockBehaviour implements ItemLike, net.neoforged.neo
         }
     }
 
+    // Neo: Allowing mods to define client behavior for their Blocks
     public void initializeClient(java.util.function.Consumer<net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions> consumer) {
     }
-
-    @Override
-    public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, net.neoforged.neoforge.common.IPlantable plantable) {
-        BlockState plant = plantable.getPlant(world, pos.relative(facing));
-        net.neoforged.neoforge.common.PlantType type = plantable.getPlantType(world, pos.relative(facing));
-
-        if (plant.getBlock() == Blocks.CACTUS)
-            return state.is(Blocks.CACTUS) || state.is(BlockTags.SAND);
-
-        if (plant.getBlock() == Blocks.SUGAR_CANE && this == Blocks.SUGAR_CANE)
-            return true;
-
-        if (plantable instanceof BushBlock && ((BushBlock)plantable).mayPlaceOn(state, world, pos))
-            return true;
-
-        if (net.neoforged.neoforge.common.PlantType.DESERT.equals(type)) {
-            return state.is(BlockTags.SAND) || state.is(BlockTags.TERRACOTTA);
-        } else if (net.neoforged.neoforge.common.PlantType.NETHER.equals(type)) {
-            return this == Blocks.SOUL_SAND;
-        } else if (net.neoforged.neoforge.common.PlantType.CROP.equals(type)) {
-            return state.is(Blocks.FARMLAND);
-        } else if (net.neoforged.neoforge.common.PlantType.CAVE.equals(type)) {
-            return state.isFaceSturdy(world, pos, Direction.UP);
-        } else if (net.neoforged.neoforge.common.PlantType.PLAINS.equals(type)) {
-            return state.is(BlockTags.DIRT) || this == Blocks.FARMLAND;
-        } else if (net.neoforged.neoforge.common.PlantType.WATER.equals(type)) {
-            return (state.is(Blocks.WATER) || state.getBlock() instanceof IceBlock) && world.getFluidState(pos.relative(facing)).isEmpty();
-        } else if (net.neoforged.neoforge.common.PlantType.BEACH.equals(type)) {
-            boolean isBeach = state.is(BlockTags.DIRT) || state.is(BlockTags.SAND);
-            boolean hasWater = false;
-            for (Direction face : Direction.Plane.HORIZONTAL) {
-                BlockState adjacentBlockState = world.getBlockState(pos.relative(face));
-                var adjacentFluidState = world.getFluidState(pos.relative(face));
-                hasWater = hasWater || adjacentBlockState.is(Blocks.FROSTED_ICE) || adjacentFluidState.is(net.minecraft.tags.FluidTags.WATER);
-                if (hasWater)
-                    break; //No point continuing.
-            }
-            return isBeach && hasWater;
-        }
-        return false;
-    }
-
-    /* ========================================= FORGE END ======================================*/
 
     /** @deprecated */
     @Deprecated

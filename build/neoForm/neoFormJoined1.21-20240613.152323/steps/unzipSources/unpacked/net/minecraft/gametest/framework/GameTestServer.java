@@ -125,7 +125,7 @@ public class GameTestServer extends MinecraftServer {
         }
     }
 
-    public GameTestServer(
+    private GameTestServer(
         Thread pServerThread,
         LevelStorageSource.LevelStorageAccess pStorageSource,
         PackRepository pPackRepository,

@@ -205,7 +205,7 @@ public class TrapDoorBlock extends HorizontalDirectionalBlock implements SimpleW
         return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
     }
 
-    //Forge Start
+    // Neo: Allows Trapdoors to be climbable if any ladder, even modded ladders, is below Trapdoor
     @Override
     public boolean isLadder(BlockState state, net.minecraft.world.level.LevelReader world, BlockPos pos, net.minecraft.world.entity.LivingEntity entity) {
         if (state.getValue(OPEN)) {
@@ -215,8 +215,6 @@ public class TrapDoorBlock extends HorizontalDirectionalBlock implements SimpleW
         }
         return false;
     }
-    //Forge End
-
 
     protected BlockSetType getType() {
         return this.type;

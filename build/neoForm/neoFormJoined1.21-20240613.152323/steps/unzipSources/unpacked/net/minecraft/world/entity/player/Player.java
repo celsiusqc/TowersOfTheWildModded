@@ -912,7 +912,6 @@ public abstract class Player extends LivingEntity implements net.neoforged.neofo
      */
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (!net.neoforged.neoforge.common.CommonHooks.onPlayerAttack(this, pSource, pAmount)) return false;
         if (this.isInvulnerableTo(pSource)) {
             return false;
         } else if (this.abilities.invulnerable && !pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
@@ -982,7 +981,7 @@ public abstract class Player extends LivingEntity implements net.neoforged.neofo
 
     @Override
     protected void hurtCurrentlyUsedShield(float pDamage) {
-        if (this.useItem.canPerformAction(net.neoforged.neoforge.common.ToolActions.SHIELD_BLOCK)) {
+        if (this.useItem.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.SHIELD_BLOCK)) {
             if (!this.level().isClientSide) {
                 this.awardStat(Stats.ITEM_USED.get(this.useItem.getItem()));
             }
@@ -1017,14 +1016,14 @@ public abstract class Player extends LivingEntity implements net.neoforged.neofo
     @Override
     protected void actuallyHurt(DamageSource pDamageSrc, float pDamageAmount) {
         if (!this.isInvulnerableTo(pDamageSrc)) {
-            pDamageAmount = net.neoforged.neoforge.common.CommonHooks.onLivingHurt(this, pDamageSrc, pDamageAmount);
-            if (pDamageAmount <= 0) return;
-            pDamageAmount = this.getDamageAfterArmorAbsorb(pDamageSrc, pDamageAmount);
-            pDamageAmount = this.getDamageAfterMagicAbsorb(pDamageSrc, pDamageAmount);
-            float f1 = Math.max(pDamageAmount - this.getAbsorptionAmount(), 0.0F);
-            this.setAbsorptionAmount(this.getAbsorptionAmount() - (pDamageAmount - f1));
-            f1 = net.neoforged.neoforge.common.CommonHooks.onLivingDamage(this, pDamageSrc, f1);
-            float f = pDamageAmount - f1;
+            this.damageContainers.peek().setReduction(net.neoforged.neoforge.common.damagesource.DamageContainer.Reduction.ARMOR, this.damageContainers.peek().getNewDamage() - this.getDamageAfterArmorAbsorb(pDamageSrc, this.damageContainers.peek().getNewDamage()));
+            this.getDamageAfterMagicAbsorb(pDamageSrc, this.damageContainers.peek().getNewDamage());
+            float damage = this.damageContainers.peek().getNewDamage();
+            this.damageContainers.peek().setReduction(net.neoforged.neoforge.common.damagesource.DamageContainer.Reduction.ABSORPTION, Math.min(this.getAbsorptionAmount(), damage));
+            float absorbed = Math.min(damage, this.damageContainers.peek().getReduction(net.neoforged.neoforge.common.damagesource.DamageContainer.Reduction.ABSORPTION));
+            this.setAbsorptionAmount(Math.max(0, this.getAbsorptionAmount() - absorbed));
+            float f1 = net.neoforged.neoforge.common.CommonHooks.onLivingDamagePre(this, this.damageContainers.peek());
+            float f = absorbed;
             if (f > 0.0F && f < 3.4028235E37F) {
                 this.awardStat(Stats.DAMAGE_ABSORBED, Math.round(f * 10.0F));
             }
@@ -1038,7 +1037,9 @@ public abstract class Player extends LivingEntity implements net.neoforged.neofo
                 }
 
                 this.gameEvent(GameEvent.ENTITY_DAMAGE);
+                this.onDamageTaken(this.damageContainers.peek());
             }
+            net.neoforged.neoforge.common.CommonHooks.onLivingDamagePost(this, this.damageContainers.peek());
         }
     }
 
@@ -1262,7 +1263,7 @@ public abstract class Player extends LivingEntity implements net.neoforged.neofo
                     double d0 = (double)(this.walkDist - this.walkDistO);
                     if (flag4 && !flag1 && !flag && this.onGround() && d0 < (double)this.getSpeed()) {
                         ItemStack itemstack1 = this.getItemInHand(InteractionHand.MAIN_HAND);
-                        flag2 = itemstack1.canPerformAction(net.neoforged.neoforge.common.ToolActions.SWORD_SWEEP);
+                        flag2 = itemstack1.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.SWORD_SWEEP);
                     }
 
                     float f6 = 0.0F;
@@ -2150,7 +2151,7 @@ public abstract class Player extends LivingEntity implements net.neoforged.neofo
                     }
                 }
 
-                return net.neoforged.neoforge.common.CommonHooks.getProjectile(this, pShootable, this.abilities.instabuild ? new ItemStack(Items.ARROW) : ItemStack.EMPTY);
+                return net.neoforged.neoforge.common.CommonHooks.getProjectile(this, pShootable, this.abilities.instabuild ? ((ProjectileWeaponItem)pShootable.getItem()).getDefaultCreativeAmmo(this, pShootable) : ItemStack.EMPTY);
             }
         }
     }
@@ -2330,7 +2331,7 @@ public abstract class Player extends LivingEntity implements net.neoforged.neofo
         }
     }
 
-    // =========== FORGE START ==============//
+    // Neo: Getters for the Player's name prefixes and suffixes
     public Collection<MutableComponent> getPrefixes() {
          return this.prefixes;
     }
@@ -2340,15 +2341,16 @@ public abstract class Player extends LivingEntity implements net.neoforged.neofo
     }
 
     private Component displayname = null;
+
     /**
-     * Force the displayed name to refresh, by firing {@link net.neoforged.neoforge.event.entity.player.PlayerEvent.NameFormat}, using the real player name as event parameter.
+     * Neo: Force the displayed name to refresh, by firing {@link net.neoforged.neoforge.event.entity.player.PlayerEvent.NameFormat}, using the real player name as event parameter.
      */
     public void refreshDisplayName() {
         this.displayname = net.neoforged.neoforge.event.EventHooks.getPlayerDisplayName(this, this.getName());
     }
 
     /**
-     * Force a pose for the player. If set, the vanilla pose determination and clearance check is skipped. Make sure the pose is clear yourself (e.g. in PlayerTick).
+     * Neo: Force a pose for the player. If set, the vanilla pose determination and clearance check is skipped. Make sure the pose is clear yourself (e.g. in PlayerTick).
      * This has to be set just once, do not set it every tick.
      * Make sure to clear (null) the pose if not required anymore and only use if necessary.
      */
@@ -2357,6 +2359,7 @@ public abstract class Player extends LivingEntity implements net.neoforged.neofo
     }
 
     /**
+     * Neo:
      * @return The forced pose if set, null otherwise
      */
     @Nullable

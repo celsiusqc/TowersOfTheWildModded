@@ -503,7 +503,7 @@ public class Raid {
             int k = 0;
 
             for (int l = 0; l < j; l++) {
-                Raider raider = raid$raidertype.entityType.create(this.level);
+                Raider raider = raid$raidertype.entityTypeSupplier.get().create(this.level);
                 if (raider == null) {
                     break;
                 }
@@ -515,7 +515,7 @@ public class Raid {
                 }
 
                 this.joinRaid(i, raider, pPos, false);
-                if (raid$raidertype.entityType == EntityType.RAVAGER) {
+                if (raid$raidertype.entityTypeSupplier.get() == EntityType.RAVAGER) {
                     Raider raider1 = null;
                     if (i == this.getNumGroups(Difficulty.NORMAL)) {
                         raider1 = EntityType.PILLAGER.create(this.level);
@@ -834,34 +834,34 @@ public class Raid {
         }
     }
 
-    public static enum RaiderType implements net.neoforged.neoforge.common.IExtensibleEnum {
+    public static enum RaiderType implements net.neoforged.fml.common.asm.enumextension.IExtensibleEnum {
         VINDICATOR(EntityType.VINDICATOR, new int[]{0, 0, 2, 0, 1, 4, 2, 5}),
         EVOKER(EntityType.EVOKER, new int[]{0, 0, 0, 0, 0, 1, 1, 2}),
         PILLAGER(EntityType.PILLAGER, new int[]{0, 4, 3, 3, 4, 4, 4, 2}),
         WITCH(EntityType.WITCH, new int[]{0, 0, 0, 0, 3, 0, 0, 1}),
         RAVAGER(EntityType.RAVAGER, new int[]{0, 0, 0, 1, 0, 1, 0, 2});
 
-        private static Raid.RaiderType[] VALUES = values();
+        static final Raid.RaiderType[] VALUES = values();
+        @Deprecated // Neo: null for custom types, use the supplier instead
         final EntityType<? extends Raider> entityType;
         final int[] spawnsPerWaveBeforeBonus;
+        final java.util.function.Supplier<EntityType<? extends Raider>> entityTypeSupplier;
 
+        @net.neoforged.fml.common.asm.enumextension.ReservedConstructor
         private RaiderType(EntityType<? extends Raider> pEntityType, int[] pSpawnsPerWaveBeforeBonus) {
             this.entityType = pEntityType;
             this.spawnsPerWaveBeforeBonus = pSpawnsPerWaveBeforeBonus;
+            this.entityTypeSupplier = () -> pEntityType;
         }
 
-        /**
-         * The waveCountsIn integer decides how many entities of the EntityType defined in typeIn will spawn in each wave.
-         * For example, one ravager will always spawn in wave 3.
-         */
-        public static RaiderType create(String name, EntityType<? extends Raider> typeIn, int[] waveCountsIn) {
-            throw new IllegalStateException("Enum not extended");
+        private RaiderType(java.util.function.Supplier<EntityType<? extends Raider>> entityTypeSupplier, int[] spawnsPerWave) {
+            this.entityType = null;
+            this.spawnsPerWaveBeforeBonus = spawnsPerWave;
+            this.entityTypeSupplier = entityTypeSupplier;
         }
 
-        @Override
-        @Deprecated
-        public void init() {
-            VALUES = values();
+        public static net.neoforged.fml.common.asm.enumextension.ExtensionInfo getExtensionInfo() {
+            return net.neoforged.fml.common.asm.enumextension.ExtensionInfo.nonExtended(Raid.RaiderType.class);
         }
     }
 }

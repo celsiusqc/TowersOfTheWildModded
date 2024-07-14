@@ -18,7 +18,7 @@ public class EnvironmentScanPlacement extends PlacementModifier {
     private final int maxSteps;
     public static final MapCodec<EnvironmentScanPlacement> CODEC = RecordCodecBuilder.mapCodec(
         p_191650_ -> p_191650_.group(
-                    // NeoForge: Allow any direction, not just vertical. The code already handles it fine.
+                    // Neo: Allow any direction, not just vertical. The code already handles it fine.
                     Direction.CODEC.fieldOf("direction_of_search").forGetter(p_191672_ -> p_191672_.directionOfSearch),
                     BlockPredicate.CODEC.fieldOf("target_condition").forGetter(p_191670_ -> p_191670_.targetCondition),
                     BlockPredicate.CODEC

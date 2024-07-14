@@ -11,7 +11,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.block.Block;
 
 public class DiggerItem extends TieredItem {
-    protected DiggerItem(Tier pTier, TagKey<Block> pBlocks, Item.Properties pProperties) {
+    public DiggerItem(Tier pTier, TagKey<Block> pBlocks, Item.Properties pProperties) {
         super(pTier, pProperties.component(DataComponents.TOOL, pTier.createToolProperties(pBlocks)));
     }
 

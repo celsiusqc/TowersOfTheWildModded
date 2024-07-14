@@ -21,22 +21,36 @@ public class SwordItem extends TieredItem {
         super(pTier, pProperties.component(DataComponents.TOOL, createToolProperties()));
     }
 
+    /**
+     * Neo: Allow modded Swords to set exactly what Tool data component to use for their sword.
+     */
+    public SwordItem(Tier pTier, Item.Properties pProperties, Tool toolComponentData) {
+        super(pTier, pProperties.component(DataComponents.TOOL, toolComponentData));
+    }
+
     public static Tool createToolProperties() {
         return new Tool(List.of(Tool.Rule.minesAndDrops(List.of(Blocks.COBWEB), 15.0F), Tool.Rule.overrideSpeed(BlockTags.SWORD_EFFICIENT, 1.5F)), 1.0F, 2);
     }
 
     public static ItemAttributeModifiers createAttributes(Tier pTier, int pAttackDamage, float pAttackSpeed) {
+        return createAttributes(pTier, (float)pAttackDamage, pAttackSpeed);
+    }
+
+    /**
+     * Neo: Method overload to allow giving a float for damage instead of an int.
+     */
+    public static ItemAttributeModifiers createAttributes(Tier p_330371_, float p_331976_, float p_332104_) {
         return ItemAttributeModifiers.builder()
             .add(
                 Attributes.ATTACK_DAMAGE,
                 new AttributeModifier(
-                    BASE_ATTACK_DAMAGE_ID, (double)((float)pAttackDamage + pTier.getAttackDamageBonus()), AttributeModifier.Operation.ADD_VALUE
+                    BASE_ATTACK_DAMAGE_ID, (double)((float)p_331976_ + p_330371_.getAttackDamageBonus()), AttributeModifier.Operation.ADD_VALUE
                 ),
                 EquipmentSlotGroup.MAINHAND
             )
             .add(
                 Attributes.ATTACK_SPEED,
-                new AttributeModifier(BASE_ATTACK_SPEED_ID, (double)pAttackSpeed, AttributeModifier.Operation.ADD_VALUE),
+                new AttributeModifier(BASE_ATTACK_SPEED_ID, (double)p_332104_, AttributeModifier.Operation.ADD_VALUE),
                 EquipmentSlotGroup.MAINHAND
             )
             .build();
@@ -61,7 +75,7 @@ public class SwordItem extends TieredItem {
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ToolAction toolAction) {
-        return net.neoforged.neoforge.common.ToolActions.DEFAULT_SWORD_ACTIONS.contains(toolAction);
+    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ItemAbility itemAbility) {
+        return net.neoforged.neoforge.common.ItemAbilities.DEFAULT_SWORD_ACTIONS.contains(itemAbility);
     }
 }

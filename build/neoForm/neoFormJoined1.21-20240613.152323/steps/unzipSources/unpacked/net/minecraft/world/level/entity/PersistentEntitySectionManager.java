@@ -112,14 +112,14 @@ public class PersistentEntitySectionManager<T extends EntityAccess> implements A
     public void addLegacyChunkEntities(Stream<T> pEntities) {
         pEntities.forEach(p_157607_ -> {
             this.addEntity(p_157607_, true);
-            if (p_157607_ instanceof Entity entity) entity.onAddedToWorld();
+            if (p_157607_ instanceof Entity entity) entity.onAddedToLevel();
         });
     }
 
     public void addWorldGenChunkEntities(Stream<T> pEntities) {
         pEntities.forEach(p_157605_ -> {
             this.addEntity(p_157605_, false);
-            if (p_157605_ instanceof Entity entity) entity.onAddedToWorld();
+            if (p_157605_ instanceof Entity entity) entity.onAddedToLevel();
         });
     }
 
@@ -245,7 +245,7 @@ public class PersistentEntitySectionManager<T extends EntityAccess> implements A
         while ((chunkentities = this.loadingInbox.poll()) != null) {
             chunkentities.getEntities().forEach(p_157593_ -> {
                 this.addEntity(p_157593_, true);
-                if (p_157593_ instanceof Entity entity) entity.onAddedToWorld();
+                if (p_157593_ instanceof Entity entity) entity.onAddedToLevel();
             });
             this.chunkLoadStatuses.put(chunkentities.getPos().toLong(), PersistentEntitySectionManager.ChunkLoadStatus.LOADED);
         }

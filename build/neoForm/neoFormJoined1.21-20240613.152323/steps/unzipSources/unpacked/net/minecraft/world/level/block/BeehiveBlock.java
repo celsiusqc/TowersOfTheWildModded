@@ -137,7 +137,7 @@ public class BeehiveBlock extends BaseEntityBlock {
         boolean flag = false;
         if (i >= 5) {
             Item item = pStack.getItem();
-            if (pStack.canPerformAction(net.neoforged.neoforge.common.ToolActions.SHEARS_HARVEST)) {
+            if (pStack.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.SHEARS_HARVEST)) {
                 pLevel.playSound(pPlayer, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.BEEHIVE_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
                 dropHoneycomb(pLevel, pPos);
                 pStack.hurtAndBreak(1, pPlayer, LivingEntity.getSlotForHand(pHand));

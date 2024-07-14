@@ -128,8 +128,9 @@ public class Item implements FeatureElement, ItemLike, net.neoforged.neoforge.co
     }
 
     /**
- * @deprecated Forge: {@link IItemExtension#onDestroyed(ItemEntity, DamageSource)
- *             Use damage source sensitive version}
+ * @deprecated Forge: {@link
+ *             net.neoforged.neoforge.common.extensions.IItemExtension#onDestroyed
+ *             (ItemEntity, DamageSource) Use damage source sensitive version}
  */
     @Deprecated
     public void onDestroyed(ItemEntity pItemEntity) {
@@ -378,7 +379,10 @@ public class Item implements FeatureElement, ItemLike, net.neoforged.neoforge.co
         return false;
     }
 
-    @Deprecated // Use ItemStack sensitive version or data components. (deprecated by vanilla too)
+    /**
+     * @deprecated Neo: Use {@link Item#getDefaultAttributeModifiers(ItemStack)}
+     */
+    @Deprecated
     public ItemAttributeModifiers getDefaultAttributeModifiers() {
         return ItemAttributeModifiers.EMPTY;
     }
@@ -422,31 +426,32 @@ public class Item implements FeatureElement, ItemLike, net.neoforged.neoforge.co
         return this.requiredFeatures;
     }
 
-    // NEO START
+    // Neo: Client rendering for Items
     private Object renderProperties;
 
-    /*
-        DO NOT CALL, IT WILL DISAPPEAR IN THE FUTURE
-        Call RenderProperties.get instead
-    */
+    /**
+     * Neo: DO NOT CALL, IT WILL DISAPPEAR IN THE FUTURE
+     * TODO: Replace this with a better solution
+     * Call {@link net.neoforged.neoforge.client.extensions.common.IClientItemExtensions#of(Item)} instead
+     */
     public Object getRenderPropertiesInternal() {
         return renderProperties;
     }
 
+    // Neo: Minecraft instance isn't available in datagen, so don't call initializeClient if in datagen
     private void initClient() {
-        // Minecraft instance isn't available in datagen, so don't call initializeClient if in datagen
-                if (net.neoforged.fml.loading.FMLEnvironment.dist == net.neoforged.api.distmarker.Dist.CLIENT && !net.neoforged.neoforge.data.loading.DatagenModLoader.isRunningDataGen()) {
-                initializeClient(properties -> {
-                        if (properties == this)
-                                throw new IllegalStateException("Don't extend IItemRenderProperties in your item, use an anonymous class instead.");
-                        this.renderProperties = properties;
-                    });
-            }
+        if (net.neoforged.fml.loading.FMLEnvironment.dist == net.neoforged.api.distmarker.Dist.CLIENT && !net.neoforged.neoforge.data.loading.DatagenModLoader.isRunningDataGen()) {
+            initializeClient(properties -> {
+                if (properties == this)
+                    throw new IllegalStateException("Don't extend IItemRenderProperties in your item, use an anonymous class instead.");
+                this.renderProperties = properties;
+            });
+        }
     }
 
+    // Neo: Allowing mods to define client behavior for their Items
     public void initializeClient(java.util.function.Consumer<net.neoforged.neoforge.client.extensions.common.IClientItemExtensions> consumer) {
     }
-    // END NEO
 
     public static class Properties implements net.neoforged.neoforge.common.extensions.IItemPropertiesExtensions {
         private static final Interner<DataComponentMap> COMPONENT_INTERNER = Interners.newStrongInterner();

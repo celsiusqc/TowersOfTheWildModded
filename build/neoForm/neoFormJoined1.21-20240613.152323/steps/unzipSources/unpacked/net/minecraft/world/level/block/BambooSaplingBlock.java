@@ -53,6 +53,8 @@ public class BambooSaplingBlock extends Block implements BonemealableBlock {
 
     @Override
     protected boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
+        net.neoforged.neoforge.common.util.TriState soilDecision = pLevel.getBlockState(pPos.below()).canSustainPlant(pLevel, pPos.below(), net.minecraft.core.Direction.UP, pState);
+        if (!soilDecision.isDefault()) return soilDecision.isTrue();
         return pLevel.getBlockState(pPos.below()).is(BlockTags.BAMBOO_PLANTABLE_ON);
     }
 
@@ -100,7 +102,7 @@ public class BambooSaplingBlock extends Block implements BonemealableBlock {
      */
     @Override
     protected float getDestroyProgress(BlockState pState, Player pPlayer, BlockGetter pLevel, BlockPos pPos) {
-        return pPlayer.getMainHandItem().canPerformAction(net.neoforged.neoforge.common.ToolActions.SWORD_DIG) ? 1.0F : super.getDestroyProgress(pState, pPlayer, pLevel, pPos);
+        return pPlayer.getMainHandItem().canPerformAction(net.neoforged.neoforge.common.ItemAbilities.SWORD_DIG) ? 1.0F : super.getDestroyProgress(pState, pPlayer, pLevel, pPos);
     }
 
     protected void growBamboo(Level pLevel, BlockPos pState) {

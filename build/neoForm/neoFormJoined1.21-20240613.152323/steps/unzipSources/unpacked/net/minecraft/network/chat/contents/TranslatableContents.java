@@ -102,6 +102,13 @@ public class TranslatableContents implements ComponentContents {
         Language language = Language.getInstance();
         if (language != this.decomposedWith) {
             this.decomposedWith = language;
+
+            Component langComponent = language.getComponent(this.key);
+            if (langComponent != null) {
+                this.decomposedParts = ImmutableList.of(langComponent);
+                return;
+            }
+
             String s = this.fallback != null ? language.getOrDefault(this.key, this.fallback) : language.getOrDefault(this.key);
 
             try {
@@ -180,6 +187,12 @@ public class TranslatableContents implements ComponentContents {
     public <T> Optional<T> visit(FormattedText.StyledContentConsumer<T> pStyledContentConsumer, Style pStyle) {
         this.decompose();
 
+        if (!net.neoforged.neoforge.common.util.InsertingContents.pushTranslation(this)) {
+            // Reference cycle.
+            return Optional.empty();
+        }
+
+        try {
         for (FormattedText formattedtext : this.decomposedParts) {
             Optional<T> optional = formattedtext.visit(pStyledContentConsumer, pStyle);
             if (optional.isPresent()) {
@@ -188,12 +201,21 @@ public class TranslatableContents implements ComponentContents {
         }
 
         return Optional.empty();
+        } finally {
+            net.neoforged.neoforge.common.util.InsertingContents.popTranslation();
+        }
     }
 
     @Override
     public <T> Optional<T> visit(FormattedText.ContentConsumer<T> pContentConsumer) {
         this.decompose();
 
+        if (!net.neoforged.neoforge.common.util.InsertingContents.pushTranslation(this)) {
+            // Reference cycle.
+            return Optional.empty();
+        }
+
+        try {
         for (FormattedText formattedtext : this.decomposedParts) {
             Optional<T> optional = formattedtext.visit(pContentConsumer);
             if (optional.isPresent()) {
@@ -202,6 +224,9 @@ public class TranslatableContents implements ComponentContents {
         }
 
         return Optional.empty();
+        } finally {
+            net.neoforged.neoforge.common.util.InsertingContents.popTranslation();
+        }
     }
 
     @Override

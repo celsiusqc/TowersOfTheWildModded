@@ -60,6 +60,11 @@ public class DataGenerator {
         return new DataGenerator.PackGenerator(pToRun, pProviderPrefix, new PackOutput(path));
     }
 
+    public PackGenerator getBuiltinDatapack(boolean pToRun, String pProviderPrefix, String path) {
+        var packPath = vanillaPackOutput.getOutputFolder(PackOutput.Target.DATA_PACK).resolve(pProviderPrefix).resolve("datapacks").resolve(path);
+        return new PackGenerator(pToRun, pProviderPrefix + '_' + path, new PackOutput(packPath));
+    }
+
     public Map<String, DataProvider> getProvidersView() {
          return this.providersView;
     }
@@ -86,6 +91,18 @@ public class DataGenerator {
             DataGenerator.this.providersToRun.put(id, provider);
 
         return provider;
+    }
+
+    public void merge(DataGenerator other) {
+        other.providersToRun.forEach((id, provider) -> {
+            if(!allProviderIds.add(id))
+                throw new IllegalStateException("Duplicate provider: " + id);
+
+            providersToRun.put(id, provider);
+        });
+
+        other.providersToRun.clear();
+        other.allProviderIds.clear();
     }
 
     static {

@@ -146,9 +146,8 @@ public final class ItemContainerContents {
         return this.hashCode;
     }
 
-    // Neo Start
-
     /**
+     * Neo:
      * {@return the number of slots in this container}
      */
     public int getSlots() {
@@ -156,7 +155,7 @@ public final class ItemContainerContents {
     }
 
     /**
-     * Gets a copy of the stack at a particular slot.
+     * Neo: Gets a copy of the stack at a particular slot.
      *
      * @param slot The slot to check. Must be within [0, {@link #getSlots()}]
      * @return A copy of the stack in that slot
@@ -168,16 +167,13 @@ public final class ItemContainerContents {
     }
 
     /**
-     * Throws {@link UnsupportedOperationException} if the provided slot index is invalid.
+     * Neo: Throws {@link UnsupportedOperationException} if the provided slot index is invalid.
      */
     private void validateSlotIndex(int slot) {
         if (slot < 0 || slot >= getSlots()) {
             throw new UnsupportedOperationException("Slot " + slot + " not in valid range - [0," + getSlots() + ")");
         }
     }
-
-    // Neo End
-
 
     static record Slot(int index, ItemStack item) {
         public static final Codec<ItemContainerContents.Slot> CODEC = RecordCodecBuilder.create(

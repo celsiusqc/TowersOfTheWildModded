@@ -361,19 +361,15 @@ public final class ItemStack implements DataComponentHolder, net.neoforged.neofo
     }
 
     public InteractionResult useOn(UseOnContext pContext) {
-        if (pContext.getPlayer() != null) { // TODO 1.20.5: Make event accept nullable player, and remove this check.
-            var e = net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent(pContext, net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK));
-            if (e.isCanceled()) return e.getCancellationResult().result();
-        }
+        var e = net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent(pContext, net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK));
+        if (e.isCanceled()) return e.getCancellationResult().result();
         if (!pContext.getLevel().isClientSide) return net.neoforged.neoforge.common.CommonHooks.onPlaceItemIntoWorld(pContext);
         return onItemUse(pContext, (c) -> getItem().useOn(pContext));
     }
 
     public InteractionResult onItemUseFirst(UseOnContext p_41662_) {
-        if (p_41662_.getPlayer() != null) { // TODO 1.20.5: Make event accept nullable player, and remove this check.
-            var e = net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent(p_41662_, net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent.UsePhase.ITEM_BEFORE_BLOCK));
-            if (e.isCanceled()) return e.getCancellationResult().result();
-        }
+        var e = net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent(p_41662_, net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent.UsePhase.ITEM_BEFORE_BLOCK));
+        if (e.isCanceled()) return e.getCancellationResult().result();
         return onItemUse(p_41662_, (c) -> getItem().onItemUseFirst(this, p_41662_));
     }
 
@@ -844,6 +840,7 @@ public final class ItemStack implements DataComponentHolder, net.neoforged.neofo
 
     private void addAttributeTooltips(Consumer<Component> pTooltipAdder, @Nullable Player pPlayer) {
         ItemAttributeModifiers itemattributemodifiers = this.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+        // Neo: We don't need to call IItemStackExtension#getAttributeModifiers here, since it will be done in forEachModifier.
         if (itemattributemodifiers.showInTooltip()) {
             for (EquipmentSlotGroup equipmentslotgroup : EquipmentSlotGroup.values()) {
                 MutableBoolean mutableboolean = new MutableBoolean(true);
@@ -987,6 +984,12 @@ public final class ItemStack implements DataComponentHolder, net.neoforged.neofo
     }
 
     public void forEachModifier(EquipmentSlotGroup p_348610_, BiConsumer<Holder<Attribute>, AttributeModifier> p_348516_) {
+        // Neo: Reflect real attribute modifiers when doing iteration
+        this.getAttributeModifiers().forEach(p_348610_, p_348516_);
+
+        if (false) {
+        // Start disabled vanilla code
+
         ItemAttributeModifiers itemattributemodifiers = this.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
         if (!itemattributemodifiers.modifiers().isEmpty()) {
             itemattributemodifiers.forEach(p_348610_, p_348516_);
@@ -994,17 +997,27 @@ public final class ItemStack implements DataComponentHolder, net.neoforged.neofo
             this.getItem().getDefaultAttributeModifiers().forEach(p_348610_, p_348516_);
         }
 
+        // end disabled vanilla code
+        }
+
         EnchantmentHelper.forEachModifier(this, p_348610_, p_348516_);
     }
 
     public void forEachModifier(EquipmentSlot pEquipmentSLot, BiConsumer<Holder<Attribute>, AttributeModifier> pAction) {
-        this.getAttributeModifiers(pEquipmentSLot).forEach(pAction);
-        if (true) return;
+        // Neo: Reflect real attribute modifiers when doing iteration
+        this.getAttributeModifiers().forEach(pEquipmentSLot, pAction);
+
+        if (false) {
+        // Start disabled vanilla code
+
         ItemAttributeModifiers itemattributemodifiers = this.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
         if (!itemattributemodifiers.modifiers().isEmpty()) {
             itemattributemodifiers.forEach(pEquipmentSLot, pAction);
         } else {
             this.getItem().getDefaultAttributeModifiers().forEach(pEquipmentSLot, pAction);
+        }
+
+        // end disabled vanilla code
         }
 
         EnchantmentHelper.forEachModifier(this, pEquipmentSLot, pAction);

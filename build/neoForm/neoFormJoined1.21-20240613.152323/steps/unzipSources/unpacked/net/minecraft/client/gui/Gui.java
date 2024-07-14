@@ -74,125 +74,125 @@ import org.joml.Matrix4fStack;
 
 @OnlyIn(Dist.CLIENT)
 public class Gui {
-    protected static final ResourceLocation CROSSHAIR_SPRITE = ResourceLocation.withDefaultNamespace("hud/crosshair");
-    protected static final ResourceLocation CROSSHAIR_ATTACK_INDICATOR_FULL_SPRITE = ResourceLocation.withDefaultNamespace("hud/crosshair_attack_indicator_full");
-    protected static final ResourceLocation CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace(
+    private static final ResourceLocation CROSSHAIR_SPRITE = ResourceLocation.withDefaultNamespace("hud/crosshair");
+    private static final ResourceLocation CROSSHAIR_ATTACK_INDICATOR_FULL_SPRITE = ResourceLocation.withDefaultNamespace("hud/crosshair_attack_indicator_full");
+    private static final ResourceLocation CROSSHAIR_ATTACK_INDICATOR_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace(
         "hud/crosshair_attack_indicator_background"
     );
-    protected static final ResourceLocation CROSSHAIR_ATTACK_INDICATOR_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace(
+    private static final ResourceLocation CROSSHAIR_ATTACK_INDICATOR_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace(
         "hud/crosshair_attack_indicator_progress"
     );
-    protected static final ResourceLocation EFFECT_BACKGROUND_AMBIENT_SPRITE = ResourceLocation.withDefaultNamespace("hud/effect_background_ambient");
-    protected static final ResourceLocation EFFECT_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("hud/effect_background");
-    protected static final ResourceLocation HOTBAR_SPRITE = ResourceLocation.withDefaultNamespace("hud/hotbar");
-    protected static final ResourceLocation HOTBAR_SELECTION_SPRITE = ResourceLocation.withDefaultNamespace("hud/hotbar_selection");
-    protected static final ResourceLocation HOTBAR_OFFHAND_LEFT_SPRITE = ResourceLocation.withDefaultNamespace("hud/hotbar_offhand_left");
-    protected static final ResourceLocation HOTBAR_OFFHAND_RIGHT_SPRITE = ResourceLocation.withDefaultNamespace("hud/hotbar_offhand_right");
-    protected static final ResourceLocation HOTBAR_ATTACK_INDICATOR_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace(
+    private static final ResourceLocation EFFECT_BACKGROUND_AMBIENT_SPRITE = ResourceLocation.withDefaultNamespace("hud/effect_background_ambient");
+    private static final ResourceLocation EFFECT_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("hud/effect_background");
+    private static final ResourceLocation HOTBAR_SPRITE = ResourceLocation.withDefaultNamespace("hud/hotbar");
+    private static final ResourceLocation HOTBAR_SELECTION_SPRITE = ResourceLocation.withDefaultNamespace("hud/hotbar_selection");
+    private static final ResourceLocation HOTBAR_OFFHAND_LEFT_SPRITE = ResourceLocation.withDefaultNamespace("hud/hotbar_offhand_left");
+    private static final ResourceLocation HOTBAR_OFFHAND_RIGHT_SPRITE = ResourceLocation.withDefaultNamespace("hud/hotbar_offhand_right");
+    private static final ResourceLocation HOTBAR_ATTACK_INDICATOR_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace(
         "hud/hotbar_attack_indicator_background"
     );
-    protected static final ResourceLocation HOTBAR_ATTACK_INDICATOR_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace(
+    private static final ResourceLocation HOTBAR_ATTACK_INDICATOR_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace(
         "hud/hotbar_attack_indicator_progress"
     );
-    protected static final ResourceLocation JUMP_BAR_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("hud/jump_bar_background");
-    protected static final ResourceLocation JUMP_BAR_COOLDOWN_SPRITE = ResourceLocation.withDefaultNamespace("hud/jump_bar_cooldown");
-    protected static final ResourceLocation JUMP_BAR_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("hud/jump_bar_progress");
-    protected static final ResourceLocation EXPERIENCE_BAR_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("hud/experience_bar_background");
-    protected static final ResourceLocation EXPERIENCE_BAR_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("hud/experience_bar_progress");
-    protected static final ResourceLocation ARMOR_EMPTY_SPRITE = ResourceLocation.withDefaultNamespace("hud/armor_empty");
-    protected static final ResourceLocation ARMOR_HALF_SPRITE = ResourceLocation.withDefaultNamespace("hud/armor_half");
-    protected static final ResourceLocation ARMOR_FULL_SPRITE = ResourceLocation.withDefaultNamespace("hud/armor_full");
-    protected static final ResourceLocation FOOD_EMPTY_HUNGER_SPRITE = ResourceLocation.withDefaultNamespace("hud/food_empty_hunger");
-    protected static final ResourceLocation FOOD_HALF_HUNGER_SPRITE = ResourceLocation.withDefaultNamespace("hud/food_half_hunger");
-    protected static final ResourceLocation FOOD_FULL_HUNGER_SPRITE = ResourceLocation.withDefaultNamespace("hud/food_full_hunger");
-    protected static final ResourceLocation FOOD_EMPTY_SPRITE = ResourceLocation.withDefaultNamespace("hud/food_empty");
-    protected static final ResourceLocation FOOD_HALF_SPRITE = ResourceLocation.withDefaultNamespace("hud/food_half");
-    protected static final ResourceLocation FOOD_FULL_SPRITE = ResourceLocation.withDefaultNamespace("hud/food_full");
-    protected static final ResourceLocation AIR_SPRITE = ResourceLocation.withDefaultNamespace("hud/air");
-    protected static final ResourceLocation AIR_BURSTING_SPRITE = ResourceLocation.withDefaultNamespace("hud/air_bursting");
-    protected static final ResourceLocation HEART_VEHICLE_CONTAINER_SPRITE = ResourceLocation.withDefaultNamespace("hud/heart/vehicle_container");
-    protected static final ResourceLocation HEART_VEHICLE_FULL_SPRITE = ResourceLocation.withDefaultNamespace("hud/heart/vehicle_full");
-    protected static final ResourceLocation HEART_VEHICLE_HALF_SPRITE = ResourceLocation.withDefaultNamespace("hud/heart/vehicle_half");
-    protected static final ResourceLocation VIGNETTE_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/vignette.png");
-    protected static final ResourceLocation PUMPKIN_BLUR_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/pumpkinblur.png");
-    protected static final ResourceLocation SPYGLASS_SCOPE_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/spyglass_scope.png");
-    protected static final ResourceLocation POWDER_SNOW_OUTLINE_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/powder_snow_outline.png");
+    private static final ResourceLocation JUMP_BAR_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("hud/jump_bar_background");
+    private static final ResourceLocation JUMP_BAR_COOLDOWN_SPRITE = ResourceLocation.withDefaultNamespace("hud/jump_bar_cooldown");
+    private static final ResourceLocation JUMP_BAR_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("hud/jump_bar_progress");
+    private static final ResourceLocation EXPERIENCE_BAR_BACKGROUND_SPRITE = ResourceLocation.withDefaultNamespace("hud/experience_bar_background");
+    private static final ResourceLocation EXPERIENCE_BAR_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("hud/experience_bar_progress");
+    private static final ResourceLocation ARMOR_EMPTY_SPRITE = ResourceLocation.withDefaultNamespace("hud/armor_empty");
+    private static final ResourceLocation ARMOR_HALF_SPRITE = ResourceLocation.withDefaultNamespace("hud/armor_half");
+    private static final ResourceLocation ARMOR_FULL_SPRITE = ResourceLocation.withDefaultNamespace("hud/armor_full");
+    private static final ResourceLocation FOOD_EMPTY_HUNGER_SPRITE = ResourceLocation.withDefaultNamespace("hud/food_empty_hunger");
+    private static final ResourceLocation FOOD_HALF_HUNGER_SPRITE = ResourceLocation.withDefaultNamespace("hud/food_half_hunger");
+    private static final ResourceLocation FOOD_FULL_HUNGER_SPRITE = ResourceLocation.withDefaultNamespace("hud/food_full_hunger");
+    private static final ResourceLocation FOOD_EMPTY_SPRITE = ResourceLocation.withDefaultNamespace("hud/food_empty");
+    private static final ResourceLocation FOOD_HALF_SPRITE = ResourceLocation.withDefaultNamespace("hud/food_half");
+    private static final ResourceLocation FOOD_FULL_SPRITE = ResourceLocation.withDefaultNamespace("hud/food_full");
+    private static final ResourceLocation AIR_SPRITE = ResourceLocation.withDefaultNamespace("hud/air");
+    private static final ResourceLocation AIR_BURSTING_SPRITE = ResourceLocation.withDefaultNamespace("hud/air_bursting");
+    private static final ResourceLocation HEART_VEHICLE_CONTAINER_SPRITE = ResourceLocation.withDefaultNamespace("hud/heart/vehicle_container");
+    private static final ResourceLocation HEART_VEHICLE_FULL_SPRITE = ResourceLocation.withDefaultNamespace("hud/heart/vehicle_full");
+    private static final ResourceLocation HEART_VEHICLE_HALF_SPRITE = ResourceLocation.withDefaultNamespace("hud/heart/vehicle_half");
+    private static final ResourceLocation VIGNETTE_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/vignette.png");
+    private static final ResourceLocation PUMPKIN_BLUR_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/pumpkinblur.png");
+    private static final ResourceLocation SPYGLASS_SCOPE_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/spyglass_scope.png");
+    private static final ResourceLocation POWDER_SNOW_OUTLINE_LOCATION = ResourceLocation.withDefaultNamespace("textures/misc/powder_snow_outline.png");
     private static final Comparator<PlayerScoreEntry> SCORE_DISPLAY_ORDER = Comparator.comparing(PlayerScoreEntry::value)
         .reversed()
         .thenComparing(PlayerScoreEntry::owner, String.CASE_INSENSITIVE_ORDER);
-    protected static final Component DEMO_EXPIRED_TEXT = Component.translatable("demo.demoExpired");
-    protected static final Component SAVING_TEXT = Component.translatable("menu.savingLevel");
-    protected static final float MIN_CROSSHAIR_ATTACK_SPEED = 5.0F;
-    protected static final int NUM_HEARTS_PER_ROW = 10;
-    protected static final int LINE_HEIGHT = 10;
-    protected static final String SPACER = ": ";
-    protected static final float PORTAL_OVERLAY_ALPHA_MIN = 0.2F;
-    protected static final int HEART_SIZE = 9;
-    protected static final int HEART_SEPARATION = 8;
-    protected static final float AUTOSAVE_FADE_SPEED_FACTOR = 0.2F;
-    protected final RandomSource random = RandomSource.create();
-    protected final Minecraft minecraft;
-    protected final ChatComponent chat;
-    protected int tickCount;
+    private static final Component DEMO_EXPIRED_TEXT = Component.translatable("demo.demoExpired");
+    private static final Component SAVING_TEXT = Component.translatable("menu.savingLevel");
+    private static final float MIN_CROSSHAIR_ATTACK_SPEED = 5.0F;
+    private static final int NUM_HEARTS_PER_ROW = 10;
+    private static final int LINE_HEIGHT = 10;
+    private static final String SPACER = ": ";
+    private static final float PORTAL_OVERLAY_ALPHA_MIN = 0.2F;
+    private static final int HEART_SIZE = 9;
+    private static final int HEART_SEPARATION = 8;
+    private static final float AUTOSAVE_FADE_SPEED_FACTOR = 0.2F;
+    private final RandomSource random = RandomSource.create();
+    private final Minecraft minecraft;
+    private final ChatComponent chat;
+    private int tickCount;
     @Nullable
-    protected Component overlayMessageString;
-    protected int overlayMessageTime;
-    protected boolean animateOverlayMessageColor;
-    protected boolean chatDisabledByPlayerShown;
+    private Component overlayMessageString;
+    private int overlayMessageTime;
+    private boolean animateOverlayMessageColor;
+    private boolean chatDisabledByPlayerShown;
     public float vignetteBrightness = 1.0F;
-    protected int toolHighlightTimer;
-    protected ItemStack lastToolHighlight = ItemStack.EMPTY;
-    protected final DebugScreenOverlay debugOverlay;
-    protected final SubtitleOverlay subtitleOverlay;
+    private int toolHighlightTimer;
+    private ItemStack lastToolHighlight = ItemStack.EMPTY;
+    private final DebugScreenOverlay debugOverlay;
+    private final SubtitleOverlay subtitleOverlay;
     /**
      * The spectator GUI for this in-game GUI instance
      */
-    protected final SpectatorGui spectatorGui;
-    protected final PlayerTabOverlay tabList;
-    protected final BossHealthOverlay bossOverlay;
+    private final SpectatorGui spectatorGui;
+    private final PlayerTabOverlay tabList;
+    private final BossHealthOverlay bossOverlay;
     /**
      * A timer for the current title and subtitle displayed
      */
-    protected int titleTime;
+    private int titleTime;
     /**
      * The current title displayed
      */
     @Nullable
-    protected Component title;
+    private Component title;
     /**
      * The current sub-title displayed
      */
     @Nullable
-    protected Component subtitle;
+    private Component subtitle;
     /**
      * The time that the title take to fade in
      */
-    protected int titleFadeInTime;
+    private int titleFadeInTime;
     /**
      * The time that the title is display
      */
-    protected int titleStayTime;
+    private int titleStayTime;
     /**
      * The time that the title take to fade out
      */
-    protected int titleFadeOutTime;
-    protected int lastHealth;
-    protected int displayHealth;
+    private int titleFadeOutTime;
+    private int lastHealth;
+    private int displayHealth;
     /**
      * The last recorded system time
      */
-    protected long lastHealthTime;
+    private long lastHealthTime;
     /**
      * Used with updateCounter to make the heart bar flash
      */
-    protected long healthBlinkTime;
-    protected float autosaveIndicatorValue;
-    protected float lastAutosaveIndicatorValue;
+    private long healthBlinkTime;
+    private float autosaveIndicatorValue;
+    private float lastAutosaveIndicatorValue;
     /** Neo: This is empty and unused, rendering goes through {@link #layerManager} instead. */
     @Deprecated
     private final LayeredDraw layers = new LayeredDraw();
     private final net.neoforged.neoforge.client.gui.GuiLayerManager layerManager = new net.neoforged.neoforge.client.gui.GuiLayerManager();
-    protected float scopeScale;
+    private float scopeScale;
 
     /**
      * Neo: This variable controls the height of overlays on the left of the hotbar (e.g. health, armor).
@@ -384,9 +384,19 @@ public class Gui {
     private void renderChat(GuiGraphics p_316307_, DeltaTracker p_348631_) {
         if (!this.chat.isChatFocused()) {
             Window window = this.minecraft.getWindow();
+            // Neo: Allow customizing position of chat component
+            var chatBottomMargin = 40; // See ChatComponent#BOTTOM_MARGIN (used in translate calls in ChatComponent#render)
+            var event = net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(
+                    new net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent.Chat(window, p_316307_, p_348631_, 0, p_316307_.guiHeight() - chatBottomMargin)
+            );
+
+            // The event is given the absolute Y position; account for chat component's own offsetting here
+            p_316307_.pose().pushPose();
+            p_316307_.pose().translate(event.getPosX(), (event.getPosY() - p_316307_.guiHeight() + chatBottomMargin) / this.chat.getScale(), 0.0F);
             int i = Mth.floor(this.minecraft.mouseHandler.xpos() * (double)window.getGuiScaledWidth() / (double)window.getScreenWidth());
             int j = Mth.floor(this.minecraft.mouseHandler.ypos() * (double)window.getGuiScaledHeight() / (double)window.getScreenHeight());
             this.chat.render(p_316307_, this.tickCount, i, j, false);
+            p_316307_.pose().popPose();
         }
     }
 
@@ -799,7 +809,7 @@ public class Gui {
     }
 
     private void renderDemoOverlay(GuiGraphics p_281825_, DeltaTracker p_348679_) {
-        if (this.minecraft.isDemo() && !this.getDebugOverlay().showDebugScreen()) { // NEO: Hide demo timer when F3 debug overlay is open; fixes MC-271166
+        if (this.minecraft.isDemo() && !this.getDebugOverlay().showDebugScreen()) { // Neo: Hide demo timer when F3 debug overlay is open; fixes MC-271166
             this.minecraft.getProfiler().push("demo");
             Component component;
             if (this.minecraft.level.getGameTime() >= 120500L) {
@@ -825,7 +835,7 @@ public class Gui {
      * @param pGuiGraphics the GuiGraphics object used for rendering.
      * @param pObjective   the objective representing the scoreboard sidebar.
      */
-    public void displayScoreboardSidebar(GuiGraphics pGuiGraphics, Objective pObjective) {
+    private void displayScoreboardSidebar(GuiGraphics pGuiGraphics, Objective pObjective) {
         Scoreboard scoreboard = pObjective.getScoreboard();
         NumberFormat numberformat = pObjective.numberFormatOrDefault(StyledFormat.SIDEBAR_DEFAULT);
 
@@ -1088,7 +1098,7 @@ public class Gui {
      * @param pAbsorptionAmount the absorption amount of the player.
      * @param pRenderHighlight  determines whether to render the highlight hearts.
      */
-    protected void renderHearts(
+    private void renderHearts(
         GuiGraphics pGuiGraphics,
         Player pPlayer,
         int pX,
@@ -1240,7 +1250,7 @@ public class Gui {
      * @param pShaderLocation the location of the shader texture.
      * @param pAlpha          the alpha value to apply to the overlay.
      */
-    protected void renderTextureOverlay(GuiGraphics pGuiGraphics, ResourceLocation pShaderLocation, float pAlpha) {
+    private void renderTextureOverlay(GuiGraphics pGuiGraphics, ResourceLocation pShaderLocation, float pAlpha) {
         RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
@@ -1258,7 +1268,7 @@ public class Gui {
      * @param pGuiGraphics the graphics object used for rendering.
      * @param pScopeScale  the scale factor for the spyglass scope.
      */
-    public void renderSpyglassOverlay(GuiGraphics pGuiGraphics, float pScopeScale) {
+    private void renderSpyglassOverlay(GuiGraphics pGuiGraphics, float pScopeScale) {
         float f = (float)Math.min(pGuiGraphics.guiWidth(), pGuiGraphics.guiHeight());
         float f1 = Math.min((float)pGuiGraphics.guiWidth() / f, (float)pGuiGraphics.guiHeight() / f) * pScopeScale;
         int i = Mth.floor(f * f1);
@@ -1295,7 +1305,7 @@ public class Gui {
      * @param pEntity      the entity used to determine the distance to the world
      *                     border.
      */
-    public void renderVignette(GuiGraphics pGuiGraphics, @Nullable Entity pEntity) {
+    private void renderVignette(GuiGraphics pGuiGraphics, @Nullable Entity pEntity) {
         WorldBorder worldborder = this.minecraft.level.getWorldBorder();
         float f = 0.0F;
         if (pEntity != null) {
@@ -1338,7 +1348,7 @@ public class Gui {
      * @param pGuiGraphics the graphics object used for rendering.
      * @param pAlpha       the alpha value of the overlay.
      */
-    protected void renderPortalOverlay(GuiGraphics pGuiGraphics, float pAlpha) {
+    private void renderPortalOverlay(GuiGraphics pGuiGraphics, float pAlpha) {
         if (pAlpha < 1.0F) {
             pAlpha *= pAlpha;
             pAlpha *= pAlpha;
@@ -1582,7 +1592,7 @@ public class Gui {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static enum HeartType implements net.neoforged.neoforge.common.IExtensibleEnum {
+    public static enum HeartType implements net.neoforged.fml.common.asm.enumextension.IExtensibleEnum {
         CONTAINER(
             ResourceLocation.withDefaultNamespace("hud/heart/container"),
             ResourceLocation.withDefaultNamespace("hud/heart/container_blinking"),
@@ -1710,18 +1720,8 @@ public class Gui {
             return gui$hearttype;
         }
 
-        public static HeartType create(
-                String name,
-                ResourceLocation full,
-                ResourceLocation fullBlinking,
-                ResourceLocation half,
-                ResourceLocation halfBlinking,
-                ResourceLocation hardcoreFull,
-                ResourceLocation hardcoreFullBlinking,
-                ResourceLocation hardcoreHalf,
-                ResourceLocation hardcoreHalfBlinking
-        ) {
-            throw new IllegalStateException("Enum not extended");
+        public static net.neoforged.fml.common.asm.enumextension.ExtensionInfo getExtensionInfo() {
+            return net.neoforged.fml.common.asm.enumextension.ExtensionInfo.nonExtended(Gui.HeartType.class);
         }
     }
 }

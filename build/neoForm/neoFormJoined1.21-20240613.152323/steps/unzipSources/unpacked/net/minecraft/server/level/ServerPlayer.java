@@ -287,7 +287,7 @@ public class ServerPlayer extends Player {
     private RemoteChatSession chatSession;
     @Nullable
     public final Object object;
-    public int containerCounter;
+    private int containerCounter;
     public boolean wonGame;
 
     public ServerPlayer(MinecraftServer pServer, ServerLevel pLevel, GameProfile pGameProfile, ClientInformation pClientInformation) {
@@ -475,7 +475,7 @@ public class ServerPlayer extends Player {
         this.lastSentExp = -1;
     }
 
-    public void initMenu(AbstractContainerMenu pMenu) {
+    private void initMenu(AbstractContainerMenu pMenu) {
         pMenu.addSlotListener(this.containerListener);
         pMenu.setSynchronizer(this.containerSynchronizer);
     }
@@ -1132,7 +1132,7 @@ public class ServerPlayer extends Player {
         this.connection.send(new ClientboundOpenSignEditorPacket(pSignEntity.getBlockPos(), pIsFrontText));
     }
 
-    public void nextContainerCounter() {
+    private void nextContainerCounter() {
         this.containerCounter = this.containerCounter % 100 + 1;
     }
 

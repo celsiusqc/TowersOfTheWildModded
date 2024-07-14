@@ -21,7 +21,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class CactusBlock extends Block implements net.neoforged.neoforge.common.IPlantable {
+public class CactusBlock extends Block {
     public static final MapCodec<CactusBlock> CODEC = simpleCodec(CactusBlock::new);
     public static final IntegerProperty AGE = BlockStateProperties.AGE_15;
     public static final int MAX_AGE = 15;
@@ -111,7 +111,9 @@ public class CactusBlock extends Block implements net.neoforged.neoforge.common.
         }
 
         BlockState blockstate1 = pLevel.getBlockState(pPos.below());
-        return blockstate1.canSustainPlant(pLevel, pPos, Direction.UP, this) && !pLevel.getBlockState(pPos.above()).liquid();
+        net.neoforged.neoforge.common.util.TriState soilDecision = blockstate1.canSustainPlant(pLevel, pPos.below(), Direction.UP, pState);
+        if (!soilDecision.isDefault()) return soilDecision.isTrue();
+        return (blockstate1.is(Blocks.CACTUS) || blockstate1.is(BlockTags.SAND)) && !pLevel.getBlockState(pPos.above()).liquid();
     }
 
     @Override
@@ -127,15 +129,5 @@ public class CactusBlock extends Block implements net.neoforged.neoforge.common.
     @Override
     protected boolean isPathfindable(BlockState pState, PathComputationType pPathComputationType) {
         return false;
-    }
-
-    @Override
-    public net.neoforged.neoforge.common.PlantType getPlantType(BlockGetter world, BlockPos pos) {
-        return net.neoforged.neoforge.common.PlantType.DESERT;
-    }
-
-    @Override
-    public BlockState getPlant(BlockGetter world, BlockPos pos) {
-        return defaultBlockState();
     }
 }

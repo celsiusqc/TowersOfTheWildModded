@@ -268,6 +268,7 @@ public class BlockEntityType<T extends BlockEntity> {
     );
     public static final BlockEntityType<VaultBlockEntity> VAULT = register("vault", BlockEntityType.Builder.of(VaultBlockEntity::new, Blocks.VAULT));
     private final BlockEntityType.BlockEntitySupplier<? extends T> factory;
+    // Neo: This field will be modified by BlockEntityTypeAddBlocksEvent event. Please use the event to add to this field for vanilla or other mod's BlockEntityTypes.
     private final Set<Block> validBlocks;
     private final Type<?> dataType;
     private final Holder.Reference<BlockEntityType<?>> builtInRegistryHolder = BuiltInRegistries.BLOCK_ENTITY_TYPE.createIntrusiveHolder(this);
@@ -297,13 +298,15 @@ public class BlockEntityType<T extends BlockEntity> {
         return (T)this.factory.create(pPos, pState);
     }
 
-    public boolean isValid(BlockState pState) {
-        return this.validBlocks.contains(pState.getBlock());
-    }
-
-    // Neo: Add block getter
+    /**
+     * Neo: Add getter for an immutable view of the set of valid blocks.
+     */
     public Set<Block> getValidBlocks() {
         return java.util.Collections.unmodifiableSet(this.validBlocks);
+    }
+
+    public boolean isValid(BlockState pState) {
+        return this.validBlocks.contains(pState.getBlock());
     }
 
     @Nullable

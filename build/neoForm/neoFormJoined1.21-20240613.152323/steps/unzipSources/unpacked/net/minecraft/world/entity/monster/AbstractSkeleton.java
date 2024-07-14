@@ -189,7 +189,7 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
         ItemStack itemstack1 = this.getProjectile(weapon);
         AbstractArrow abstractarrow = this.getArrow(itemstack1, pDistanceFactor, weapon);
         if (weapon.getItem() instanceof net.minecraft.world.item.ProjectileWeaponItem weaponItem)
-            abstractarrow = weaponItem.customArrow(abstractarrow, weapon);
+            abstractarrow = weaponItem.customArrow(abstractarrow, itemstack1, weapon);
         double d0 = pTarget.getX() - this.getX();
         double d1 = pTarget.getY(0.3333333333333333) - abstractarrow.getY();
         double d2 = pTarget.getZ() - this.getZ();

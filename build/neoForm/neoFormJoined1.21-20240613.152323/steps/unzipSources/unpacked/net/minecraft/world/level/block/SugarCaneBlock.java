@@ -19,7 +19,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class SugarCaneBlock extends Block implements net.neoforged.neoforge.common.IPlantable {
+public class SugarCaneBlock extends Block {
     public static final MapCodec<SugarCaneBlock> CODEC = simpleCodec(SugarCaneBlock::new);
     public static final IntegerProperty AGE = BlockStateProperties.AGE_15;
     protected static final float AABB_OFFSET = 6.0F;
@@ -90,12 +90,12 @@ public class SugarCaneBlock extends Block implements net.neoforged.neoforge.comm
 
     @Override
     protected boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        BlockState soil = pLevel.getBlockState(pPos.below());
-        if (soil.canSustainPlant(pLevel, pPos.below(), Direction.UP, this)) return true;
         BlockState blockstate = pLevel.getBlockState(pPos.below());
         if (blockstate.is(this)) {
             return true;
         } else {
+            net.neoforged.neoforge.common.util.TriState soilDecision = blockstate.canSustainPlant(pLevel, pPos.below(), Direction.UP, pState);
+            if (!soilDecision.isDefault()) return soilDecision.isTrue();
             if (blockstate.is(BlockTags.DIRT) || blockstate.is(BlockTags.SAND)) {
                 BlockPos blockpos = pPos.below();
 
@@ -115,15 +115,5 @@ public class SugarCaneBlock extends Block implements net.neoforged.neoforge.comm
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(AGE);
-    }
-
-    @Override
-    public net.neoforged.neoforge.common.PlantType getPlantType(BlockGetter world, BlockPos pos) {
-         return net.neoforged.neoforge.common.PlantType.BEACH;
-    }
-
-    @Override
-    public BlockState getPlant(BlockGetter world, BlockPos pos) {
-        return defaultBlockState();
     }
 }

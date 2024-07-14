@@ -58,6 +58,20 @@ public interface CustomPacketPayload {
         };
     }
 
+    /**
+     * {@return the vanilla clientbound packet representation of this payload}
+     */
+    default net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket toVanillaClientbound() {
+        return new net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket(this);
+    }
+
+    /**
+     * {@return the vanilla serverbound packet representation of this payload}
+     */
+    default net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket toVanillaServerbound() {
+        return new net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket(this);
+    }
+
     public interface FallbackProvider<B extends FriendlyByteBuf> {
         StreamCodec<B, ? extends CustomPacketPayload> create(ResourceLocation pId);
     }

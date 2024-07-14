@@ -33,16 +33,16 @@ public class ElytraLayer<T extends LivingEntity, M extends EntityModel<T>> exten
     }
 
     public void render(
-            PoseStack pPoseStack,
-            MultiBufferSource pBuffer,
-            int pPackedLight,
-            T pLivingEntity,
-            float pLimbSwing,
-            float pLimbSwingAmount,
-            float pPartialTicks,
-            float pAgeInTicks,
-            float pNetHeadYaw,
-            float pHeadPitch
+        PoseStack pPoseStack,
+        MultiBufferSource pBuffer,
+        int pPackedLight,
+        T pLivingEntity,
+        float pLimbSwing,
+        float pLimbSwingAmount,
+        float pPartialTicks,
+        float pAgeInTicks,
+        float pNetHeadYaw,
+        float pHeadPitch
     ) {
         ItemStack itemstack = pLivingEntity.getItemBySlot(EquipmentSlot.CHEST);
         if (shouldRender(itemstack, pLivingEntity)) {

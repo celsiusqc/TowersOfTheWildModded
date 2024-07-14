@@ -79,6 +79,8 @@ public class CocoaBlock extends HorizontalDirectionalBlock implements Bonemealab
     @Override
     protected boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         BlockState blockstate = pLevel.getBlockState(pPos.relative(pState.getValue(FACING)));
+        net.neoforged.neoforge.common.util.TriState soilDecision = blockstate.canSustainPlant(pLevel, pPos.relative(pState.getValue(FACING)), pState.getValue(FACING).getOpposite(), pState);
+        if (!soilDecision.isDefault()) return soilDecision.isTrue();
         return blockstate.is(BlockTags.JUNGLE_LOGS);
     }
 

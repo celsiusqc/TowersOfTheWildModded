@@ -456,7 +456,7 @@ public class Wolf extends TamableAnimal implements NeutralMob, VariantHolder<Hol
                         this.setBodyArmorItem(itemstack.copyWithCount(1));
                         itemstack.consume(1, pPlayer);
                         return InteractionResult.SUCCESS;
-                    } else if (itemstack.is(Items.SHEARS)
+                    } else if (itemstack.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.SHEARS_REMOVE_ARMOR)
                         && this.isOwnedBy(pPlayer)
                         && this.hasArmor()
                         && (!EnchantmentHelper.has(this.getBodyArmorItem(), EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE) || pPlayer.isCreative())) {

@@ -352,7 +352,7 @@ public class ClientLevel extends Level {
         if (net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.entity.EntityJoinLevelEvent(pEntity, this)).isCanceled()) return;
         this.removeEntity(pEntity.getId(), Entity.RemovalReason.DISCARDED);
         this.entityStorage.addEntity(pEntity);
-        pEntity.onAddedToWorld();
+        pEntity.onAddedToLevel();
     }
 
     public void removeEntity(int pEntityId, Entity.RemovalReason pReason) {
@@ -1127,7 +1127,7 @@ public class ClientLevel extends Level {
             p_171716_.unRide();
             ClientLevel.this.players.remove(p_171716_);
 
-            p_171716_.onRemovedFromWorld();
+            p_171716_.onRemovedFromLevel();
             net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent(p_171716_, ClientLevel.this));
 
             if (p_171716_.isMultipartEntity()) {

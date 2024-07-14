@@ -74,10 +74,8 @@ public class FishingRodItem extends Item {
         return 1;
     }
 
-     /* ******************** FORGE START ******************** */
-
-     @Override
-    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ToolAction toolAction) {
-        return net.neoforged.neoforge.common.ToolActions.DEFAULT_FISHING_ROD_ACTIONS.contains(toolAction);
+    @Override
+    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ItemAbility itemAbility) {
+        return net.neoforged.neoforge.common.ItemAbilities.DEFAULT_FISHING_ROD_ACTIONS.contains(itemAbility);
     }
 }

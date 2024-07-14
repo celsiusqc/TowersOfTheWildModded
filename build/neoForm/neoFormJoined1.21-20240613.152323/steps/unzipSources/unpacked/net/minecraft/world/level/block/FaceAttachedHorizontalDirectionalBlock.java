@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 public abstract class FaceAttachedHorizontalDirectionalBlock extends HorizontalDirectionalBlock {
     public static final EnumProperty<AttachFace> FACE = BlockStateProperties.ATTACH_FACE;
 
-    public FaceAttachedHorizontalDirectionalBlock(BlockBehaviour.Properties pProperties) {
+    protected FaceAttachedHorizontalDirectionalBlock(BlockBehaviour.Properties pProperties) {
         super(pProperties);
     }
 

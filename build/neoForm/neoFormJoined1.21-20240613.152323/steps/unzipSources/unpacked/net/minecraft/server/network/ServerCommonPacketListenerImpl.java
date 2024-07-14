@@ -33,7 +33,7 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
     private static final Component TIMEOUT_DISCONNECTION_MESSAGE = Component.translatable("disconnect.timeout");
     static final Component DISCONNECT_UNEXPECTED_QUERY = Component.translatable("multiplayer.disconnect.unexpected_query_response");
     protected final MinecraftServer server;
-    public final Connection connection;
+    protected final Connection connection;
     private final boolean transferred;
     private long keepAliveTime;
     private boolean keepAlivePending;

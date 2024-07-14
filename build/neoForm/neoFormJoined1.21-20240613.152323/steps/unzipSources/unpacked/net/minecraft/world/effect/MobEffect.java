@@ -185,27 +185,28 @@ public class MobEffect implements FeatureElement, net.neoforged.neoforge.common.
         return this.requiredFeatures;
     }
 
-    // NEO START
+    // Neo: Client rendering for MobEffects
     private Object effectRenderer;
 
-    /*
-     * DO NOT CALL, IT WILL DISAPPEAR IN THE FUTURE
-     * Call RenderProperties.getEffectRenderer instead
+    /**
+     * Neo: DO NOT CALL, IT WILL DISAPPEAR IN THE FUTURE
+     * TODO: Replace this with a better solution
+     * Call {@link net.neoforged.neoforge.client.extensions.common.IClientMobEffectExtensions#of(MobEffect)} instead
      */
     public Object getEffectRendererInternal() {
         return effectRenderer;
     }
 
+    // Neo: Minecraft instance isn't available in datagen, so don't call initializeClient if in datagen
     private void initClient() {
-        // Minecraft instance isn't available in datagen, so don't call initializeClient if in datagen
         if (net.neoforged.fml.loading.FMLEnvironment.dist == net.neoforged.api.distmarker.Dist.CLIENT && !net.neoforged.neoforge.data.loading.DatagenModLoader.isRunningDataGen()) {
             initializeClient(properties -> this.effectRenderer = properties);
         }
     }
 
+    // Neo: Allowing mods to define client behavior for their MobEffects
     public void initializeClient(java.util.function.Consumer<net.neoforged.neoforge.client.extensions.common.IClientMobEffectExtensions> consumer) {
     }
-    // END NEO
 
     static record AttributeTemplate(ResourceLocation id, double amount, AttributeModifier.Operation operation) {
         public AttributeModifier create(int p_316614_) {

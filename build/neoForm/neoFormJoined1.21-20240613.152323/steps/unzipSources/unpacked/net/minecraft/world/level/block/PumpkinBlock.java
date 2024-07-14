@@ -35,7 +35,7 @@ public class PumpkinBlock extends Block {
     protected ItemInteractionResult useItemOn(
         ItemStack p_316383_, BlockState p_316676_, Level p_316272_, BlockPos p_316484_, Player p_316367_, InteractionHand p_316216_, BlockHitResult p_316827_
     ) {
-        if (!p_316383_.canPerformAction(net.neoforged.neoforge.common.ToolActions.SHEARS_CARVE)) {
+        if (!p_316383_.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.SHEARS_CARVE)) {
             return super.useItemOn(p_316383_, p_316676_, p_316272_, p_316484_, p_316367_, p_316216_, p_316827_);
         } else if (p_316272_.isClientSide) {
             return ItemInteractionResult.sidedSuccess(p_316272_.isClientSide);

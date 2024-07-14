@@ -117,14 +117,14 @@ public class TitleScreen extends Screen {
         int i = this.font.width(COPYRIGHT_TEXT);
         int j = this.width - i - 2;
         int k = 24;
-        int l = this.height / 4 + 48;
-        Button modButton = null;
+        int l = this.height / 4 + 32;
         if (this.minecraft.isDemo()) {
             this.createDemoMenuOptions(l, 24);
         } else {
             this.createNormalMenuOptions(l, 24);
-            modButton = this.addRenderableWidget(new net.neoforged.neoforge.client.gui.widget.ModsButton(Button.builder(Component.translatable("fml.menu.mods"), button -> this.minecraft.setScreen(new net.neoforged.neoforge.client.gui.ModListScreen(this)))
-                .pos(this.width / 2 - 100, l + 24 * 2).size(98, 20)));
+            this.addRenderableWidget(new net.neoforged.neoforge.client.gui.widget.ModsButton(Button.builder(Component.translatable("fml.menu.mods"), button -> this.minecraft.setScreen(new net.neoforged.neoforge.client.gui.ModListScreen(this)))
+                    .pos(this.width / 2 - 100, l + 24 * 3).size(200, 20)));
+            l += 22; // Move down Options, Quit, Language, and Accessibility buttons to make room for mods button
         }
 
         SpriteIconButton spriteiconbutton = this.addRenderableWidget(
@@ -177,7 +177,7 @@ public class TitleScreen extends Screen {
         }).bounds(this.width / 2 - 100, pY + pRowHeight * 1, 200, 20).tooltip(tooltip).build()).active = flag;
         this.addRenderableWidget(
                 Button.builder(Component.translatable("menu.online"), p_315821_ -> this.minecraft.setScreen(new RealmsMainScreen(this)))
-                    .bounds(this.width / 2 + 2, pY + pRowHeight * 2, 98, 20)
+                    .bounds(this.width / 2 - 100, pY + pRowHeight * 2, 200, 20)
                     .tooltip(tooltip)
                     .build()
             )

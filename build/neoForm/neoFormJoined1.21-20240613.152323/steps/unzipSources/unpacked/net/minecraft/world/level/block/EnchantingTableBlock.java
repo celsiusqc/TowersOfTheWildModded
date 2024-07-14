@@ -42,7 +42,7 @@ public class EnchantingTableBlock extends BaseEntityBlock {
         return CODEC;
     }
 
-    protected EnchantingTableBlock(BlockBehaviour.Properties p_341305_) {
+    public EnchantingTableBlock(BlockBehaviour.Properties p_341305_) {
         super(p_341305_);
     }
 

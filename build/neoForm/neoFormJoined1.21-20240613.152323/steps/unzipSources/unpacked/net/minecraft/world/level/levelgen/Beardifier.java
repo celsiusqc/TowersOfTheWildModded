@@ -141,7 +141,7 @@ public class Beardifier implements DensityFunctions.BeardifierOrMarker {
         return Double.POSITIVE_INFINITY;
     }
 
-    private static double getBuryContribution(double pX, double pY, double pZ) {
+    protected static double getBuryContribution(double pX, double pY, double pZ) {
         double d0 = Mth.length(pX, pY, pZ);
         return Mth.clampedMap(d0, 0.0, 6.0, 1.0, 0.0);
     }

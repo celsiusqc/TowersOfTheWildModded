@@ -85,6 +85,17 @@ public class ItemTransforms {
     }
 
     public ItemTransform getTransform(ItemDisplayContext pDisplayContext) {
+        if (pDisplayContext.isModded()) {
+            ItemTransform moddedTransform = moddedTransforms.get(pDisplayContext);
+            if (moddedTransform != null) {
+                return moddedTransform;
+            }
+            ItemDisplayContext moddedFallback = pDisplayContext.fallback();
+            if (moddedFallback == null) {
+                return ItemTransform.NO_TRANSFORM;
+            }
+            pDisplayContext = moddedFallback;
+        }
         return switch (pDisplayContext) {
             case THIRD_PERSON_LEFT_HAND -> this.thirdPersonLeftHand;
             case THIRD_PERSON_RIGHT_HAND -> this.thirdPersonRightHand;

@@ -59,7 +59,7 @@ public class ServerLoginPacketListenerImpl implements ServerLoginPacketListener,
     @Nullable
     String requestedUsername;
     @Nullable
-    public GameProfile authenticatedProfile;
+    private GameProfile authenticatedProfile;
     private final String serverId = "";
     private final boolean transferred;
 

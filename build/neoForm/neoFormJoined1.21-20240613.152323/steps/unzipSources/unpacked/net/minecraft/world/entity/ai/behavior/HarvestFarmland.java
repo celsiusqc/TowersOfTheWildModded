@@ -82,7 +82,7 @@ public class HarvestFarmland extends Behavior<Villager> {
         BlockState blockstate = pServerLevel.getBlockState(pPos);
         Block block = blockstate.getBlock();
         Block block1 = pServerLevel.getBlockState(pPos.below()).getBlock();
-        return block instanceof CropBlock && ((CropBlock)block).isMaxAge(blockstate) || blockstate.isAir() && block1 instanceof FarmBlock;
+        return block instanceof CropBlock && ((CropBlock)block).isMaxAge(blockstate) || blockstate.isAir() && (block1 instanceof FarmBlock || block1.builtInRegistryHolder().is(net.neoforged.neoforge.common.Tags.Blocks.VILLAGER_FARMLANDS));
     }
 
     protected void start(ServerLevel pLevel, Villager pEntity, long pGameTime) {
@@ -109,7 +109,7 @@ public class HarvestFarmland extends Behavior<Villager> {
                     pLevel.destroyBlock(this.aboveFarmlandPos, true, pOwner);
                 }
 
-                if (blockstate.isAir() && block1 instanceof FarmBlock && pOwner.hasFarmSeeds()) {
+                if (blockstate.isAir() && (block1 instanceof FarmBlock || block1.builtInRegistryHolder().is(net.neoforged.neoforge.common.Tags.Blocks.VILLAGER_FARMLANDS)) && pOwner.hasFarmSeeds()) {
                     SimpleContainer simplecontainer = pOwner.getInventory();
 
                     for (int i = 0; i < simplecontainer.getContainerSize(); i++) {
@@ -120,9 +120,9 @@ public class HarvestFarmland extends Behavior<Villager> {
                             pLevel.setBlockAndUpdate(this.aboveFarmlandPos, blockstate1);
                             pLevel.gameEvent(GameEvent.BLOCK_PLACE, this.aboveFarmlandPos, GameEvent.Context.of(pOwner, blockstate1));
                             flag = true;
-                        } else if (itemstack.getItem() instanceof net.neoforged.neoforge.common.IPlantable) {
-                            if (((net.neoforged.neoforge.common.IPlantable)itemstack.getItem()).getPlantType(pLevel, aboveFarmlandPos) == net.neoforged.neoforge.common.PlantType.CROP) {
-                                pLevel.setBlock(aboveFarmlandPos, ((net.neoforged.neoforge.common.IPlantable)itemstack.getItem()).getPlant(pLevel, aboveFarmlandPos), 3);
+                        } else if (itemstack.getItem() instanceof net.neoforged.neoforge.common.SpecialPlantable specialPlantable && specialPlantable.villagerCanPlantItem(pOwner)) {
+                            if (specialPlantable.canPlacePlantAtPosition(itemstack, pLevel, aboveFarmlandPos, net.minecraft.core.Direction.DOWN)) {
+                                specialPlantable.spawnPlantAtPosition(itemstack, pLevel, aboveFarmlandPos, net.minecraft.core.Direction.DOWN);
                                 flag = true;
                             }
                         }

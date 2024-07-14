@@ -75,6 +75,9 @@ public class ChorusFlowerBlock extends Block {
                 boolean flag = false;
                 boolean flag1 = false;
                 BlockState blockstate = pLevel.getBlockState(pPos.below());
+                net.neoforged.neoforge.common.util.TriState soilDecision = blockstate.canSustainPlant(pLevel, pPos.below(), Direction.UP, pState);
+                if (!soilDecision.isDefault()) flag = soilDecision.isTrue();
+                else
                 if (blockstate.is(Blocks.END_STONE)) {
                     flag = true;
                 } else if (blockstate.is(this.plant)) {
@@ -83,6 +86,8 @@ public class ChorusFlowerBlock extends Block {
                     for (int k = 0; k < 4; k++) {
                         BlockState blockstate1 = pLevel.getBlockState(pPos.below(j + 1));
                         if (!blockstate1.is(this.plant)) {
+                            net.neoforged.neoforge.common.util.TriState soilDecision2 = blockstate1.canSustainPlant(pLevel, pPos.below(j + 1), Direction.UP, pState);
+                            if (!soilDecision2.isDefault()) flag1 = soilDecision2.isTrue();
                             if (blockstate1.is(Blocks.END_STONE)) {
                                 flag1 = true;
                             }
@@ -171,6 +176,8 @@ public class ChorusFlowerBlock extends Block {
     @Override
     protected boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         BlockState blockstate = pLevel.getBlockState(pPos.below());
+        net.neoforged.neoforge.common.util.TriState soilDecision = blockstate.canSustainPlant(pLevel, pPos.below(), Direction.UP, pState);
+        if (!soilDecision.isDefault()) return soilDecision.isTrue();
         if (!blockstate.is(this.plant) && !blockstate.is(Blocks.END_STONE)) {
             if (!blockstate.isAir()) {
                 return false;

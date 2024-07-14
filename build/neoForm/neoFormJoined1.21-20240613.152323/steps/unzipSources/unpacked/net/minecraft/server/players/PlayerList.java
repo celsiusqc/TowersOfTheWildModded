@@ -455,15 +455,20 @@ public abstract class PlayerList {
         this.players.remove(pPlayer);
         pPlayer.serverLevel().removePlayerImmediately(pPlayer, p_348558_);
         DimensionTransition dimensiontransition = pPlayer.findRespawnPositionAndUseSpawnBlock(pKeepEverything, DimensionTransition.DO_NOTHING);
+
+        // Neo: Allow changing the respawn position of players. The local dimension transition is updated with the new target.
         var event = net.neoforged.neoforge.event.EventHooks.firePlayerRespawnPositionEvent(pPlayer, dimensiontransition, pKeepEverything);
         dimensiontransition = event.getDimensionTransition();
+
         ServerLevel serverlevel = dimensiontransition.newLevel();
         ServerPlayer serverplayer = new ServerPlayer(this.server, serverlevel, pPlayer.getGameProfile(), pPlayer.clientInformation());
         serverplayer.connection = pPlayer.connection;
         serverplayer.restoreFrom(pPlayer, pKeepEverything);
         serverplayer.setId(pPlayer.getId());
         serverplayer.setMainArm(pPlayer.getMainArm());
-        if (!dimensiontransition.missingRespawnBlock()) {
+
+        // Neo: Allow the event to control if the original spawn position is copied
+        if (event.copyOriginalSpawnPosition()) {
             serverplayer.copyRespawnPosition(pPlayer);
         }
 
@@ -473,9 +478,6 @@ public abstract class PlayerList {
 
         Vec3 vec3 = dimensiontransition.pos();
         serverplayer.moveTo(vec3.x, vec3.y, vec3.z, dimensiontransition.yRot(), dimensiontransition.xRot());
-        if (event.changePlayerSpawnPosition()) {
-            serverplayer.setRespawnPosition(dimensiontransition.newLevel().dimension(), BlockPos.containing(vec3), dimensiontransition.yRot(), pPlayer.isRespawnForced(), false);
-        }
         if (dimensiontransition.missingRespawnBlock()) {
             serverplayer.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.NO_RESPAWN_BLOCK_AVAILABLE, 0.0F));
         }

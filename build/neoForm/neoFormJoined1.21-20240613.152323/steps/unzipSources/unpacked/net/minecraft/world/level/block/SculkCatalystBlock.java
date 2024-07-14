@@ -69,8 +69,11 @@ public class SculkCatalystBlock extends BaseEntityBlock {
 
     }
 
+    // Neo: Patch-in override for getExpDrop. Original vanilla logic passes this.xpRange to tryDropExperience.
     @Override
-    public int getExpDrop(BlockState state, net.minecraft.world.level.LevelReader level, RandomSource randomSource, BlockPos pos) {
-        return this.xpRange.sample(randomSource);
+    public int getExpDrop(BlockState state, net.minecraft.world.level.LevelAccessor level, BlockPos pos,
+            @org.jetbrains.annotations.Nullable net.minecraft.world.level.block.entity.BlockEntity blockEntity,
+            @org.jetbrains.annotations.Nullable net.minecraft.world.entity.Entity breaker, ItemStack tool) {
+        return this.xpRange.sample(level.getRandom());
     }
 }

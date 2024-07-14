@@ -69,15 +69,13 @@ public class ShieldItem extends Item implements Equipable {
         return pRepair.is(ItemTags.PLANKS) || super.isValidRepairItem(pToRepair, pRepair);
     }
 
-    /* ******************** FORGE START ******************** */
-
-    @Override
-    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ToolAction toolAction) {
-        return net.neoforged.neoforge.common.ToolActions.DEFAULT_SHIELD_ACTIONS.contains(toolAction);
-    }
-
     @Override
     public EquipmentSlot getEquipmentSlot() {
         return EquipmentSlot.OFFHAND;
+    }
+
+    @Override
+    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ItemAbility itemAbility) {
+        return net.neoforged.neoforge.common.ItemAbilities.DEFAULT_SHIELD_ACTIONS.contains(itemAbility);
     }
 }

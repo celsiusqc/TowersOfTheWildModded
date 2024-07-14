@@ -27,7 +27,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class BambooStalkBlock extends Block implements BonemealableBlock, net.neoforged.neoforge.common.IPlantable {
+public class BambooStalkBlock extends Block implements BonemealableBlock {
     public static final MapCodec<BambooStalkBlock> CODEC = simpleCodec(BambooStalkBlock::new);
     protected static final float SMALL_LEAVES_AABB_OFFSET = 3.0F;
     protected static final float LARGE_LEAVES_AABB_OFFSET = 5.0F;
@@ -97,7 +97,8 @@ public class BambooStalkBlock extends Block implements BonemealableBlock, net.ne
             return null;
         } else {
             BlockState blockstate = pContext.getLevel().getBlockState(pContext.getClickedPos().below());
-            if (blockstate.is(BlockTags.BAMBOO_PLANTABLE_ON)) {
+            net.neoforged.neoforge.common.util.TriState soilDecision = blockstate.canSustainPlant(pContext.getLevel(), pContext.getClickedPos().below(), net.minecraft.core.Direction.UP, this.defaultBlockState());
+            if (soilDecision.isDefault() ? blockstate.is(BlockTags.BAMBOO_PLANTABLE_ON) : soilDecision.isTrue()) {
                 if (blockstate.is(Blocks.BAMBOO_SAPLING)) {
                     return this.defaultBlockState().setValue(AGE, Integer.valueOf(0));
                 } else if (blockstate.is(Blocks.BAMBOO)) {
@@ -145,6 +146,8 @@ public class BambooStalkBlock extends Block implements BonemealableBlock, net.ne
 
     @Override
     protected boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
+        net.neoforged.neoforge.common.util.TriState soilDecision = pLevel.getBlockState(pPos.below()).canSustainPlant(pLevel, pPos.below(), Direction.UP, pState);
+        if (!soilDecision.isDefault()) return soilDecision.isTrue();
         return pLevel.getBlockState(pPos.below()).is(BlockTags.BAMBOO_PLANTABLE_ON);
     }
 
@@ -206,7 +209,7 @@ public class BambooStalkBlock extends Block implements BonemealableBlock, net.ne
      */
     @Override
     protected float getDestroyProgress(BlockState pState, Player pPlayer, BlockGetter pLevel, BlockPos pPos) {
-        return pPlayer.getMainHandItem().canPerformAction(net.neoforged.neoforge.common.ToolActions.SWORD_DIG) ? 1.0F : super.getDestroyProgress(pState, pPlayer, pLevel, pPos);
+        return pPlayer.getMainHandItem().canPerformAction(net.neoforged.neoforge.common.ItemAbilities.SWORD_DIG) ? 1.0F : super.getDestroyProgress(pState, pPlayer, pLevel, pPos);
     }
 
     protected void growBamboo(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom, int pAge) {
@@ -251,12 +254,5 @@ public class BambooStalkBlock extends Block implements BonemealableBlock, net.ne
         }
 
         return i;
-    }
-
-    @Override
-    public BlockState getPlant(BlockGetter world, BlockPos pos) {
-        BlockState state = world.getBlockState(pos);
-        if (state.getBlock() != this) return defaultBlockState();
-        return state;
     }
 }

@@ -80,6 +80,7 @@ public class KeyBindsScreen extends OptionsSubScreen {
                 this.options.setKey(this.selectedKey, InputConstants.getKey(p_345810_, p_345447_));
             }
 
+            if(!net.neoforged.neoforge.client.settings.KeyModifier.isKeyCodeModifier(this.selectedKey.getKey()))
             this.selectedKey = null;
             this.lastKeySelection = Util.getMillis();
             this.keyBindsList.resetMappingAndUpdateButtons();

@@ -21,7 +21,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class PistonHeadRenderer implements BlockEntityRenderer<PistonMovingBlockEntity> {
-    private BlockRenderDispatcher blockRenderer;
+    private final BlockRenderDispatcher blockRenderer;
 
     public PistonHeadRenderer(BlockEntityRendererProvider.Context pContext) {
         this.blockRenderer = pContext.getBlockRenderDispatcher();
@@ -74,7 +74,7 @@ public class PistonHeadRenderer implements BlockEntityRenderer<PistonMovingBlock
         BlockPos pPos, BlockState pState, PoseStack pPoseStack, MultiBufferSource pBufferSource, Level pLevel, boolean pExtended, int pPackedOverlay
     ) {
         if (true) {
-            net.neoforged.neoforge.client.ClientHooks.renderPistonMovedBlocks(pPos, pState, pPoseStack, pBufferSource, pLevel, pExtended, pPackedOverlay, blockRenderer == null ? blockRenderer = net.minecraft.client.Minecraft.getInstance().getBlockRenderer() : blockRenderer);
+            net.neoforged.neoforge.client.ClientHooks.renderPistonMovedBlocks(pPos, pState, pPoseStack, pBufferSource, pLevel, pExtended, pPackedOverlay, blockRenderer);
             return;
         }
         RenderType rendertype = ItemBlockRenderTypes.getMovingBlockRenderType(pState);

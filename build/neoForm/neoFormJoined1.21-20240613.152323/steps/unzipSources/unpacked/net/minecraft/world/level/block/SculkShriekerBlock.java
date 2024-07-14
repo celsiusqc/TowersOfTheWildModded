@@ -153,11 +153,13 @@ public class SculkShriekerBlock extends BaseEntityBlock implements SimpleWaterlo
     @Override
     protected void spawnAfterBreak(BlockState pState, ServerLevel pLevel, BlockPos pPos, ItemStack pStack, boolean pDropExperience) {
         super.spawnAfterBreak(pState, pLevel, pPos, pStack, pDropExperience);
-
     }
 
+    // Neo: Patch-in override for getExpDrop. Original vanilla logic passes ConstantInt.of(5) to tryDropExperience.
     @Override
-    public int getExpDrop(BlockState state, net.minecraft.world.level.LevelReader level, RandomSource randomSource, BlockPos pos) {
+    public int getExpDrop(BlockState state, net.minecraft.world.level.LevelAccessor level, BlockPos pos,
+            @org.jetbrains.annotations.Nullable net.minecraft.world.level.block.entity.BlockEntity blockEntity,
+            @org.jetbrains.annotations.Nullable net.minecraft.world.entity.Entity breaker, ItemStack tool) {
         return 5;
     }
 

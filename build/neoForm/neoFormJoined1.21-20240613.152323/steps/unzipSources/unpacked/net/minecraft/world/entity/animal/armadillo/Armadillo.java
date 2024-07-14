@@ -315,7 +315,7 @@ public class Armadillo extends Animal {
     @Override
     public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
-        if (itemstack.is(Items.BRUSH) && this.brushOffScute()) {
+        if (itemstack.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.BRUSH_BRUSH) && this.brushOffScute()) {
             itemstack.hurtAndBreak(16, pPlayer, getSlotForHand(pHand));
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         } else {

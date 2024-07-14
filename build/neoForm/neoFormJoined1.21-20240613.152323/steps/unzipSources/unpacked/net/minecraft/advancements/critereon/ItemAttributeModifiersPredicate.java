@@ -40,6 +40,14 @@ public record ItemAttributeModifiersPredicate(
         return !this.modifiers.isPresent() || this.modifiers.get().test(pValue.modifiers());
     }
 
+    /**
+     * Neo: Override this method to reflect gameplay attribute modifiers instead of only NBT modifiers.
+     */
+    @Override
+    public boolean matches(ItemStack p_333958_) {
+        return matches(p_333958_, p_333958_.getAttributeModifiers());
+    }
+
     public static record EntryPredicate(
         Optional<HolderSet<Attribute>> attribute,
         Optional<ResourceLocation> id,

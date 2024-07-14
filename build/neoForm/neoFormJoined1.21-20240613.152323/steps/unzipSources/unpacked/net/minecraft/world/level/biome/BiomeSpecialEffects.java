@@ -212,7 +212,9 @@ public class BiomeSpecialEffects {
         }
     }
 
-    public static enum GrassColorModifier implements StringRepresentable, net.neoforged.neoforge.common.IExtensibleEnum {
+    @net.neoforged.fml.common.asm.enumextension.NamedEnum
+    @net.neoforged.fml.common.asm.enumextension.NetworkedEnum(net.neoforged.fml.common.asm.enumextension.NetworkedEnum.NetworkCheck.CLIENTBOUND)
+    public static enum GrassColorModifier implements StringRepresentable, net.neoforged.fml.common.asm.enumextension.IExtensibleEnum {
         NONE("none") {
             @Override
             public int modifyColor(double p_48081_, double p_48082_, int p_48083_) {
@@ -234,37 +236,24 @@ public class BiomeSpecialEffects {
         };
 
         private final String name;
-        public static final Codec<BiomeSpecialEffects.GrassColorModifier> CODEC = net.neoforged.neoforge.common.IExtensibleEnum.createCodecForExtensibleEnum(BiomeSpecialEffects.GrassColorModifier::values, BiomeSpecialEffects.GrassColorModifier::byName);
-        private static final java.util.Map<String, GrassColorModifier> BY_NAME = java.util.Arrays.stream(values()).collect(java.util.stream.Collectors.toMap(BiomeSpecialEffects.GrassColorModifier::getName, grassColorModifier -> grassColorModifier));
+        private final ColorModifier delegate;
+        public static final Codec<BiomeSpecialEffects.GrassColorModifier> CODEC = StringRepresentable.fromEnum(BiomeSpecialEffects.GrassColorModifier::values);
 
         public int modifyColor(double pX, double pZ, int pGrassColor) {
             return delegate.modifyGrassColor(pX, pZ, pGrassColor);
         }
 
+        @net.neoforged.fml.common.asm.enumextension.ReservedConstructor
         GrassColorModifier(String pName) {
             this.name = pName;
+            this.delegate = null;
         }
 
-        private ColorModifier delegate;
-        private GrassColorModifier(String pName, ColorModifier delegate) {
-            this(pName);
+        GrassColorModifier(String pName, ColorModifier delegate) {
+            this.name = pName;
             this.delegate = delegate;
         }
-        public static GrassColorModifier create(String name, String id, ColorModifier delegate) {
-            throw new IllegalStateException("Enum not extended");
-        }
-        @Override
-        public void init() {
-            BY_NAME.put(this.getName(), this);
-        }
-        // Forge: Access enum members by name
-        public static BiomeSpecialEffects.GrassColorModifier byName(String name) {
-            return BY_NAME.get(name);
-        }
-        @FunctionalInterface
-        public interface ColorModifier {
-            int modifyGrassColor(double x, double z, int color);
-        }
+
         public String getName() {
             return this.name;
         }
@@ -272,6 +261,15 @@ public class BiomeSpecialEffects {
         @Override
         public String getSerializedName() {
             return this.name;
+        }
+
+        public static net.neoforged.fml.common.asm.enumextension.ExtensionInfo getExtensionInfo() {
+            return net.neoforged.fml.common.asm.enumextension.ExtensionInfo.nonExtended(BiomeSpecialEffects.GrassColorModifier.class);
+        }
+
+        @FunctionalInterface
+        public interface ColorModifier {
+            int modifyGrassColor(double x, double z, int color);
         }
     }
 }

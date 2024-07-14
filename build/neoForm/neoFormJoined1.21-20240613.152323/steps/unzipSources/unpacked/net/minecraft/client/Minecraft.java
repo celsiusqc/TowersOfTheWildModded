@@ -269,7 +269,7 @@ public class Minecraft extends ReentrantBlockableEventLoop<Runnable> implements 
     private final long canary = Double.doubleToLongBits(Math.PI);
     private final Path resourcePackDirectory;
     private final CompletableFuture<ProfileResult> profileFuture;
-    public final TextureManager textureManager;
+    private final TextureManager textureManager;
     private final DataFixer fixerUpper;
     private final VirtualScreen virtualScreen;
     private final Window window;

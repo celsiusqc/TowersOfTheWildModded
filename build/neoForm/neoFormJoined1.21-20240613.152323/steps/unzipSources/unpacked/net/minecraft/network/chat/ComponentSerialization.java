@@ -104,7 +104,7 @@ public class ComponentSerialization {
 
     private static Codec<Component> createCodec(Codec<Component> p_304554_) {
         ComponentContents.Type<?>[] type = new ComponentContents.Type[]{
-            PlainTextContents.TYPE, TranslatableContents.TYPE, KeybindContents.TYPE, ScoreContents.TYPE, SelectorContents.TYPE, NbtContents.TYPE
+            PlainTextContents.TYPE, TranslatableContents.TYPE, KeybindContents.TYPE, ScoreContents.TYPE, SelectorContents.TYPE, NbtContents.TYPE, net.neoforged.neoforge.common.util.InsertingContents.TYPE
         };
         MapCodec<ComponentContents> mapcodec = createLegacyComponentMatcher(type, ComponentContents.Type::codec, ComponentContents::type, "type");
         Codec<Component> codec = RecordCodecBuilder.create(

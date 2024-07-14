@@ -135,7 +135,7 @@ public class RealmsNotificationsScreen extends RealmsScreen {
     private void drawIcons(GuiGraphics pGuiGraphics) {
         int i = this.numberOfPendingInvites;
         int j = 24;
-        int k = this.height / 4 + 48;
+        int k = this.height / 4 + (inTitleScreen() ? 32 : 48);
         int l = this.width / 2 + 100;
         int i1 = k + 48 + 2;
         int j1 = l - 3;

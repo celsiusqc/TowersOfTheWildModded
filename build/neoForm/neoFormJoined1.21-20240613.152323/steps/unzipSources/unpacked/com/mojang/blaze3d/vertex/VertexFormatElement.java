@@ -122,7 +122,8 @@ public record VertexFormatElement(int id, int index, VertexFormatElement.Type ty
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static enum Usage implements net.neoforged.neoforge.common.IExtensibleEnum {
+    @net.neoforged.fml.common.asm.enumextension.NamedEnum
+    public static enum Usage implements net.neoforged.fml.common.asm.enumextension.IExtensibleEnum {
         POSITION(
             "Position",
             (p_349733_, p_349734_, p_349735_, p_349736_, p_349737_) -> GlStateManager._vertexAttribPointer(
@@ -174,8 +175,8 @@ public record VertexFormatElement(int id, int index, VertexFormatElement.Type ty
             void setupBufferState(int p_167053_, int p_167054_, int p_167055_, long p_167056_, int p_167057_);
         }
 
-        public static Usage create(String name, String usageName, SetupState setupState) {
-            throw new IllegalArgumentException("Enum not extended");
+        public static net.neoforged.fml.common.asm.enumextension.ExtensionInfo getExtensionInfo() {
+            return net.neoforged.fml.common.asm.enumextension.ExtensionInfo.nonExtended(VertexFormatElement.Usage.class);
         }
     }
 }

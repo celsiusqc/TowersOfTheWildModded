@@ -9,7 +9,7 @@ public interface PlaceRecipe<T> {
     default void placeRecipe(int pWidth, int pHeight, int pOutputSlot, RecipeHolder<?> pRecipe, Iterator<T> pIngredients, int pMaxAmount) {
         int i = pWidth;
         int j = pHeight;
-        if (pRecipe.value() instanceof net.neoforged.neoforge.common.crafting.IShapedRecipe<?> shapedrecipe) {
+        if (pRecipe.value() instanceof ShapedRecipe shapedrecipe) {
             i = shapedrecipe.getWidth();
             j = shapedrecipe.getHeight();
         }

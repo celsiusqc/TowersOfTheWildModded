@@ -468,7 +468,7 @@ public class HumanoidModel<T extends LivingEntity> extends AgeableListModel<T> i
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static enum ArmPose implements net.neoforged.neoforge.common.IExtensibleEnum {
+    public static enum ArmPose implements net.neoforged.fml.common.asm.enumextension.IExtensibleEnum {
         EMPTY(false),
         ITEM(false),
         BLOCK(false),
@@ -481,32 +481,31 @@ public class HumanoidModel<T extends LivingEntity> extends AgeableListModel<T> i
         BRUSH(false);
 
         private final boolean twoHanded;
+        @org.jetbrains.annotations.Nullable
+        private final net.neoforged.neoforge.client.IArmPoseTransformer forgeArmPose;
 
+        @net.neoforged.fml.common.asm.enumextension.ReservedConstructor
         private ArmPose(boolean pTwoHanded) {
             this.twoHanded = pTwoHanded;
             this.forgeArmPose = null;
         }
 
-        public boolean isTwoHanded() {
-            return this.twoHanded;
-        }
-        // FORGE START
-        @org.jetbrains.annotations.Nullable
-        private final net.neoforged.neoforge.client.IArmPoseTransformer forgeArmPose;
-
-        private ArmPose(boolean pTwoHanded, @javax.annotation.Nonnull net.neoforged.neoforge.client.IArmPoseTransformer forgeArmPose) {
+        private ArmPose(boolean pTwoHanded, net.neoforged.neoforge.client.IArmPoseTransformer forgeArmPose) {
             this.twoHanded = pTwoHanded;
             com.google.common.base.Preconditions.checkNotNull(forgeArmPose, "Cannot create new ArmPose with null transformer!");
             this.forgeArmPose = forgeArmPose;
         }
 
-        public static ArmPose create(String name, boolean twoHanded, @javax.annotation.Nonnull net.neoforged.neoforge.client.IArmPoseTransformer forgeArmPose) {
-            throw new IllegalStateException("Enum not extended");
+        public boolean isTwoHanded() {
+            return this.twoHanded;
         }
 
         public <T extends LivingEntity> void applyTransform(HumanoidModel<T> model, T entity, net.minecraft.world.entity.HumanoidArm arm) {
             if (this.forgeArmPose != null) this.forgeArmPose.applyTransform(model, entity, arm);
         }
-        // FORGE END
+
+        public static net.neoforged.fml.common.asm.enumextension.ExtensionInfo getExtensionInfo() {
+            return net.neoforged.fml.common.asm.enumextension.ExtensionInfo.nonExtended(HumanoidModel.ArmPose.class);
+        }
     }
 }

@@ -386,7 +386,7 @@ public class KeyboardHandler {
                     );
                     return;
                 }
-                } else if (pAction == 0 /*GLFW_RELEASE*/ && this.minecraft.screen instanceof KeyBindsScreen)
+                } else if (pAction == 0 /*GLFW_RELEASE*/ && this.minecraft.screen instanceof KeyBindsScreen && net.neoforged.neoforge.client.settings.KeyModifier.getActiveModifier() != net.neoforged.neoforge.client.settings.KeyModifier.NONE)
                     ((KeyBindsScreen)this.minecraft.screen).selectedKey = null; //Forge: Unset pure modifiers.
             }
 

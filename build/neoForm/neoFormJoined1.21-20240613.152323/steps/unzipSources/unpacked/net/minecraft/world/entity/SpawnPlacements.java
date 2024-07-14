@@ -46,8 +46,13 @@ import net.minecraft.world.level.levelgen.Heightmap;
 public class SpawnPlacements {
     private static final Map<EntityType<?>, SpawnPlacements.Data> DATA_BY_TYPE = Maps.newHashMap();
 
+    /**
+     * @deprecated Neo: Modders should use {@link
+     *             net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent}
+     *             instead.
+     */
+    @Deprecated
     private static <T extends Mob> void register(
-    @Deprecated // FORGE: use SpawnPlacementRegisterEvent to register and modify spawn placements
         EntityType<T> pEntityType, SpawnPlacementType pSpawnPlacementType, Heightmap.Types pHeightmapType, SpawnPlacements.SpawnPredicate<T> pPredicate
     ) {
         SpawnPlacements.Data spawnplacements$data = DATA_BY_TYPE.put(pEntityType, new SpawnPlacements.Data(pHeightmapType, pSpawnPlacementType, pPredicate));
@@ -76,6 +81,11 @@ public class SpawnPlacements {
         SpawnPlacements.Data spawnplacements$data = DATA_BY_TYPE.get(pEntityType);
         boolean vanillaResult = spawnplacements$data == null || spawnplacements$data.predicate.test((EntityType)pEntityType, pServerLevel, pSpawnType, pPos, pRandom);
         return net.neoforged.neoforge.event.EventHooks.checkSpawnPlacements(pEntityType, pServerLevel, pSpawnType, pPos, pRandom, vanillaResult);
+    }
+
+    // Neo: Added to allow for checking if an entity has a spawn placement
+    public static boolean hasPlacement(EntityType<?> type) {
+        return DATA_BY_TYPE.containsKey(type);
     }
 
     static {
@@ -172,12 +182,14 @@ public class SpawnPlacements {
         boolean test(EntityType<T> pEntityType, ServerLevelAccessor pServerLevel, MobSpawnType pSpawnType, BlockPos pPos, RandomSource pRandom);
     }
 
-    // ******* FORGE START. INTERNAL USE ONLY! ****** //
-    public static void fireSpawnPlacementEvent()
-    {
-         Map<EntityType<?>, net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent.MergedSpawnPredicate<?>> map = Maps.newHashMap();
-         DATA_BY_TYPE.forEach((type, data) -> map.put(type, new net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent.MergedSpawnPredicate<>(data.predicate, data.placement, data.heightMap)));
-         net.neoforged.fml.ModLoader.postEvent(new net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent(map));
+    /**
+     * Neo: Purely for Neo usage to fire off the spawn registering events.
+     */
+    @org.jetbrains.annotations.ApiStatus.Internal
+    public static void fireSpawnPlacementEvent() {
+         Map<EntityType<?>, net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent.MergedSpawnPredicate<?>> map = Maps.newHashMap();
+         DATA_BY_TYPE.forEach((type, data) -> map.put(type, new net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent.MergedSpawnPredicate<>(data.predicate, data.placement, data.heightMap)));
+         net.neoforged.fml.ModLoader.postEvent(new net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent(map));
          map.forEach(((entityType, merged) -> DATA_BY_TYPE.put(entityType, new SpawnPlacements.Data(merged.getHeightmapType(), merged.getSpawnType(), merged.build()))));
     }
 }

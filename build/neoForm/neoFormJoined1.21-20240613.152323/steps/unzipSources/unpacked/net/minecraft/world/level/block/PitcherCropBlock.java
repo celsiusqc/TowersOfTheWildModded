@@ -91,12 +91,13 @@ public class PitcherCropBlock extends DoublePlantBlock implements BonemealableBl
 
     @Override
     public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        return isLower(pState) && !sufficientLight(pLevel, pPos) ? false : super.canSurvive(pState, pLevel, pPos);
+        net.neoforged.neoforge.common.util.TriState soilDecision = pLevel.getBlockState(pPos.below()).canSustainPlant(pLevel, pPos.below(), Direction.UP, pState);
+        return isLower(pState) && !sufficientLight(pLevel, pPos) ? soilDecision.isTrue() : super.canSurvive(pState, pLevel, pPos);
     }
 
     @Override
     protected boolean mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        return pState.is(Blocks.FARMLAND);
+        return pState.getBlock() instanceof net.minecraft.world.level.block.FarmBlock;
     }
 
     @Override
@@ -136,7 +137,7 @@ public class PitcherCropBlock extends DoublePlantBlock implements BonemealableBl
      */
     @Override
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        float f = CropBlock.getGrowthSpeed(this, pLevel, pPos);
+        float f = CropBlock.getGrowthSpeed(pState, pLevel, pPos);
         boolean flag = pRandom.nextInt((int)(25.0F / f) + 1) == 0;
         if (flag) {
             this.grow(pLevel, pState, pPos, 1);

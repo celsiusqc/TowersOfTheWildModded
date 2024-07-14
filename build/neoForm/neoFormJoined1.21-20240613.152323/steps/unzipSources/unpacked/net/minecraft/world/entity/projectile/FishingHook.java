@@ -243,8 +243,8 @@ public class FishingHook extends Projectile {
     private boolean shouldStopFishing(Player pPlayer) {
         ItemStack itemstack = pPlayer.getMainHandItem();
         ItemStack itemstack1 = pPlayer.getOffhandItem();
-        boolean flag = itemstack.canPerformAction(net.neoforged.neoforge.common.ToolActions.FISHING_ROD_CAST);
-        boolean flag1 = itemstack1.canPerformAction(net.neoforged.neoforge.common.ToolActions.FISHING_ROD_CAST);
+        boolean flag = itemstack.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.FISHING_ROD_CAST);
+        boolean flag1 = itemstack1.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.FISHING_ROD_CAST);
         if (!pPlayer.isRemoved() && pPlayer.isAlive() && (flag || flag1) && !(this.distanceToSqr(pPlayer) > 1024.0)) {
             return false;
         } else {

@@ -669,14 +669,13 @@ public class LevelChunk extends ChunkAccess implements net.neoforged.neoforge.at
         return new LevelChunk.BoundTickingBlockEntity<>(pBlockEntity, pTicker);
     }
 
-    // FORGE START
+    // Neo: Threadsafe lighting system for BlockEntities that change lighting based on dynamic data changing.
     private final net.neoforged.neoforge.common.world.LevelChunkAuxiliaryLightManager auxLightManager = new net.neoforged.neoforge.common.world.LevelChunkAuxiliaryLightManager(this);
 
     @Override
     public net.neoforged.neoforge.common.world.LevelChunkAuxiliaryLightManager getAuxLightManager(ChunkPos pos) {
         return auxLightManager;
     }
-    // FORGE END
 
     class BoundTickingBlockEntity<T extends BlockEntity> implements TickingBlockEntity {
         private final T blockEntity;

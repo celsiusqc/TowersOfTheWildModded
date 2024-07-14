@@ -172,7 +172,7 @@ public interface HolderSet<T> extends Iterable<Holder<T>>, net.neoforged.neoforg
             this.key = pKey;
         }
 
-        public void bind(List<Holder<T>> pContents) {
+        void bind(List<Holder<T>> pContents) {
             this.contents = List.copyOf(pContents);
             for (Runnable runnable : this.invalidationCallbacks) {
                 runnable.run(); // FORGE: invalidate listeners when tags rebind

@@ -1011,7 +1011,7 @@ public class LevelRenderer implements ResourceManagerReloadListener, AutoCloseab
                             || p_109604_.isDetached()
                             || p_109604_.getEntity() instanceof LivingEntity && ((LivingEntity)p_109604_.getEntity()).isSleeping()
                     )
-                    && (!(entity instanceof LocalPlayer) || p_109604_.getEntity() == entity || (entity == minecraft.player && !minecraft.player.isSpectator()))) { // NEO: render local player entity when it is not the camera entity
+                    && (!(entity instanceof LocalPlayer) || p_109604_.getEntity() == entity || (entity == minecraft.player && !minecraft.player.isSpectator()))) { // Neo: render local player entity when it is not the camera entity
                     this.renderedEntities++;
                     if (entity.tickCount == 0) {
                         entity.xOld = entity.getX();

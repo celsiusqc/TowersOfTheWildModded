@@ -230,30 +230,42 @@ public class LootTable {
         return new LootTable.Builder();
     }
 
-    //======================== FORGE START =============================================
+    // Neo: Implement LootTable freezing to prevent manipulation outside of Neo APIs
     private boolean isFrozen = false;
+
     public void freeze() {
         this.isFrozen = true;
         this.pools.forEach(LootPool::freeze);
     }
-    public boolean isFrozen(){ return this.isFrozen; }
+
+    public boolean isFrozen() {
+        return this.isFrozen;
+    }
+
     private void checkFrozen() {
         if (this.isFrozen())
             throw new RuntimeException("Attempted to modify LootTable after being finalized!");
     }
 
+    // Neo: Linking the LootTable to its ID for easier retrieval
     private ResourceLocation lootTableId;
+
     public void setLootTableId(final ResourceLocation id) {
         if (this.lootTableId != null) throw new IllegalStateException("Attempted to rename loot table from '" + this.lootTableId + "' to '" + id + "': this is not supported");
         this.lootTableId = java.util.Objects.requireNonNull(id);
     }
-    public ResourceLocation getLootTableId() { return this.lootTableId; }
 
+    public ResourceLocation getLootTableId() {
+        return this.lootTableId;
+    }
+
+    // Neo: Retrieve LootPools by name
     @org.jetbrains.annotations.Nullable
     public LootPool getPool(String name) {
         return pools.stream().filter(e -> name.equals(e.getName())).findFirst().orElse(null);
     }
 
+    // Neo: Remove LootPools by name
     @org.jetbrains.annotations.Nullable
     public LootPool removePool(String name) {
         checkFrozen();
@@ -266,13 +278,13 @@ public class LootTable {
         return null;
     }
 
+    // Neo: Allow adding new pools to LootTable
     public void addPool(LootPool pool) {
         checkFrozen();
         if (pools.stream().anyMatch(e -> e == pool || e.getName() != null && e.getName().equals(pool.getName())))
             throw new RuntimeException("Attempted to add a duplicate pool to loot table: " + pool.getName());
         this.pools.add(pool);
     }
-    //======================== FORGE END ===============================================
 
     public static class Builder implements FunctionUserBuilder<LootTable.Builder> {
         private final ImmutableList.Builder<LootPool> pools = ImmutableList.builder();

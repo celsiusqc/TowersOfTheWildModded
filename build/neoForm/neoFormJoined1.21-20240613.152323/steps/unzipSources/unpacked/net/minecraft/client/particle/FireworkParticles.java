@@ -296,7 +296,7 @@ public class FireworkParticles {
             return minecraft.gameRenderer.getMainCamera().getPosition().distanceToSqr(this.x, this.y, this.z) >= 256.0;
         }
 
-        private void createParticle(
+        public void createParticle(
             double pX,
             double pY,
             double pZ,
@@ -319,7 +319,7 @@ public class FireworkParticles {
             }
         }
 
-        private void createParticleBall(double pSpeed, int pRadius, IntList pColors, IntList pFadeColors, boolean pTrail, boolean pTwinkle) {
+        public void createParticleBall(double pSpeed, int pRadius, IntList pColors, IntList pFadeColors, boolean pTrail, boolean pTwinkle) {
             double d0 = this.x;
             double d1 = this.y;
             double d2 = this.z;
@@ -340,7 +340,7 @@ public class FireworkParticles {
             }
         }
 
-        private void createParticleShape(
+        public void createParticleShape(
             double pSpeed, double[][] pCoords, IntList pColors, IntList pFadeColors, boolean pTrail, boolean pTwinkle, boolean pIsCreeper
         ) {
             double d0 = pCoords[0][0];
@@ -375,7 +375,7 @@ public class FireworkParticles {
             }
         }
 
-        private void createParticleBurst(IntList pColors, IntList pFadeColors, boolean pTrail, boolean pTwinkle) {
+        public void createParticleBurst(IntList pColors, IntList pFadeColors, boolean pTrail, boolean pTwinkle) {
             double d0 = this.random.nextGaussian() * 0.05;
             double d1 = this.random.nextGaussian() * 0.05;
 

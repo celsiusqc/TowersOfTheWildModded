@@ -925,7 +925,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
         }
 
         this.entityManager.addNewEntityWithoutEvent(pPlayer);
-        pPlayer.onAddedToWorld();
+        pPlayer.onAddedToLevel();
     }
 
     /**
@@ -937,7 +937,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
             return false;
         } else {
             if (this.entityManager.addNewEntity(pEntity)) {
-                pEntity.onAddedToWorld();
+                pEntity.onAddedToLevel();
                 return true;
             } else {
                 return false;
@@ -1811,7 +1811,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
 
             p_143375_.updateDynamicGameEventListener(DynamicGameEventListener::remove);
 
-            p_143375_.onRemovedFromWorld();
+            p_143375_.onRemovedFromLevel();
             net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent(p_143375_, ServerLevel.this));
         }
 

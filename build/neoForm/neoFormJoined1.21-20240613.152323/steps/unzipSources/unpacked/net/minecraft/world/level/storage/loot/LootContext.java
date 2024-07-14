@@ -108,8 +108,8 @@ public class LootContext {
         return new LootContext.VisitedEntry<>(LootDataType.MODIFIER, pModifier);
     }
 
-    // ============================== FORGE START ==============================
-
+    // Neo: Keep track of the original loot table ID through modifications
+    @org.jetbrains.annotations.Nullable
     private ResourceLocation queriedLootTableId;
 
     private LootContext(LootParams pParams, RandomSource pRandom, HolderGetter.Provider pLootDataResolver, ResourceLocation queriedLootTableId) {
@@ -117,19 +117,19 @@ public class LootContext {
         this.queriedLootTableId = queriedLootTableId;
     }
 
-    public void setQueriedLootTableId(ResourceLocation queriedLootTableId) {
+    public void setQueriedLootTableId(@org.jetbrains.annotations.Nullable ResourceLocation queriedLootTableId) {
         if (this.queriedLootTableId == null && queriedLootTableId != null) this.queriedLootTableId = queriedLootTableId;
     }
 
     public ResourceLocation getQueriedLootTableId() {
         return this.queriedLootTableId == null ? net.neoforged.neoforge.common.loot.LootTableIdCondition.UNKNOWN_LOOT_TABLE : this.queriedLootTableId;
     }
-    // =============================== FORGE END ===============================
 
     public static class Builder {
         private final LootParams params;
         @Nullable
         private RandomSource random;
+        @Nullable
         private ResourceLocation queriedLootTableId; // Forge: correctly pass around loot table ID with copy constructor
 
         public Builder(LootParams pParams) {

@@ -107,7 +107,10 @@ public record FireworkExplosion(FireworkExplosion.Shape shape, IntList colors, I
         return new FireworkExplosion(this.shape, this.colors, new IntArrayList(pFadeColors), this.hasTrail, this.hasTwinkle);
     }
 
-    public static enum Shape implements StringRepresentable, net.neoforged.neoforge.common.IExtensibleEnum {
+    @net.neoforged.fml.common.asm.enumextension.IndexedEnum
+    @net.neoforged.fml.common.asm.enumextension.NamedEnum(1)
+    @net.neoforged.fml.common.asm.enumextension.NetworkedEnum(net.neoforged.fml.common.asm.enumextension.NetworkedEnum.NetworkCheck.BIDIRECTIONAL)
+    public static enum Shape implements StringRepresentable, net.neoforged.fml.common.asm.enumextension.IExtensibleEnum {
         SMALL_BALL(0, "small_ball"),
         LARGE_BALL(1, "large_ball"),
         STAR(2, "star"),
@@ -117,8 +120,8 @@ public record FireworkExplosion(FireworkExplosion.Shape shape, IntList colors, I
         private static final IntFunction<FireworkExplosion.Shape> BY_ID = ByIdMap.continuous(
             FireworkExplosion.Shape::getId, values(), ByIdMap.OutOfBoundsStrategy.ZERO
         );
-        public static final StreamCodec<ByteBuf, FireworkExplosion.Shape> STREAM_CODEC = net.neoforged.neoforge.common.IExtensibleEnum.createStreamCodecForExtensibleEnum(Shape::values);
-        public static final Codec<FireworkExplosion.Shape> CODEC = net.neoforged.neoforge.common.IExtensibleEnum.createCodecForExtensibleEnum(Shape::values, Shape::getShape);
+        public static final StreamCodec<ByteBuf, FireworkExplosion.Shape> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, FireworkExplosion.Shape::getId);
+        public static final Codec<FireworkExplosion.Shape> CODEC = StringRepresentable.fromValues(FireworkExplosion.Shape::values);
         private final int id;
         private final String name;
 
@@ -139,20 +142,13 @@ public record FireworkExplosion(FireworkExplosion.Shape shape, IntList colors, I
             return BY_ID.apply(pId);
         }
 
-        public static FireworkExplosion.Shape getShape(String name) {
-            for (Shape ret : values())
-                if (ret.name().equals(name))
-                    return ret;
-            return SMALL_BALL;
-        }
-
-        public static Shape create(String registryName, int id, String shapeName) {
-            throw new IllegalStateException("Enum not extended");
-        }
-
         @Override
         public String getSerializedName() {
             return this.name;
+        }
+
+        public static net.neoforged.fml.common.asm.enumextension.ExtensionInfo getExtensionInfo() {
+            return net.neoforged.fml.common.asm.enumextension.ExtensionInfo.nonExtended(FireworkExplosion.Shape.class);
         }
     }
 }

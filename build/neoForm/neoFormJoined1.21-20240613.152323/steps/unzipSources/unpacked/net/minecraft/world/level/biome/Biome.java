@@ -419,8 +419,7 @@ public final class Biome {
         }
     }
 
-    // FORGE START
-
+    // Neo: Grant ability to modify Biomes in specific ways such as adding new features or change temperature
     private final net.neoforged.neoforge.common.world.ModifiableBiomeInfo modifiableBiomeInfo;
 
     /**
@@ -446,6 +445,4 @@ public final class Biome {
     public BiomeSpecialEffects getModifiedSpecialEffects() {
         return this.modifiableBiomeInfo().get().effects();
     }
-
-    // FORGE END
 }

@@ -67,7 +67,7 @@ public final class Ticket<T> implements Comparable<Ticket<?>> {
         return i != 0L && pCurrentTime - this.createdTick > i;
     }
 
-    /* ======================================== FORGE START =====================================*/
+    // Neo: Injected ability to force chunks to tick
     private final boolean forceTicks;
 
     public boolean isForceTicks() {

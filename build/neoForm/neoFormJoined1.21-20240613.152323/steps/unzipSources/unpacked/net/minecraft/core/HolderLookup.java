@@ -26,7 +26,7 @@ public interface HolderLookup<T> extends HolderGetter<T> {
         return this.listTags().map(HolderSet.Named::key);
     }
 
-    public interface Provider {
+    public interface Provider extends net.neoforged.neoforge.common.extensions.IHolderLookupProviderExtension {
         Stream<ResourceKey<? extends Registry<?>>> listRegistries();
 
         <T> Optional<HolderLookup.RegistryLookup<T>> lookup(ResourceKey<? extends Registry<? extends T>> pRegistryKey);

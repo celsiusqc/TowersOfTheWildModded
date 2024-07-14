@@ -49,6 +49,7 @@ import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
 import net.minecraft.client.model.HumanoidModel;
@@ -101,6 +102,7 @@ import net.minecraft.network.chat.PlayerChatMessage;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
+import net.minecraft.sounds.Music;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -143,6 +145,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
 import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.GatherEffectScreenTooltipsEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
@@ -162,6 +165,7 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.client.event.ScreenshotEvent;
+import net.neoforged.neoforge.client.event.SelectMusicEvent;
 import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
 import net.neoforged.neoforge.client.event.ToastAddEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
@@ -390,6 +394,13 @@ public class ClientHooks {
         return e.getSound();
     }
 
+    @Nullable
+    public static Music selectMusic(Music situational, @Nullable SoundInstance playing) {
+        SelectMusicEvent e = new SelectMusicEvent(situational, playing);
+        NeoForge.EVENT_BUS.post(e);
+        return e.getMusic();
+    }
+
     public static void drawScreen(Screen screen, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         guiGraphics.pose().pushPose();
         guiLayers.forEach(layer -> {
@@ -433,12 +444,6 @@ public class ClientHooks {
             RenderSystem.setShaderFogEnd(event.getFarPlaneDistance());
             RenderSystem.setShaderFogShape(event.getFogShape());
         }
-    }
-
-    public static ViewportEvent.ComputeCameraAngles onCameraSetup(GameRenderer renderer, Camera camera, float partial) {
-        ViewportEvent.ComputeCameraAngles event = new ViewportEvent.ComputeCameraAngles(renderer, camera, partial, camera.getYRot(), camera.getXRot(), 0);
-        NeoForge.EVENT_BUS.post(event);
-        return event;
     }
 
     public static void onModifyBakingResult(Map<ModelResourceLocation, BakedModel> models, Map<ResourceLocation, AtlasSet.StitchResult> stitchResults, ModelBakery modelBakery) {
@@ -1060,5 +1065,21 @@ public class ClientHooks {
             return level.registryAccess().lookup(key).orElse(null);
         }
         return null;
+    }
+
+    /**
+     * Fires the {@link GatherEffectScreenTooltipsEvent} and returns the resulting tooltip lines.
+     * <p>
+     * Called from {@link EffectRenderingInventoryScreen#renderEffects} just before {@link GuiGraphics#renderTooltip(Font, List, Optional, int, int)} is called.
+     * 
+     * @param screen     The screen rendering the tooltip.
+     * @param effectInst The effect instance whose tooltip is being rendered.
+     * @param tooltip    An immutable list containing the existing tooltip lines, which consist of the name and the duration.
+     * @return The new tooltip lines, modified by the event.
+     */
+    public static List<Component> getEffectTooltip(EffectRenderingInventoryScreen<?> screen, MobEffectInstance effectInst, List<Component> tooltip) {
+        var event = new GatherEffectScreenTooltipsEvent(screen, effectInst, tooltip);
+        NeoForge.EVENT_BUS.post(event);
+        return event.getTooltip();
     }
 }

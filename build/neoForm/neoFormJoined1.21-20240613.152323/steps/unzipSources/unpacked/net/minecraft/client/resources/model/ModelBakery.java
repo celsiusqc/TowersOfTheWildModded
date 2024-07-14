@@ -197,7 +197,7 @@ public class ModelBakery {
         this.topLevelModels.put(p_352067_, p_352146_);
     }
 
-    protected BlockModel loadBlockModel(ResourceLocation pLocation) throws IOException {
+    private BlockModel loadBlockModel(ResourceLocation pLocation) throws IOException {
         String s = pLocation.getPath();
         if ("builtin/generated".equals(s)) {
             return GENERATION_MARKER;
@@ -252,6 +252,12 @@ public class ModelBakery {
         }
 
         @Override
+        @Nullable
+        public UnbakedModel getTopLevelModel(ModelResourceLocation location) {
+            return topLevelModels.get(location);
+        }
+
+        @Override
         public Function<Material, TextureAtlasSprite> getModelTextureGetter() {
             return this.modelTextureGetter;
         }
@@ -280,8 +286,9 @@ public class ModelBakery {
             return bakeUncached(p_352386_, p_352194_, this.modelTextureGetter);
         }
 
+        @Override
         @Nullable
-        BakedModel bakeUncached(UnbakedModel p_352386_, ModelState p_352194_, Function<Material, TextureAtlasSprite> sprites) {
+        public BakedModel bakeUncached(UnbakedModel p_352386_, ModelState p_352194_, Function<Material, TextureAtlasSprite> sprites) {
             if (p_352386_ instanceof BlockModel blockmodel && blockmodel.getRootModel() == ModelBakery.GENERATION_MARKER) {
                 return ModelBakery.ITEM_MODEL_GENERATOR
                     .generateBlockModel(sprites, blockmodel)

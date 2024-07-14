@@ -11,8 +11,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 
-public abstract class BushBlock extends Block implements net.neoforged.neoforge.common.IPlantable {
-    public BushBlock(BlockBehaviour.Properties pProperties) {
+public abstract class BushBlock extends Block {
+    protected BushBlock(BlockBehaviour.Properties pProperties) {
         super(pProperties);
     }
 
@@ -20,7 +20,7 @@ public abstract class BushBlock extends Block implements net.neoforged.neoforge.
     protected abstract MapCodec<? extends BushBlock> codec();
 
     protected boolean mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        return pState.is(BlockTags.DIRT) || pState.is(Blocks.FARMLAND);
+        return pState.is(BlockTags.DIRT) || pState.getBlock() instanceof net.minecraft.world.level.block.FarmBlock;
     }
 
     /**
@@ -38,9 +38,10 @@ public abstract class BushBlock extends Block implements net.neoforged.neoforge.
     @Override
     protected boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
         BlockPos blockpos = pPos.below();
-        if (pState.getBlock() == this) //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
-            return pLevel.getBlockState(blockpos).canSustainPlant(pLevel, blockpos, Direction.UP, this);
-        return this.mayPlaceOn(pLevel.getBlockState(blockpos), pLevel, blockpos);
+        BlockState belowBlockState = pLevel.getBlockState(blockpos);
+        net.neoforged.neoforge.common.util.TriState soilDecision = belowBlockState.canSustainPlant(pLevel, blockpos, Direction.UP, pState);
+        if (!soilDecision.isDefault()) return soilDecision.isTrue();
+        return this.mayPlaceOn(belowBlockState, pLevel, blockpos);
     }
 
     @Override
@@ -51,12 +52,5 @@ public abstract class BushBlock extends Block implements net.neoforged.neoforge.
     @Override
     protected boolean isPathfindable(BlockState pState, PathComputationType pPathComputationType) {
         return pPathComputationType == PathComputationType.AIR && !this.hasCollision ? true : super.isPathfindable(pState, pPathComputationType);
-    }
-
-    @Override
-    public BlockState getPlant(BlockGetter world, BlockPos pos) {
-        BlockState state = world.getBlockState(pos);
-        if (state.getBlock() != this) return defaultBlockState();
-        return state;
     }
 }

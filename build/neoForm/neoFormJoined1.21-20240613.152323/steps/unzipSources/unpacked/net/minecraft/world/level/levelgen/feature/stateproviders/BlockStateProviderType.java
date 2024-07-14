@@ -22,7 +22,7 @@ public class BlockStateProviderType<P extends BlockStateProvider> {
         return Registry.register(BuiltInRegistries.BLOCKSTATE_PROVIDER_TYPE, pName, new BlockStateProviderType<>(pCodec));
     }
 
-    private BlockStateProviderType(MapCodec<P> pCodec) {
+    public BlockStateProviderType(MapCodec<P> pCodec) {
         this.codec = pCodec;
     }
 

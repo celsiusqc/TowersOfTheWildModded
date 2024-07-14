@@ -5,7 +5,10 @@ import java.util.function.IntFunction;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 
-public enum ItemDisplayContext implements StringRepresentable, net.neoforged.neoforge.common.IExtensibleEnum {
+@net.neoforged.fml.common.asm.enumextension.IndexedEnum
+@net.neoforged.fml.common.asm.enumextension.NamedEnum(1)
+@net.neoforged.fml.common.asm.enumextension.NetworkedEnum(net.neoforged.fml.common.asm.enumextension.NetworkedEnum.NetworkCheck.CLIENTBOUND)
+public enum ItemDisplayContext implements StringRepresentable, net.neoforged.fml.common.asm.enumextension.IExtensibleEnum {
     NONE(0, "none"),
     THIRD_PERSON_LEFT_HAND(1, "thirdperson_lefthand"),
     THIRD_PERSON_RIGHT_HAND(2, "thirdperson_righthand"),
@@ -16,16 +19,26 @@ public enum ItemDisplayContext implements StringRepresentable, net.neoforged.neo
     GROUND(7, "ground"),
     FIXED(8, "fixed");
 
-    public static final Codec<ItemDisplayContext> CODEC = net.neoforged.neoforge.registries.NeoForgeRegistries.DISPLAY_CONTEXTS.byNameCodec();
-    public static final IntFunction<ItemDisplayContext> BY_ID = id -> java.util.Objects.requireNonNullElse(net.neoforged.neoforge.registries.NeoForgeRegistries.DISPLAY_CONTEXTS.byId(id < 0 ? Byte.MAX_VALUE + -id : id), NONE);
-    private byte id;
+    public static final Codec<ItemDisplayContext> CODEC = StringRepresentable.fromEnum(ItemDisplayContext::values);
+    public static final IntFunction<ItemDisplayContext> BY_ID = ByIdMap.continuous(ItemDisplayContext::getId, values(), ByIdMap.OutOfBoundsStrategy.ZERO);
+    private final byte id;
     private final String name;
+    private final boolean isModded;
+    private final java.util.function.Supplier<ItemDisplayContext> fallback;
 
+    @net.neoforged.fml.common.asm.enumextension.ReservedConstructor
     private ItemDisplayContext(int pId, String pName) {
         this.name = pName;
         this.id = (byte)pId;
         this.isModded = false;
-        this.fallback = null;
+        this.fallback = () -> null;
+    }
+
+    private ItemDisplayContext(int pId, String pName, @org.jetbrains.annotations.Nullable String fallbackName) {
+        this.id = (byte)pId;
+        this.name = pName;
+        this.isModded = true;
+        this.fallback = fallbackName == null ? () -> null : com.google.common.base.Suppliers.memoize(() -> ItemDisplayContext.valueOf(fallbackName));
     }
 
     @Override
@@ -41,28 +54,16 @@ public enum ItemDisplayContext implements StringRepresentable, net.neoforged.neo
         return this == FIRST_PERSON_LEFT_HAND || this == FIRST_PERSON_RIGHT_HAND;
     }
 
-    // Forge start
-    private final boolean isModded;
-    @org.jetbrains.annotations.Nullable
-    private final ItemDisplayContext fallback;
-
-    private ItemDisplayContext(net.minecraft.resources.ResourceLocation serializeName, ItemDisplayContext fallback) {
-        this.id = 0; // If the context is never registered then it should be treated as the NONE one
-        this.name = java.util.Objects.requireNonNull(serializeName, "Modded ItemDisplayContexts must have a non-null serializeName").toString();
-        this.isModded = true;
-        this.fallback = fallback;
-    }
-
     public boolean isModded() {
         return isModded;
     }
 
-    public @org.jetbrains.annotations.Nullable ItemDisplayContext fallback() {
-        return fallback;
+    @org.jetbrains.annotations.Nullable
+    public ItemDisplayContext fallback() {
+        return fallback.get();
     }
 
-    public static ItemDisplayContext create(String keyName, net.minecraft.resources.ResourceLocation serializedName, @org.jetbrains.annotations.Nullable ItemDisplayContext fallback) {
-        throw new IllegalStateException("Enum not extended!");
+    public static net.neoforged.fml.common.asm.enumextension.ExtensionInfo getExtensionInfo() {
+        return net.neoforged.fml.common.asm.enumextension.ExtensionInfo.nonExtended(ItemDisplayContext.class);
     }
-    public static final net.neoforged.neoforge.registries.callback.AddCallback<ItemDisplayContext> ADD_CALLBACK = (registry, id, key, obj) -> obj.id = id > Byte.MAX_VALUE ? (byte) -(id - Byte.MAX_VALUE) : (byte) id; // if the ID is > 127 start doing negative IDs
 }

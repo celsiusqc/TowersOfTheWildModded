@@ -14,10 +14,9 @@ tasks.named('wrapper', Wrapper).configure {
     // (Verify by checking gradle/wrapper/gradle-wrapper.properties to see if distributionUrl now points to `-all`)
     distributionType = Wrapper.DistributionType.BIN
 }
-
 def modVersion = project.findProperty("mod_version") ?: "1.0.5-1.21"
 
-version = "Neoforge-1.21-$modVersion"
+version = "neoforge-1.21-$modVersion"
 group = mod_group_id
 archivesBaseName = 'totw_modded'
 

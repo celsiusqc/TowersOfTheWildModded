@@ -854,7 +854,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
     @Override
     public boolean wantsToPickUp(ItemStack pStack) {
         Item item = pStack.getItem();
-        return (WANTED_ITEMS.contains(item) || this.getVillagerData().getProfession().requestedItems().contains(item))
+        return (WANTED_ITEMS.contains(item) || this.getVillagerData().getProfession().requestedItems().contains(item) || (pStack.getItem() instanceof net.neoforged.neoforge.common.SpecialPlantable specialPlantable && specialPlantable.villagerCanPlantItem(this)))
             && this.getInventory().canAddItem(pStack);
     }
 

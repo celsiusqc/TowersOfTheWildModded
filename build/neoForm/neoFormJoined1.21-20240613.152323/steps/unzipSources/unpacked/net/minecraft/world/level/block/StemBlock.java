@@ -74,7 +74,7 @@ public class StemBlock extends BushBlock implements BonemealableBlock {
 
     @Override
     protected boolean mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        return pState.is(Blocks.FARMLAND);
+        return pState.getBlock() instanceof net.minecraft.world.level.block.FarmBlock;
     }
 
     /**
@@ -84,7 +84,7 @@ public class StemBlock extends BushBlock implements BonemealableBlock {
     protected void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         if (!pLevel.isAreaLoaded(pPos, 1)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light
         if (pLevel.getRawBrightness(pPos, 0) >= 9) {
-            float f = CropBlock.getGrowthSpeed(this, pLevel, pPos);
+            float f = CropBlock.getGrowthSpeed(pState, pLevel, pPos);
             if (net.neoforged.neoforge.common.CommonHooks.canCropGrow(pLevel, pPos, pState, pRandom.nextInt((int)(25.0F / f) + 1) == 0)) {
                 int i = pState.getValue(AGE);
                 if (i < 7) {
@@ -93,7 +93,7 @@ public class StemBlock extends BushBlock implements BonemealableBlock {
                     Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(pRandom);
                     BlockPos blockpos = pPos.relative(direction);
                     BlockState blockstate = pLevel.getBlockState(blockpos.below());
-                    if (pLevel.isEmptyBlock(blockpos) && (blockstate.is(Blocks.FARMLAND) || blockstate.is(BlockTags.DIRT))) { // TODO 1.20.3 PORTING: reimplement canSustainPlant check
+                    if (pLevel.isEmptyBlock(blockpos) && (blockstate.getBlock() instanceof net.minecraft.world.level.block.FarmBlock || blockstate.is(BlockTags.DIRT))) {
                         Registry<Block> registry = pLevel.registryAccess().registryOrThrow(Registries.BLOCK);
                         Optional<Block> optional = registry.getOptional(this.fruit);
                         Optional<Block> optional1 = registry.getOptional(this.attachedStem);
@@ -136,11 +136,5 @@ public class StemBlock extends BushBlock implements BonemealableBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(AGE);
-    }
-
-    //FORGE START
-    @Override
-    public net.neoforged.neoforge.common.PlantType getPlantType(BlockGetter world, BlockPos pos) {
-        return net.neoforged.neoforge.common.PlantType.CROP;
     }
 }

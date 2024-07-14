@@ -185,7 +185,6 @@ public class LocalPlayer extends AbstractClientPlayer {
      */
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        net.neoforged.neoforge.common.CommonHooks.onPlayerAttack(this, pSource, pAmount);
         return false;
     }
 

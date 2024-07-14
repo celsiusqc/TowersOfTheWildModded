@@ -600,7 +600,7 @@ public class Rabbit extends Animal implements VariantHolder<Rabbit.Variant> {
         @Override
         protected boolean isValidTarget(LevelReader pLevel, BlockPos pPos) {
             BlockState blockstate = pLevel.getBlockState(pPos);
-            if (blockstate.is(Blocks.FARMLAND) && this.wantsToRaid && !this.canRaid) {
+            if (blockstate.getBlock() instanceof net.minecraft.world.level.block.FarmBlock && this.wantsToRaid && !this.canRaid) {
                 blockstate = pLevel.getBlockState(pPos.above());
                 if (blockstate.getBlock() instanceof CarrotBlock && ((CarrotBlock)blockstate.getBlock()).isMaxAge(blockstate)) {
                     this.canRaid = true;

@@ -109,7 +109,7 @@ public class TripWireBlock extends Block {
 
     @Override
     public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
-        if (!pLevel.isClientSide && !pPlayer.getMainHandItem().isEmpty() && pPlayer.getMainHandItem().canPerformAction(net.neoforged.neoforge.common.ToolActions.SHEARS_DISARM)) {
+        if (!pLevel.isClientSide && !pPlayer.getMainHandItem().isEmpty() && pPlayer.getMainHandItem().canPerformAction(net.neoforged.neoforge.common.ItemAbilities.SHEARS_DISARM)) {
             pLevel.setBlock(pPos, pState.setValue(DISARMED, Boolean.valueOf(true)), 4);
             pLevel.gameEvent(pPlayer, GameEvent.SHEAR, pPos);
         }

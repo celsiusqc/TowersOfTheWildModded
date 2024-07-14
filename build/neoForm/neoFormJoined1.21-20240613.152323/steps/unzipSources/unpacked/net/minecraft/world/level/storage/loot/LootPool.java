@@ -132,29 +132,57 @@ public class LootPool {
         this.rolls.validate(pContext.forChild(".rolls"));
         this.bonusRolls.validate(pContext.forChild(".bonusRolls"));
     }
-    //======================== FORGE START =============================================
+
+    // Neo: Implement LootPool freezing to prevent manipulation outside of Neo APIs
     private boolean isFrozen = false;
-    public void freeze() { this.isFrozen = true; }
-    public boolean isFrozen(){ return this.isFrozen; }
+
+    public void freeze() {
+        this.isFrozen = true;
+    }
+
+    public boolean isFrozen() {
+        return this.isFrozen;
+    }
+
     private void checkFrozen() {
         if (this.isFrozen())
             throw new RuntimeException("Attempted to modify LootPool after being frozen!");
     }
+
+    // Neo: Apply names for LootPools to allow easier targeting specific pools
     @org.jetbrains.annotations.Nullable
     private String name;
+
     @org.jetbrains.annotations.Nullable
-    public String getName() { return this.name; }
+    public String getName() {
+        return this.name;
+    }
+
     void setName(final String name) {
         if (this.name != null) {
             throw new UnsupportedOperationException("Cannot change the name of a pool when it has a name set!");
         }
         this.name = name;
     }
-    public NumberProvider getRolls()        { return this.rolls; }
-    public NumberProvider getBonusRolls() { return this.bonusRolls; }
-    public void setRolls      (NumberProvider v){ checkFrozen(); this.rolls = v; }
-    public void setBonusRolls(NumberProvider v){ checkFrozen(); this.bonusRolls = v; }
-    //======================== FORGE END ===============================================
+
+    // Neo: Add getters and settings for changing the rolls for this pool
+    public NumberProvider getRolls() {
+        return this.rolls;
+    }
+
+    public NumberProvider getBonusRolls() {
+        return this.bonusRolls;
+    }
+
+    public void setRolls (NumberProvider v) {
+        checkFrozen();
+        this.rolls = v;
+    }
+
+    public void setBonusRolls (NumberProvider v) {
+        checkFrozen();
+        this.bonusRolls = v;
+    }
 
     public static LootPool.Builder lootPool() {
         return new LootPool.Builder();

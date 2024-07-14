@@ -24,7 +24,7 @@ public record SignableCommand<S>(List<SignableCommand.Argument<S>> arguments) {
 
         CommandContextBuilder<S> commandcontextbuilder2;
         while (
-            // NEO: Check if the command node is a RootCommandNode, instead of simply being the original root node; fixes #186
+            // Neo: Check if the command node is a RootCommandNode, instead of simply being the original root node; fixes #186
             (commandcontextbuilder2 = commandcontextbuilder1.getChild()) != null && !(commandcontextbuilder2.getRootNode() instanceof com.mojang.brigadier.tree.RootCommandNode)
         ) {
             list.addAll(collectArguments(s, commandcontextbuilder2));

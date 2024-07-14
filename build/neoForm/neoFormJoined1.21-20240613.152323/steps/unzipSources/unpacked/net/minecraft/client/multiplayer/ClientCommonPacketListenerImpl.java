@@ -71,7 +71,7 @@ public abstract class ClientCommonPacketListenerImpl implements ClientCommonPack
     private static final Component GENERIC_DISCONNECT_MESSAGE = Component.translatable("disconnect.lost");
     private static final Logger LOGGER = LogUtils.getLogger();
     protected final Minecraft minecraft;
-    public final Connection connection;
+    protected final Connection connection;
     @Nullable
     protected final ServerData serverData;
     @Nullable

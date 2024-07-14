@@ -1083,7 +1083,8 @@ public class GameRenderer implements AutoCloseable {
 
             if (this.minecraft.getOverlay() != null) {
                 try {
-                    this.minecraft.getOverlay().render(guigraphics, i, j, p_348648_.getRealtimeDeltaTicks());
+                    // Neo: Fix https://bugs.mojang.com/browse/MC-273464
+                    this.minecraft.getOverlay().render(guigraphics, i, j, p_348648_.getGameTimeDeltaPartialTick(false));
                 } catch (Throwable throwable2) {
                     CrashReport crashreport = CrashReport.forThrowable(throwable2, "Rendering overlay");
                     CrashReportCategory crashreportcategory = crashreport.addCategory("Overlay render details");
@@ -1092,7 +1093,9 @@ public class GameRenderer implements AutoCloseable {
                 }
             } else if (flag && this.minecraft.screen != null) {
                 try {
-                    net.neoforged.neoforge.client.ClientHooks.drawScreen(this.minecraft.screen, guigraphics, i, j, this.minecraft.getTimer().getRealtimeDeltaTicks());
+                    // Neo: Wrap Screen#render to allow for GUI Layers and ScreenEvent.Render.[Pre/Post]
+                    // Also fixes https://bugs.mojang.com/browse/MC-273464
+                    net.neoforged.neoforge.client.ClientHooks.drawScreen(this.minecraft.screen, guigraphics, i, j, p_348648_.getGameTimeDeltaPartialTick(false));
                 } catch (Throwable throwable1) {
                     CrashReport crashreport1 = CrashReport.forThrowable(throwable1, "Rendering screen");
                     CrashReportCategory crashreportcategory1 = crashreport1.addCategory("Screen render details");
@@ -1266,12 +1269,8 @@ public class GameRenderer implements AutoCloseable {
         }
 
         this.resetProjectionMatrix(matrix4f);
-        net.neoforged.neoforge.client.event.ViewportEvent.ComputeCameraAngles cameraSetup = net.neoforged.neoforge.client.ClientHooks.onCameraSetup(this, camera, f);
-        camera.setAnglesInternal(cameraSetup.getYaw(), cameraSetup.getPitch());
         Quaternionf quaternionf = camera.rotation().conjugate(new Quaternionf());
         Matrix4f matrix4f1 = new Matrix4f().rotation(quaternionf);
-        // Neo: Use matrix multiplication so roll is stacked on top of vanilla XY rotations
-        matrix4f1 = new Matrix4f().rotationZ(cameraSetup.getRoll() * (float) (Math.PI / 180.0)).mul(matrix4f1);
         this.minecraft
             .levelRenderer
             .prepareCullFrustum(camera.getPosition(), matrix4f1, this.getProjectionMatrix(Math.max(d0, (double)this.minecraft.options.fov().get().intValue())));

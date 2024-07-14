@@ -12,7 +12,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public enum RecipeBookCategories implements net.neoforged.neoforge.common.IExtensibleEnum {
+public enum RecipeBookCategories implements net.neoforged.fml.common.asm.enumextension.IExtensibleEnum {
     CRAFTING_SEARCH(new ItemStack(Items.COMPASS)),
     CRAFTING_BUILDING_BLOCKS(new ItemStack(Blocks.BRICKS)),
     CRAFTING_REDSTONE(new ItemStack(Items.REDSTONE)),
@@ -39,10 +39,19 @@ public enum RecipeBookCategories implements net.neoforged.neoforge.common.IExten
         CRAFTING_SEARCH, CRAFTING_EQUIPMENT, CRAFTING_BUILDING_BLOCKS, CRAFTING_MISC, CRAFTING_REDSTONE
     );
     public static final Map<RecipeBookCategories, List<RecipeBookCategories>> AGGREGATE_CATEGORIES = net.neoforged.neoforge.client.RecipeBookManager.getAggregateCategories();
+    @Deprecated // Neo: Empty for custom categories. Use the getter.
     private final List<ItemStack> itemIcons;
+    private final java.util.function.Supplier<List<ItemStack>> itemIconsSupplier;
 
+    @net.neoforged.fml.common.asm.enumextension.ReservedConstructor
     private RecipeBookCategories(ItemStack... pItemIcons) {
         this.itemIcons = ImmutableList.copyOf(pItemIcons);
+        this.itemIconsSupplier = () -> this.itemIcons;
+    }
+
+    private RecipeBookCategories(java.util.function.Supplier<List<ItemStack>> itemIconsSupplier) {
+        this.itemIcons = List.of();
+        this.itemIconsSupplier = net.neoforged.neoforge.common.util.Lazy.of(itemIconsSupplier);
     }
 
     public static List<RecipeBookCategories> getCategories(RecipeBookType pRecipeBookType) {
@@ -56,10 +65,10 @@ public enum RecipeBookCategories implements net.neoforged.neoforge.common.IExten
     }
 
     public List<ItemStack> getIconItems() {
-        return this.itemIcons;
+        return this.itemIconsSupplier.get();
     }
 
-    public static RecipeBookCategories create(String name, ItemStack... icons) {
-        throw new IllegalStateException("Enum not extended");
+    public static net.neoforged.fml.common.asm.enumextension.ExtensionInfo getExtensionInfo() {
+        return net.neoforged.fml.common.asm.enumextension.ExtensionInfo.nonExtended(RecipeBookCategories.class);
     }
 }

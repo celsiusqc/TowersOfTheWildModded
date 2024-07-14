@@ -33,7 +33,15 @@ public class MusicManager {
     }
 
     public void tick() {
-        Music music = this.minecraft.getSituationalMusic();
+        Music music = net.neoforged.neoforge.client.ClientHooks.selectMusic(this.minecraft.getSituationalMusic(), this.currentMusic);
+        if (music == null) {
+            if (this.currentMusic != null) {
+                this.stopPlaying();
+            }
+            this.nextSongDelay = 0;
+            return;
+        }
+
         if (this.currentMusic != null) {
             if (!music.getEvent().value().getLocation().equals(this.currentMusic.getLocation()) && music.replaceCurrentMusic()) {
                 this.minecraft.getSoundManager().stop(this.currentMusic);

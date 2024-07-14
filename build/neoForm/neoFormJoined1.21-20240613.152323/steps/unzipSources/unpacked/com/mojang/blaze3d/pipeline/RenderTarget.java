@@ -269,8 +269,9 @@ public abstract class RenderTarget {
         return this.depthBufferId;
     }
 
-    /*================================ FORGE START ================================================*/
+    // Neo: Injected stencil control
     private boolean stencilEnabled = false;
+
     /**
      * Attempts to enable 8 bits of stencil buffer on this FrameBuffer.
      * Modders must call this directly to set things up.
@@ -284,11 +285,10 @@ public abstract class RenderTarget {
     }
 
     /**
-     * Returns wither or not this FBO has been successfully initialized with stencil bits.
+     * Returns whether this FBO has been successfully initialized with stencil bits.
      * If not, and a modder wishes it to be, they must call enableStencil.
      */
     public boolean isStencilEnabled() {
         return this.stencilEnabled;
     }
-    /*================================ FORGE END    ================================================*/
 }

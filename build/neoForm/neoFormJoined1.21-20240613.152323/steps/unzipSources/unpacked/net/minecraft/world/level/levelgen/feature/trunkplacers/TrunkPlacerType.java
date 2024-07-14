@@ -22,7 +22,7 @@ public class TrunkPlacerType<P extends TrunkPlacer> {
         return Registry.register(BuiltInRegistries.TRUNK_PLACER_TYPE, pName, new TrunkPlacerType<>(pCodec));
     }
 
-    private TrunkPlacerType(MapCodec<P> pCodec) {
+    public TrunkPlacerType(MapCodec<P> pCodec) {
         this.codec = pCodec;
     }
 

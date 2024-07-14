@@ -26,7 +26,7 @@ public class HoeItem extends DiggerItem {
     /**
      * @deprecated Forge: This map is patched out of vanilla code.
      * Listen to {@link net.neoforged.neoforge.event.level.BlockEvent.BlockToolModificationEvent}
-     * or override {@link net.neoforged.neoforge.common.extensions.IBlockExtension#getToolModifiedState(BlockState, UseOnContext, net.neoforged.neoforge.common.ToolAction, boolean)}.
+     * or override {@link net.neoforged.neoforge.common.extensions.IBlockExtension#getToolModifiedState(BlockState, UseOnContext, net.neoforged.neoforge.common.ItemAbility, boolean)}.
      */
     @Deprecated
     protected static final Map<Block, Pair<Predicate<UseOnContext>, Consumer<UseOnContext>>> TILLABLES = Maps.newHashMap(
@@ -55,7 +55,7 @@ public class HoeItem extends DiggerItem {
     public InteractionResult useOn(UseOnContext pContext) {
         Level level = pContext.getLevel();
         BlockPos blockpos = pContext.getClickedPos();
-        BlockState toolModifiedState = level.getBlockState(blockpos).getToolModifiedState(pContext, net.neoforged.neoforge.common.ToolActions.HOE_TILL, false);
+        BlockState toolModifiedState = level.getBlockState(blockpos).getToolModifiedState(pContext, net.neoforged.neoforge.common.ItemAbilities.HOE_TILL, false);
         Pair<Predicate<UseOnContext>, Consumer<UseOnContext>> pair = toolModifiedState == null ? null : Pair.of(ctx -> true, changeIntoState(toolModifiedState));
         if (pair == null) {
             return InteractionResult.PASS;
@@ -99,7 +99,7 @@ public class HoeItem extends DiggerItem {
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ToolAction toolAction) {
-        return net.neoforged.neoforge.common.ToolActions.DEFAULT_HOE_ACTIONS.contains(toolAction);
+    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ItemAbility itemAbility) {
+        return net.neoforged.neoforge.common.ItemAbilities.DEFAULT_HOE_ACTIONS.contains(itemAbility);
     }
 }

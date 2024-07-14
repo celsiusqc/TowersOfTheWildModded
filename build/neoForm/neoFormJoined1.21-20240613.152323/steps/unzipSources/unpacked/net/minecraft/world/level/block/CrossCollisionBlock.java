@@ -35,7 +35,7 @@ public abstract class CrossCollisionBlock extends Block implements SimpleWaterlo
     protected final VoxelShape[] shapeByIndex;
     private final Object2IntMap<BlockState> stateToIndex = new Object2IntOpenHashMap<>();
 
-    public CrossCollisionBlock(float pNodeWidth, float pExtensionWidth, float pNodeHeight, float pExtensionHeight, float pCollisionHeight, BlockBehaviour.Properties pProperties) {
+    protected CrossCollisionBlock(float pNodeWidth, float pExtensionWidth, float pNodeHeight, float pExtensionHeight, float pCollisionHeight, BlockBehaviour.Properties pProperties) {
         super(pProperties);
         this.collisionShapeByIndex = this.makeShapes(pNodeWidth, pExtensionWidth, pCollisionHeight, 0.0F, pCollisionHeight);
         this.shapeByIndex = this.makeShapes(pNodeWidth, pExtensionWidth, pNodeHeight, 0.0F, pExtensionHeight);

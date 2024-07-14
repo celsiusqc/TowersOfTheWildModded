@@ -199,8 +199,7 @@ public abstract class Structure {
 
     public abstract StructureType<?> type();
 
-    // FORGE START
-
+    // Neo: Grant ability to modify Structures in specific ways such as adding new natural mob spawns to structures
     private final net.neoforged.neoforge.common.world.ModifiableStructureInfo modifiableStructureInfo;
 
     /**
@@ -208,8 +207,7 @@ public abstract class Structure {
      * Modified structure data is set by server after datapacks and serverconfigs load.
      * Settings field reads are coremodded to redirect to this.
      **/
-    public net.neoforged.neoforge.common.world.ModifiableStructureInfo modifiableStructureInfo()
-    {
+    public net.neoforged.neoforge.common.world.ModifiableStructureInfo modifiableStructureInfo() {
         return this.modifiableStructureInfo;
     }
 
@@ -219,8 +217,6 @@ public abstract class Structure {
     public StructureSettings getModifiedStructureSettings() {
         return this.modifiableStructureInfo().get().structureSettings();
     }
-
-    // FORGE END
 
     public static record GenerationContext(
         RegistryAccess registryAccess,

@@ -94,9 +94,13 @@ public class RedStoneOreBlock extends Block {
     protected void spawnAfterBreak(BlockState pState, ServerLevel pLevel, BlockPos pPos, ItemStack pStack, boolean pDropExperience) {
         super.spawnAfterBreak(pState, pLevel, pPos, pStack, pDropExperience);
     }
+
+    // Neo: Patch-in override for getExpDrop. Original vanilla logic passes UniformInt.of(1, 5) to tryDropExperience.
     @Override
-    public int getExpDrop(BlockState state, net.minecraft.world.level.LevelReader world, RandomSource randomSource, BlockPos pos) {
-        return 1 + randomSource.nextInt(5);
+    public int getExpDrop(BlockState state, net.minecraft.world.level.LevelAccessor level, BlockPos pos,
+            @org.jetbrains.annotations.Nullable net.minecraft.world.level.block.entity.BlockEntity blockEntity,
+            @org.jetbrains.annotations.Nullable net.minecraft.world.entity.Entity breaker, ItemStack tool) {
+        return UniformInt.of(1, 5).sample(level.getRandom());
     }
 
     /**

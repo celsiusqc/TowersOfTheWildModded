@@ -13,7 +13,7 @@ public class FeatureSizeType<P extends FeatureSize> {
         return Registry.register(BuiltInRegistries.FEATURE_SIZE_TYPE, pName, new FeatureSizeType<>(pCodec));
     }
 
-    private FeatureSizeType(MapCodec<P> pCodec) {
+    public FeatureSizeType(MapCodec<P> pCodec) {
         this.codec = pCodec;
     }
 

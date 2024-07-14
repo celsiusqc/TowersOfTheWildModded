@@ -122,9 +122,7 @@ public class FarmBlock extends Block {
     }
 
     private static boolean shouldMaintainFarmland(BlockGetter pLevel, BlockPos pPos) {
-        BlockState plant = pLevel.getBlockState(pPos.above());
-        BlockState state = pLevel.getBlockState(pPos);
-        return plant.getBlock() instanceof net.neoforged.neoforge.common.IPlantable && state.canSustainPlant(pLevel, pPos, Direction.UP, (net.neoforged.neoforge.common.IPlantable)plant.getBlock());
+        return pLevel.getBlockState(pPos.above()).is(BlockTags.MAINTAINS_FARMLAND);
     }
 
     private static boolean isNearWater(LevelReader pLevel, BlockPos pPos) {

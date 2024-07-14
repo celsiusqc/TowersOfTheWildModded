@@ -266,9 +266,9 @@ public abstract class Entity extends net.neoforged.neoforge.attachment.Attachmen
         this.defineSynchedData(synchedentitydata$builder);
         this.entityData = synchedentitydata$builder.build();
         this.setPos(0.0, 0.0, 0.0);
-        net.neoforged.neoforge.event.entity.EntityEvent.Size sizeEvent = net.neoforged.neoforge.event.EventHooks.getEntitySizeForge(this, Pose.STANDING, this.dimensions, this.dimensions.eyeHeight());
+        net.neoforged.neoforge.event.entity.EntityEvent.Size sizeEvent = net.neoforged.neoforge.event.EventHooks.getEntitySizeForge(this, Pose.STANDING, this.dimensions);
         this.dimensions = sizeEvent.getNewSize();
-        this.eyeHeight = sizeEvent.getNewEyeHeight();
+        this.eyeHeight = this.dimensions.eyeHeight();
         net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.event.entity.EntityEvent.EntityConstructing(this));
     }
 
@@ -2679,10 +2679,11 @@ public abstract class Entity extends net.neoforged.neoforge.attachment.Attachmen
      * Returns whether this Entity is invulnerable to the given DamageSource.
      */
     public boolean isInvulnerableTo(DamageSource pSource) {
-        return this.isRemoved()
+        boolean isVanillaInvulnerable = this.isRemoved()
             || this.invulnerable && !pSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && !pSource.isCreativePlayer()
             || pSource.is(DamageTypeTags.IS_FIRE) && this.fireImmune()
             || pSource.is(DamageTypeTags.IS_FALL) && this.getType().is(EntityTypeTags.FALL_DAMAGE_IMMUNE);
+        return net.neoforged.neoforge.common.CommonHooks.isEntityInvulnerableTo(this, pSource, isVanillaInvulnerable);
     }
 
     public boolean isInvulnerable() {
@@ -2963,7 +2964,7 @@ public abstract class Entity extends net.neoforged.neoforge.attachment.Attachmen
         EntityDimensions entitydimensions = this.dimensions;
         Pose pose = this.getPose();
         EntityDimensions entitydimensions1 = this.getDimensions(pose);
-        net.neoforged.neoforge.event.entity.EntityEvent.Size sizeEvent = net.neoforged.neoforge.event.EventHooks.getEntitySizeForge(this, pose, entitydimensions, entitydimensions1, entitydimensions1.eyeHeight()); // Porting 1.20.5 check if this still works
+        net.neoforged.neoforge.event.entity.EntityEvent.Size sizeEvent = net.neoforged.neoforge.event.EventHooks.getEntitySizeForge(this, pose, entitydimensions, entitydimensions1);
         entitydimensions1 = sizeEvent.getNewSize();
         this.dimensions = entitydimensions1;
         this.eyeHeight = entitydimensions1.eyeHeight();
@@ -3548,7 +3549,7 @@ public abstract class Entity extends net.neoforged.neoforge.attachment.Attachmen
 
             this.levelCallback.onMove();
         }
-        if (this.isAddedToWorld() && !this.level.isClientSide && !this.isRemoved()) this.level.getChunk((int) Math.floor(pX) >> 4, (int) Math.floor(pZ) >> 4); // Forge - ensure target chunk is loaded.
+        if (this.isAddedToLevel() && !this.level.isClientSide && !this.isRemoved()) this.level.getChunk((int) Math.floor(pX) >> 4, (int) Math.floor(pZ) >> 4); // Forge - ensure target chunk is loaded.
     }
 
     public void checkDespawn() {
@@ -3677,27 +3678,37 @@ public abstract class Entity extends net.neoforged.neoforge.attachment.Attachmen
         return true;
     }
 
-    /* ================================== Forge Start =====================================*/
-
+    /**
+     * Neo: Short-lived holder of dropped item entities. Used mainly for Neo hooks and event logic.
+     * <p>
+     * When not null, records all item entities from {@link #spawnAtLocation(ItemStack, float)} and {@link net.minecraft.server.level.ServerPlayer#drop(ItemStack, boolean, boolean)} instead of adding them to the world.
+     */
     @Nullable
     private java.util.Collection<ItemEntity> captureDrops = null;
+
     @Override
     public java.util.Collection<ItemEntity> captureDrops() {
         return captureDrops;
     }
+
     @Override
     public java.util.Collection<ItemEntity> captureDrops(@Nullable java.util.Collection<ItemEntity> value) {
         java.util.Collection<ItemEntity> ret = captureDrops;
         this.captureDrops = value;
         return ret;
     }
+
+    // Neo: Injected ability to store arbitrary nbt onto entities in ways that allow inter-mod compat without compile-time dependencies
     private CompoundTag persistentData;
+
     @Override
     public CompoundTag getPersistentData() {
         if (persistentData == null)
             persistentData = new CompoundTag();
         return persistentData;
     }
+
+    // Neo: Set the default behavior for trampling on Farmland
     @Override
     public boolean canTrample(BlockState state, BlockPos pos, float fallDistance) {
         return level.random.nextFloat() < fallDistance - 0.5F
@@ -3707,43 +3718,40 @@ public abstract class Entity extends net.neoforged.neoforge.attachment.Attachmen
     }
 
     /**
-     * Internal use for keeping track of entities that are tracked by a world, to
+     * Neo: Internal use for keeping track of entities that are tracked by a world, to
      * allow guarantees that entity position changes will force a chunk load, avoiding
      * potential issues with entity desyncing and bad chunk data.
      */
-    private boolean isAddedToWorld;
+    private boolean isAddedToLevel;
 
     @Override
-    public final boolean isAddedToWorld() { return this.isAddedToWorld; }
+    public final boolean isAddedToLevel() { return this.isAddedToLevel; }
 
     @Override
-    public void onAddedToWorld() { this.isAddedToWorld = true; }
+    public void onAddedToLevel() { this.isAddedToLevel = true; }
 
     @Override
-    public void onRemovedFromWorld() { this.isAddedToWorld = false; }
+    public void onRemovedFromLevel() { this.isAddedToLevel = false; }
 
+    // Neo: Helper method to stop an entity from being removed if already marked for removal
     @Override
     public void revive() {
         this.unsetRemoved();
     }
 
-    // no AT because of overrides
-    /**
-     * Accessor method for {@link #getEyeHeight(Pose)}
-     */
-    public float getEyeHeightAccess(Pose pose) {
-        return this.getEyeHeight(pose);
-    }
-
+    // Neo: New logic for determining entity-fluid interactions. Replaces the vanilla logic that used fluids/fluid tags.
     protected Object2DoubleMap<net.neoforged.neoforge.fluids.FluidType> forgeFluidTypeHeight = new Object2DoubleArrayMap<>(net.neoforged.neoforge.fluids.FluidType.SIZE.get());
     private net.neoforged.neoforge.fluids.FluidType forgeFluidTypeOnEyes = net.neoforged.neoforge.common.NeoForgeMod.EMPTY_TYPE.value();
+
     protected final void setFluidTypeHeight(net.neoforged.neoforge.fluids.FluidType type, double height) {
         this.forgeFluidTypeHeight.put(type, height);
     }
+
     @Override
     public final double getFluidTypeHeight(net.neoforged.neoforge.fluids.FluidType type) {
         return this.forgeFluidTypeHeight.getDouble(type);
     }
+
     @Override
     public final boolean isInFluidType(java.util.function.BiPredicate<net.neoforged.neoforge.fluids.FluidType, Double> predicate, boolean forAllTypes) {
         if (this.forgeFluidTypeHeight.isEmpty()) {
@@ -3752,14 +3760,17 @@ public abstract class Entity extends net.neoforged.neoforge.attachment.Attachmen
         return forAllTypes ? this.forgeFluidTypeHeight.object2DoubleEntrySet().stream().allMatch(e -> predicate.test(e.getKey(), e.getDoubleValue()))
                   : this.forgeFluidTypeHeight.object2DoubleEntrySet().stream().anyMatch(e -> predicate.test(e.getKey(), e.getDoubleValue()));
     }
+
     @Override
     public final boolean isInFluidType() {
         return this.forgeFluidTypeHeight.size() > 0;
     }
-  @Override
-  public final net.neoforged.neoforge.fluids.FluidType getEyeInFluidType() {
+
+    @Override
+    public final net.neoforged.neoforge.fluids.FluidType getEyeInFluidType() {
         return forgeFluidTypeOnEyes;
     }
+
     @Override
     public net.neoforged.neoforge.fluids.FluidType getMaxHeightFluidType() {
         if (this.forgeFluidTypeHeight.isEmpty()) {
@@ -3768,6 +3779,7 @@ public abstract class Entity extends net.neoforged.neoforge.attachment.Attachmen
         return this.forgeFluidTypeHeight.object2DoubleEntrySet().stream().max(java.util.Comparator.comparingDouble(Object2DoubleMap.Entry::getDoubleValue)).map(Object2DoubleMap.Entry::getKey).orElseGet(net.neoforged.neoforge.common.NeoForgeMod.EMPTY_TYPE::value);
     }
 
+    // Neo: Hookup Attachment data setting
     @Override
     @Nullable
     public final <T> T setData(net.neoforged.neoforge.attachment.AttachmentType<T> type, T data) {
@@ -3775,6 +3787,7 @@ public abstract class Entity extends net.neoforged.neoforge.attachment.Attachmen
         return super.setData(type, data);
     }
 
+    // Neo: Hookup Capabilities getters to entities
     @Nullable
     public final <T, C> T getCapability(net.neoforged.neoforge.capabilities.EntityCapability<T, C> capability, @org.jetbrains.annotations.UnknownNullability C context) {
         return capability.getCapability(this, context);
@@ -3784,9 +3797,6 @@ public abstract class Entity extends net.neoforged.neoforge.attachment.Attachmen
     public final <T> T getCapability(net.neoforged.neoforge.capabilities.EntityCapability<T, Void> capability) {
         return capability.getCapability(this, null);
     }
-
-    /* ================================== Forge End =====================================*/
-
 
     public Level level() {
         return this.level;

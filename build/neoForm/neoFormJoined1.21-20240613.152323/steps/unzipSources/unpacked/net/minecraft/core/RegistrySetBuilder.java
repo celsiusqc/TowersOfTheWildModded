@@ -350,7 +350,7 @@ public class RegistrySetBuilder {
         }
 
         @Override
-        public void bindValue(T pValue) {
+        protected void bindValue(T pValue) {
             super.bindValue(pValue);
             this.supplier = null;
         }

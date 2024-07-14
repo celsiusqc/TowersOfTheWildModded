@@ -245,7 +245,7 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
     public void setTarget(@Nullable LivingEntity pTarget) {
         net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent changeTargetEvent = net.neoforged.neoforge.common.CommonHooks.onLivingChangeTarget(this, pTarget, net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent.LivingTargetType.MOB_TARGET);
         if(!changeTargetEvent.isCanceled()) {
-             this.target = changeTargetEvent.getNewTarget();
+             this.target = changeTargetEvent.getNewAboutToBeSetTarget();
         }
     }
 
@@ -704,6 +704,10 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
 
     private double getApproximateAttackDamageWithItem(ItemStack pItemStack) {
         ItemAttributeModifiers itemattributemodifiers = pItemStack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+
+        // Neo: Respect gameplay modifiers
+        itemattributemodifiers = pItemStack.getAttributeModifiers();
+
         return itemattributemodifiers.compute(this.getAttributeBaseValue(Attributes.ATTACK_DAMAGE), EquipmentSlot.MAINHAND);
     }
 
@@ -1600,12 +1604,12 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
 
     /**
      * Marks this mob as being disallowed to spawn during {@link Level#addFreshEntity(Entity)}.<p>
-     * @throws UnsupportedOperationException if this entity has already been {@link Entity#isAddedToWorld() added to the world}.
+     * @throws UnsupportedOperationException if this entity has already been {@link Entity#isAddedToLevel()} added to the level.
      * @apiNote Not public-facing API.
      */
     @org.jetbrains.annotations.ApiStatus.Internal
     public final void setSpawnCancelled(boolean cancel) {
-        if (this.isAddedToWorld()) {
+        if (this.isAddedToLevel()) {
             throw new UnsupportedOperationException("Late invocations of Mob#setSpawnCancelled are not permitted.");
         }
         this.spawnCancelled = cancel;

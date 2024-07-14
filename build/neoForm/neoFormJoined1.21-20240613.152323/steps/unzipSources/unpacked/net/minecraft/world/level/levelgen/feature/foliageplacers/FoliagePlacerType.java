@@ -24,7 +24,7 @@ public class FoliagePlacerType<P extends FoliagePlacer> {
         return Registry.register(BuiltInRegistries.FOLIAGE_PLACER_TYPE, pName, new FoliagePlacerType<>(pCodec));
     }
 
-    private FoliagePlacerType(MapCodec<P> pCodec) {
+    public FoliagePlacerType(MapCodec<P> pCodec) {
         this.codec = pCodec;
     }
 

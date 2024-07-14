@@ -98,7 +98,7 @@ public abstract class EntityRenderer<T extends Entity> {
         var event = new net.neoforged.neoforge.client.event.RenderNameTagEvent(pEntity, pEntity.getDisplayName(), this, pPoseStack, pBuffer, pPackedLight, pPartialTick);
         net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(event);
         if (event.canRender().isTrue() || event.canRender().isDefault() && this.shouldShowName(pEntity)) {
-            this.renderNameTag(pEntity, pEntity.getDisplayName(), pPoseStack, pBuffer, pPackedLight, pPartialTick);
+            this.renderNameTag(pEntity, event.getContent(), pPoseStack, pBuffer, pPackedLight, pPartialTick);
         }
     }
 

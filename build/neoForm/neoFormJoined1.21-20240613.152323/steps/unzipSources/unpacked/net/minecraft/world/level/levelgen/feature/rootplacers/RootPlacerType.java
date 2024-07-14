@@ -12,7 +12,7 @@ public class RootPlacerType<P extends RootPlacer> {
         return Registry.register(BuiltInRegistries.ROOT_PLACER_TYPE, pName, new RootPlacerType<>(pCodec));
     }
 
-    private RootPlacerType(MapCodec<P> pCodec) {
+    public RootPlacerType(MapCodec<P> pCodec) {
         this.codec = pCodec;
     }
 

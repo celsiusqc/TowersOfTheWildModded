@@ -84,7 +84,7 @@ public class AttachedStemBlock extends BushBlock {
 
     @Override
     protected boolean mayPlaceOn(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        return pState.is(Blocks.FARMLAND);
+        return pState.getBlock() instanceof net.minecraft.world.level.block.FarmBlock;
     }
 
     @Override
