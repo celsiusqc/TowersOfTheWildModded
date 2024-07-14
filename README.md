@@ -1,27 +1,27 @@
+# Towers_Of_The_Wild_Modded
+Towers Of The Wild Modded implements towers based off of the original mod https://www.curseforge.com/minecraft/mc-mods/towers-of-the-wild.
 
-Installation information
-=======
+# <img alt="logo" src="https://i.imgur.com/3PX6O3p.png">
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions at [github](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+Nether & End towers are forked from https://www.curseforge.com/minecraft/mc-mods/towers-of-the-wild-additions.
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+https://www.curseforge.com/minecraft/mc-mods/towers-of-the-wild-additions has a custom license at the time of writing this stating:
 
-> **Note**: For Eclipse, use tasks in `Launch Group` instead of ones founds in `Java Application`. A preparation task must run before launching the game. NeoGradle uses launch groups to do these subsequently.
+"This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA."
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+Hence, credit has just now been attributed.
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+Folder Structure is based off of https://www.curseforge.com/minecraft/texture-packs/towers-of-the-wild-reworked-datapack.
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+https://www.curseforge.com/minecraft/texture-packs/towers-of-the-wild-reworked-datapack has an MIT license at the time of writing this stating:
+
+"The MIT License Copyright (c) <year> <copyright holders> Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
+
+Hence, credit has just now been attributed.
+
+  Derelict variants, Regular, Jungle, Ice are pulled from https://www.curseforge.com/minecraft/texture-packs/towers-of-the-wild-reworked-datapack.
+
+Variants:
+# <img alt="Variants" src="https://i.imgur.com/SFHGrGx.png">
+# <img alt="Variants" src="https://i.imgur.com/0Kns0gM.png">
+# <img alt="Variants" src="https://i.imgur.com/q7tx9IE.png">
