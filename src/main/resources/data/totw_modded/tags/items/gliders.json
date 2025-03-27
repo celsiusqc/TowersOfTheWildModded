@@ -3,6 +3,8 @@
   "values": [
     {"id":"hangglider:hang_glider","required":false},
     {"id":"paraglider:paraglider","required":false},
-    {"id":"paraglider:deku_leaf","required":false}
+    {"id":"paraglider:deku_leaf","required":false},
+    {"id":"vc_gliders:paraglider_wood","required":false},
+    {"id":"vc_gliders:paraglider_iron","required":false}
   ]
 }
