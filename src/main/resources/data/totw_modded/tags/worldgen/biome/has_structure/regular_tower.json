@@ -1,6 +1,5 @@
 {
     "replace": false,
-    "required": false,
     "values": [
         "#minecraft:is_taiga",
         "minecraft:plains",
@@ -9,6 +8,22 @@
         "#minecraft:is_forest",
         "minecraft:swamp",
         "#minecraft:is_mountain",
-        "#minecraft:is_hill"
+        "#minecraft:is_hill",
+        {
+            "id": "#c:is_taiga",
+            "required": false
+        },
+        {
+            "id": "#c:is_forest",
+            "required": false
+        },
+        {
+            "id": "#c:is_mountain",
+            "required": false
+        },
+        {
+            "id": "#c:is_hill",
+            "required": false
+        }
     ]
 }
