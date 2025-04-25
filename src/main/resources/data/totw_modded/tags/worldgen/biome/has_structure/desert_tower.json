@@ -1,7 +1,11 @@
 {
     "replace": false,
-    "required": false,
     "values": [
-        "minecraft:desert"
+        "minecraft:desert",
+        "#minecraft:is_desert",
+        {
+            "id": "#c:is_desert",
+            "required": false
+        }
     ]
 }

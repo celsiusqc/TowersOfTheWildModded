@@ -1,8 +1,11 @@
 {
     "replace": false,
-    "required": false,
     "values": [
         "minecraft:end_highlands",
-        "minecraft:end_midlands"
+        "minecraft:end_midlands",
+        {
+            "id": "#c:is_end",
+            "required": false
+        }
     ]
 }
