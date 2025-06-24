@@ -1,14 +1,24 @@
 {
-    "replace": false,
-    "values": [
-        "minecraft:snowy_plains",
-        "minecraft:snowy_slopes",
-        "minecraft:snowy_taiga",
-        "minecraft:frozen_peaks",
-        "minecraft:ice_spikes",
-        {
-            "id": "#c:is_cold",
-            "required": false
-        }
-    ]
+  "replace": false,
+  "values": [
+    {
+      "id": "minecraft:snowy_plains"
+    },
+    {
+      "id": "minecraft:snowy_slopes"
+    },
+    {
+      "id": "minecraft:snowy_taiga"
+    },
+    {
+      "id": "minecraft:frozen_peaks"
+    },
+    {
+      "id": "minecraft:ice_spikes"
+    },
+    {
+      "id": "#c:is_cold",
+      "required": false
+    }
+  ]
 }
