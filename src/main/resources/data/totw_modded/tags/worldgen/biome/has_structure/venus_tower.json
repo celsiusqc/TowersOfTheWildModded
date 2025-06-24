@@ -1,7 +1,9 @@
 {
-    "replace": false,
-    "required": false,
-    "values": [
-        "ad_astra:infernal_venus_barrens"
-    ]
+  "replace": false,
+  "values": [
+    {
+      "id": "ad_astra:infernal_venus_barrens",
+      "required": false
+    }
+  ]
 }
