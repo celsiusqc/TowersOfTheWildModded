@@ -1,7 +1,9 @@
 {
-    "replace": false,
-    "required": false,
-    "values": [
-        "#aether:is_aether"
-    ]
+  "replace": false,
+  "values": [
+    {
+      "id": "#aether:is_aether",
+      "required": false
+    }
+  ]
 }

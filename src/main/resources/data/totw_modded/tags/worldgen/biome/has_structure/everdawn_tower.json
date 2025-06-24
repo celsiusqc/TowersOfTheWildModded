@@ -1,15 +1,41 @@
 {
-    "replace": false,
-    "required": false,
-    "values": [
-        "blue_skies:unorthodox_valley",
-        "blue_skies:shaded_woodlands",
-        "blue_skies:crystal_dunes",
-        "blue_skies:crystal_dunes_spikes",
-        "blue_skies:sunset_maple_forest",
-        "blue_skies:rising_creek",
-        "blue_skies:crystal_roughs",
-        "blue_skies:searing_grassland",
-        "blue_skies:crescent_orchard"
-    ]
+  "replace": false,
+  "values": [
+    {
+      "id": "blue_skies:unorthodox_valley",
+      "required": false
+    },
+    {
+      "id": "blue_skies:shaded_woodlands",
+      "required": false
+    },
+    {
+      "id": "blue_skies:crystal_dunes",
+      "required": false
+    },
+    {
+      "id": "blue_skies:crystal_dunes_spikes",
+      "required": false
+    },
+    {
+      "id": "blue_skies:sunset_maple_forest",
+      "required": false
+    },
+    {
+      "id": "blue_skies:rising_creek",
+      "required": false
+    },
+    {
+      "id": "blue_skies:crystal_roughs",
+      "required": false
+    },
+    {
+      "id": "blue_skies:searing_grassland",
+      "required": false
+    },
+    {
+      "id": "blue_skies:crescent_orchard",
+      "required": false
+    }
+  ]
 }

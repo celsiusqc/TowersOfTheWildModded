@@ -1,0 +1,45 @@
+{
+  "totw_modded:regular_tower": {
+    "criteria": {
+      "regular": "2025-06-24 14:29:32 -0400"
+    },
+    "done": true
+  },
+  "totw_modded:jungle_tower": {
+    "criteria": {
+      "jungle": "2025-06-24 14:29:32 -0400"
+    },
+    "done": true
+  },
+  "totw_modded:derelict_tower": {
+    "criteria": {
+      "derelict": "2025-06-24 14:29:32 -0400"
+    },
+    "done": true
+  },
+  "totw_modded:ice_tower": {
+    "criteria": {
+      "ice": "2025-06-24 14:29:32 -0400"
+    },
+    "done": true
+  },
+  "minecraft:recipes/decorations/crafting_table": {
+    "criteria": {
+      "unlock_right_away": "2025-06-24 14:29:31 -0400"
+    },
+    "done": true
+  },
+  "totw_modded:derelict_grass_tower": {
+    "criteria": {
+      "derelict_grass": "2025-06-24 14:29:32 -0400"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:plains": "2025-06-24 14:29:32 -0400"
+    },
+    "done": false
+  },
+  "DataVersion": 3953
+}

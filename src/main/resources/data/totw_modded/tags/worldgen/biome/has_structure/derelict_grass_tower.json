@@ -1,25 +1,41 @@
 {
-    "replace": false,
-    "values": [
-        "#minecraft:is_taiga",
-        "minecraft:plains",
-        "minecraft:sunflower_plains",
-        "minecraft:savanna",
-        "minecraft:forest",
-        "minecraft:swamp",
-        "#minecraft:is_mountain",
-        "#minecraft:is_hill",
-        {
-            "id": "#c:is_taiga",
-            "required": false
-        },
-        {
-            "id": "#c:is_mountain",
-            "required": false
-        },
-        {
-            "id": "#c:is_hill",
-            "required": false
-        }
-    ]
+  "replace": false,
+  "values": [
+    {
+      "id": "#minecraft:is_taiga"
+    },
+    {
+      "id": "minecraft:plains"
+    },
+    {
+      "id": "minecraft:sunflower_plains"
+    },
+    {
+      "id": "minecraft:savanna"
+    },
+    {
+      "id": "minecraft:forest"
+    },
+    {
+      "id": "minecraft:swamp"
+    },
+    {
+      "id": "#minecraft:is_mountain"
+    },
+    {
+      "id": "#minecraft:is_hill"
+    },
+    {
+      "id": "#c:is_taiga",
+      "required": false
+    },
+    {
+      "id": "#c:is_mountain",
+      "required": false
+    },
+    {
+      "id": "#c:is_hill",
+      "required": false
+    }
+  ]
 }

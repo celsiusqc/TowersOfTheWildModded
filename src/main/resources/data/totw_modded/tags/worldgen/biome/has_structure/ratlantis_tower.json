@@ -1,7 +1,9 @@
 {
-    "replace": false,
-    "required": false,
-    "values": [
-        "rats:ratlantis"
-    ]
+  "replace": false,
+  "values": [
+    {
+      "id": "rats:ratlantis",
+      "required": false
+    }
+  ]
 }
