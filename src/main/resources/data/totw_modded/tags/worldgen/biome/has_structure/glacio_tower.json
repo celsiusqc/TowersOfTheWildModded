@@ -1,8 +1,13 @@
 {
-    "replace": false,
-    "required": false,
-    "values": [
-        "ad_astra:glacio_snowy_barrens",
-        "ad_astra:glacio_ice_peaks"
-    ]
+  "replace": false,
+  "values": [
+    {
+      "id": "ad_astra:glacio_snowy_barrens",
+      "required": false
+    },
+    {
+      "id": "ad_astra:glacio_ice_peaks",
+      "required": false
+    }
+  ]
 }
