@@ -1,8 +1,13 @@
 {
-    "replace": false,
-    "required": false,
-    "values": [
-        "twilightforest:swamp",
-        "twilightforest:fire_swamp"
-    ]
+  "replace": false,
+  "values": [
+    {
+      "id": "twilightforest:swamp",
+      "required": false
+    },
+    {
+      "id": "twilightforest:fire_swamp",
+      "required": false
+    }
+  ]
 }
