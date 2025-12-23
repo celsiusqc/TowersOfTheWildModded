@@ -17,7 +17,7 @@
       "id": "minecraft:ice_spikes"
     },
     {
-      "id": "#c:is_cold",
+      "id": "#c:is_cold/overworld",
       "required": false
     }
   ]
