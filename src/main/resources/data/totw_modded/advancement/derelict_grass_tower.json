@@ -2,7 +2,7 @@
     "parent": "totw_modded:root",
     "display": {
         "icon": {
-            "item": "minecraft:mossy_cobblestone"
+            "id": "minecraft:mossy_cobblestone"
         },
         "title": {
             "translate": "A trip to the Countryside"
@@ -19,11 +19,17 @@
         "derelict_grass": {
             "trigger": "minecraft:location",
             "conditions": {
-                "player": {
-                    "location": {
-                        "structure": "totw_modded:derelict_grass"
+                "player": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "minecraft:location": {
+                                "structures": "totw_modded:derelict_grass"
+                            }
+                        }
                     }
-                }
+                ]
             }
         }
     },

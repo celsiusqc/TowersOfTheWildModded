@@ -1,6 +1,10 @@
 {
   "pack": {
-    "description": "${mod_id} resources",
-    "pack_format": 34
+    "description": "totw_modded resources",
+    "max_format": 107,
+    "min_format": [
+      107,
+      1
+    ]
   }
 }
