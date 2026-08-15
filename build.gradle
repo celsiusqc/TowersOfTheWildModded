@@ -8,6 +8,7 @@ plugins {
     id 'eclipse'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[7.0.17,8)'
+    id 'net.darkhax.curseforgegradle' version '1.1.26'
 }
 
 version = "forge-${minecraft_version}-${mod_version}"
@@ -67,4 +68,19 @@ dependencies {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+// Publish to CurseForge: needs curseforge_token in ~/.gradle/gradle.properties
+// or a CURSEFORGE_TOKEN environment variable (e.g. a GitHub Actions secret).
+tasks.register('publishCurseForge', net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+    apiToken = findProperty('curseforge_token') ?: System.getenv('CURSEFORGE_TOKEN')
+
+    def mainFile = upload(859365, jar)
+    mainFile.displayName = "totw_modded-forge-${minecraft_version}-${mod_version}"
+    mainFile.releaseType = 'release'
+    mainFile.changelog = 'See https://github.com/zachsai/TowersOfTheWildModded for changes.'
+    mainFile.changelogType = 'markdown'
+    mainFile.addModLoader('Forge')
+    mainFile.addGameVersion(minecraft_version)
+    mainFile.addJavaVersion('Java 25')
 }
