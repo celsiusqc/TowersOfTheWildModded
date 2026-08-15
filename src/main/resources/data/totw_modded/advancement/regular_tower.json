@@ -2,7 +2,7 @@
     "parent": "totw_modded:root",
     "display": {
         "icon": {
-            "item": "minecraft:diamond_sword"
+            "id": "minecraft:diamond_sword"
         },
         "title": {
             "translate": "A breath of fresh air"
@@ -19,11 +19,17 @@
         "regular": {
             "trigger": "minecraft:location",
             "conditions": {
-                "player": {
-                    "location": {
-                        "structure": "totw_modded:regular"
+                "player": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "minecraft:location": {
+                                "structures": "totw_modded:regular"
+                            }
+                        }
                     }
-                }
+                ]
             }
         }
     },

@@ -2,7 +2,7 @@
     "parent": "totw_modded:root",
     "display": {
         "icon": {
-            "item": "minecraft:cracked_deepslate_bricks"
+            "id": "minecraft:cracked_deepslate_bricks"
         },
         "title": {
             "translate": "I found it like this..."
@@ -19,11 +19,17 @@
         "derelict": {
             "trigger": "minecraft:location",
             "conditions": {
-                "player": {
-                    "location": {
-                        "structure": "totw_modded:derelict"
+                "player": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "minecraft:location": {
+                                "structures": "totw_modded:derelict"
+                            }
+                        }
                     }
-                }
+                ]
             }
         }
     },

@@ -2,7 +2,7 @@
     "parent": "totw_modded:root",
     "display": {
         "icon": {
-            "item": "minecraft:blue_ice"
+            "id": "minecraft:blue_ice"
         },
         "title": {
             "translate": "Brrrrrr"
@@ -19,11 +19,17 @@
         "ice": {
             "trigger": "minecraft:location",
             "conditions": {
-                "player": {
-                    "location": {
-                        "structure": "totw_modded:ice"
+                "player": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "minecraft:location": {
+                                "structures": "totw_modded:ice"
+                            }
+                        }
                     }
-                }
+                ]
             }
         }
     },
