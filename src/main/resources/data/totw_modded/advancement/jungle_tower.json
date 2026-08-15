@@ -2,7 +2,7 @@
     "parent": "totw_modded:root",
     "display": {
         "icon": {
-            "item": "minecraft:vine"
+            "id": "minecraft:vine"
         },
         "title": {
             "translate": "BANANAS?"
@@ -19,11 +19,17 @@
         "jungle": {
             "trigger": "minecraft:location",
             "conditions": {
-                "player": {
-                    "location": {
-                        "structure": "totw_modded:jungle"
+                "player": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "minecraft:location": {
+                                "structures": "totw_modded:jungle"
+                            }
+                        }
                     }
-                }
+                ]
             }
         }
     },

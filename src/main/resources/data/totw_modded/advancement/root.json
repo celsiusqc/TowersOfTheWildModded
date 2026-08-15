@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "item": "waystones:mossy_waystone"
+            "id": "minecraft:mossy_cobblestone"
         },
         "title": {
             "translate": "Towers of the Wild: Modded"
@@ -13,7 +13,7 @@
         "show_toast": false,
         "announce_to_chat": false,
         "hidden": false,
-        "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png"
+        "background": "minecraft:gui/advancements/backgrounds/adventure"
     },
     "criteria": {
         "sample_trigger": {
@@ -21,7 +21,7 @@
             "conditions": {
                 "items": [
                     {
-                        "item": "minecraft:crafting_table"
+                        "items": "minecraft:crafting_table"
                     }
                 ]
             }
