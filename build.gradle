@@ -75,6 +75,9 @@ tasks.register('publishCurseForge', net.darkhax.curseforgegradle.TaskPublishCurs
 	mainFile.addModLoader('Fabric')
 	mainFile.addGameVersion(minecraft_version)
 	mainFile.addJavaVersion('Java 25')
+	// CurseForge requires an environment tag
+	mainFile.addGameVersion('Client')
+	mainFile.addGameVersion('Server')
 	mainFile.addRequirement('fabric-api')
 }
 
