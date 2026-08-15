@@ -1,7 +1,7 @@
 # See https://docs.minecraftforge.net/en/1.21.x/gettingstarted/modfiles/#modstoml
 
 modLoader="javafml"
-loaderVersion="[64,)"
+loaderVersion="[61,)"
 license="All Rights Reserved"
 
 [[mods]]
@@ -15,13 +15,13 @@ description='''Towers of the Wild for modern Minecraft, with datapack-driven tow
 [[dependencies.totw_modded]]
     modId="forge"
     mandatory=true
-    versionRange="[64,)"
+    versionRange="[61,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.totw_modded]]
     modId="minecraft"
     mandatory=true
-    versionRange="[26.1.2,26.2)"
+    versionRange="[1.21.11,26.1)"
     ordering="NONE"
     side="BOTH"

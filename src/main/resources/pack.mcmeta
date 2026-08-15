@@ -1,9 +1,9 @@
 {
   "pack": {
     "description": "totw_modded resources",
-    "max_format": 101,
+    "max_format": 94,
     "min_format": [
-      101,
+      94,
       1
     ]
   }
