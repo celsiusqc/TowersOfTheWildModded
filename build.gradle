@@ -3,6 +3,8 @@ plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.143'
     id 'idea'
+    // CurseForge upload support for the publishCurseForge task below
+    id 'net.darkhax.curseforgegradle' version '1.1.26'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -124,6 +126,21 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+// Publish to CurseForge: needs curseforge_token in ~/.gradle/gradle.properties
+// or a CURSEFORGE_TOKEN environment variable (e.g. a GitHub Actions secret).
+tasks.register('publishCurseForge', net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+    apiToken = findProperty('curseforge_token') ?: System.getenv('CURSEFORGE_TOKEN')
+
+    def mainFile = upload(859365, jar)
+    mainFile.displayName = "totw_modded-neoforge-${minecraft_version}-${mod_version}"
+    mainFile.releaseType = 'release'
+    mainFile.changelog = 'See https://github.com/zachsai/TowersOfTheWildModded for changes.'
+    mainFile.changelogType = 'markdown'
+    mainFile.addModLoader('NeoForge')
+    mainFile.addGameVersion(minecraft_version)
+    mainFile.addJavaVersion('Java 25')
 }
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
