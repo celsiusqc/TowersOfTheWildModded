@@ -141,6 +141,9 @@ tasks.register('publishCurseForge', net.darkhax.curseforgegradle.TaskPublishCurs
     mainFile.addModLoader('NeoForge')
     mainFile.addGameVersion(minecraft_version)
     mainFile.addJavaVersion('Java 25')
+    // CurseForge requires an environment tag
+    mainFile.addGameVersion('Client')
+    mainFile.addGameVersion('Server')
 }
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
