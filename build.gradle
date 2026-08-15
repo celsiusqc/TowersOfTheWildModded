@@ -32,7 +32,12 @@ minecraft {
             systemProperty 'forge.enabledGameTestNamespaces', mod_id
         }
 
-        register('client')
+        register('client') {
+            // LWJGL/GLFW requires the JVM to start on the first thread on macOS
+            if (System.getProperty('os.name').toLowerCase().contains('mac')) {
+                jvmArgs '-XstartOnFirstThread'
+            }
+        }
 
         register('server') {
             args '--nogui'
